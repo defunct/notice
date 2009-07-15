@@ -1,6 +1,6 @@
 <projectDescription>
   <name>prattle</name>
-  <comment>A contemporary logging interface.</comment>
+  <comment>Logging with variable arguments.</comment>
   <projects/>
   <buildSpec>
     <buildCommand>

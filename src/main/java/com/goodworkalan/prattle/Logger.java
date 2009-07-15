@@ -10,21 +10,13 @@ public class Logger
         this.logger = logger;
     }
     
-    public void info(String pattern, Object...arguments)
+    public Log info(String format, Object...args)
     {
-        if (logger.isInfoEnabled())
-        {
-            String message = String.format(pattern, arguments);
-            logger.warn(message);
-        }
+        return logger.isInfoEnabled() ? new CoreLog(logger, Level.INFO).message(format, args) : NullLog.INSTANCE;
     }
     
-    public void debug(String pattern, Object...arguments)
+    public Log debug(String format, Object...args)
     {
-        if (logger.isDebugEnabled())
-        {
-            String message = String.format(pattern, arguments);
-            logger.warn(message);
-        }
+        return logger.isDebugEnabled() ? new CoreLog(logger, Level.DEBUG).message(format, args) : NullLog.INSTANCE;
     }
 }
