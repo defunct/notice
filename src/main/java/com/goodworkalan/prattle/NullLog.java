@@ -9,9 +9,19 @@ public class NullLog implements Log
         return this;
     }
     
-    public Dump dump(Object object)
+    public Log bean(String id, Object object)
     {
-        return NullDump.INSTACE;
+        return this;
+    }
+    
+    public Lister<Log> list(String id)
+    {
+        return new NullLister<Log>(this);
+    }
+    
+    public Mapper<Log> map(String id)
+    {
+        return new NullMapper<Log>(this);
     }
 
     public void send()

@@ -1,0 +1,54 @@
+date: 2009-07-16T09:24:18.337Z
+level: INFO
+thread: 1
+message: Starting YAML recorder.
+---
+date: 2009-07-16T09:24:18.369Z
+level: INFO
+thread: 1
+message: Hello, World!
+---
+date: 2009-07-16T09:24:18.372Z
+level: INFO
+thread: 1
+message: Create a brand new foo.
+objects:
+  greeting: Hello, World!
+  url: !!java.net.URI
+    absolute: true
+    authority: blogometer.com
+    fragment: null
+    host: blogometer.com
+    opaque: false
+    path: ''
+    port: -1
+    query: null
+    rawAuthority: blogometer.com
+    rawFragment: null
+    rawPath: ''
+    rawQuery: null
+    rawSchemeSpecificPart: //blogometer.com
+    rawUserInfo: null
+    scheme: http
+    schemeSpecificPart: //blogometer.com
+    userInfo: null
+  person:
+    firstName: Alan
+    lastName: Guiterrez
+  map:
+    list:
+    - A
+    - B
+    - C
+    map:
+      one: 1
+      two: 2
+    bean:
+      firstName: Geroge
+      lastName: Washington
+  list:
+  - one
+  - two
+  - - two.one
+    - two.two
+  - three

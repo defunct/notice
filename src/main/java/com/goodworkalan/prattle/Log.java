@@ -4,7 +4,11 @@ public interface Log
 {
     public void send();
     
-    public Dump dump(Object object);
+    public Log bean(String id, Object object);
+    
+    public Mapper<Log> map(String id);
+    
+    public Lister<Log> list(String id);
     
     public Log message(String format, Object...args);
 }
