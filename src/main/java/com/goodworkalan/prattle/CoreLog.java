@@ -48,6 +48,12 @@ public class CoreLog implements Log
         return this;
     }
     
+    public Log string(String id, Object object)
+    {
+        getObjects().put(id, object.toString());
+        return this;
+    }
+    
     public Lister<Log> list(String id)
     {
         List<Object> list = new ArrayList<Object>();

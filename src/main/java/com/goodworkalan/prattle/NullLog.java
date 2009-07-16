@@ -14,6 +14,11 @@ public class NullLog implements Log
         return this;
     }
     
+    public Log string(String id, Object object)
+    {
+        return this;
+    }
+    
     public Lister<Log> list(String id)
     {
         return new NullLister<Log>(this);

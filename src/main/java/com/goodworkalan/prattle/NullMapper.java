@@ -13,6 +13,11 @@ public class NullMapper<T> implements Mapper<T>
     {
         return this;
     }
+    
+    public Mapper<T> string(String id, Object object)
+    {
+        return this;
+    }
 
     public Lister<Mapper<T>> list(String id)
     {

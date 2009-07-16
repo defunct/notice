@@ -23,6 +23,12 @@ public class CoreLister<T> implements Lister<T>
         return this;
     }
     
+    public Lister<T> string(Object object)
+    {
+        list.add(object.toString());
+        return this;
+    }
+    
     public Lister<Lister<T>> list()
     {
         List<Object> subList = new ArrayList<Object>();

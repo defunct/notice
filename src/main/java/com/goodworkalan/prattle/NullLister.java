@@ -14,6 +14,11 @@ public class NullLister<T> implements Lister<T>
         return this;
     }
     
+    public Lister<T> string(Object object)
+    {
+        return this;
+    }
+    
     public Lister<Lister<T>> list()
     {
         return new NullLister<Lister<T>>(this);

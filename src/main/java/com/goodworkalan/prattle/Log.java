@@ -6,6 +6,8 @@ public interface Log
     
     public Log bean(String id, Object object);
     
+    public Log string(String id, Object object);
+    
     public Mapper<Log> map(String id);
     
     public Lister<Log> list(String id);

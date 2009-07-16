@@ -1,17 +1,17 @@
 logger: com.goodworkalan.prattle.YamlRecorder
-date: 2009-07-16T16:11:04.179Z
+date: 2009-07-16T20:38:02.412Z
 level: INFO
 thread: 1
 message: Starting YAML recorder.
 ---
 logger: com.goodworkalan.prattle.api.LoggerTest
-date: 2009-07-16T16:11:04.222Z
+date: 2009-07-16T20:38:02.452Z
 level: INFO
 thread: 1
 message: Hello, World!
 ---
 logger: com.goodworkalan.prattle.api.LoggerTest
-date: 2009-07-16T16:11:04.224Z
+date: 2009-07-16T20:38:02.456Z
 level: INFO
 thread: 1
 message: Create a brand new foo.
