@@ -32,7 +32,7 @@ public class YamlRecorder implements Recorder
         try
         {
             writer = new FileWriter(file);
-            writer.write(yaml.dump(new Message("Starting YAML recorder.", Level.INFO, null).toMap()));
+            writer.write(yaml.dump(new CoreMessage(getClass().getName(), "Starting YAML recorder.", Level.INFO, null).toMap()));
         }
         catch (IOException e)
         {

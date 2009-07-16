@@ -14,9 +14,9 @@ public class LoggerTest
     public void test()
     {
         Logger logger = LoggerFactory.getLogger(LoggerTest.class);
-        logger.debug("Test.").send();
-        logger.info("Hello, World!").send();
-        logger.info("Create a brand new foo.")
+        logger.debug().message("Test.").send();
+        logger.info().message("Hello, World!").send();
+        logger.info().message("Create a brand new foo.")
               .bean("greeting", "Hello, World!")
               .bean("url", URI.create("http://blogometer.com"))
               .bean("person", new Person("Alan", "Guiterrez"))

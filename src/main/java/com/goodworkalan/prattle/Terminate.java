@@ -1,13 +1,18 @@
 package com.goodworkalan.prattle;
 
-public class Terminate extends Message
+import java.util.Map;
+
+class Terminate implements Message
 {
     public Terminate()
     {
-        super(null, null, null);
     }
     
-    @Override
+    public Map<String, Object> toMap()
+    {
+        return null;
+    }
+    
     public boolean isTerminal()
     {
         return true;

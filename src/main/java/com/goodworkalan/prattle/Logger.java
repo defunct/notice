@@ -10,13 +10,33 @@ public class Logger
         this.logger = logger;
     }
     
-    public Log info(String format, Object...args)
+    public void trace(String format, Object...args)
     {
-        return logger.isInfoEnabled() ? new CoreLog(logger, Level.INFO).message(format, args) : NullLog.INSTANCE;
+        trace().message(format, args).send();
     }
     
-    public Log debug(String format, Object...args)
+    public Log trace()
     {
-        return logger.isDebugEnabled() ? new CoreLog(logger, Level.DEBUG).message(format, args) : NullLog.INSTANCE;
+        return logger.isTraceEnabled() ? new CoreLog(logger, Level.TRACE) : NullLog.INSTANCE;
+    }
+    
+    public void debug(String format, Object...args)
+    {
+        debug().message(format, args).send();
+    }
+
+    public Log debug()
+    {
+        return logger.isDebugEnabled() ? new CoreLog(logger, Level.DEBUG) : NullLog.INSTANCE;
+    }
+
+    public void info(String format, Object...args)
+    {
+        info().message(format, args).send();
+    }
+    
+    public Log info()
+    {
+        return logger.isInfoEnabled() ? new CoreLog(logger, Level.INFO) : NullLog.INSTANCE;   
     }
 }

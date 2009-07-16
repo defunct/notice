@@ -84,6 +84,6 @@ public class CoreLog implements Log
             break;
         }
                 
-        Prattle.getInstance().send(new Message(msg, level, objects));
+        Prattle.getInstance().send(new CoreMessage(logger.getName(), msg, level, objects));
     }
 }
