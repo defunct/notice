@@ -1,5 +1,7 @@
 package com.goodworkalan.prattle;
 
+import java.io.Serializable;
+
 public class NullLog implements Log
 {
     public final static Log INSTANCE = new NullLog();
@@ -9,11 +11,21 @@ public class NullLog implements Log
         return this;
     }
     
-    public Log bean(String id, Object object)
+    public Log object(String id, Object object)
     {
         return this;
     }
     
+    public Log freeze(String name, Object object, Class<?>...freeze)
+    {
+        return this;
+    }
+    
+    public Log serialize(String name, Serializable serializable)
+    {
+        return this;
+    }
+
     public Log string(String id, Object object)
     {
         return this;

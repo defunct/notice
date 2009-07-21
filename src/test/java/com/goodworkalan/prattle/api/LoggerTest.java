@@ -17,9 +17,9 @@ public class LoggerTest
         logger.debug().message("Test.").send();
         logger.info().message("Hello, World!").send();
         logger.info().message("Create a brand new foo.")
-              .bean("greeting", "Hello, World!")
-              .bean("url", URI.create("http://blogometer.com"))
-              .bean("person", new Person("Alan", "Guiterrez"))
+              .object("greeting", "Hello, World!")
+              .object("url", URI.create("http://blogometer.com"))
+              .object("person", new Person("Alan", "Guiterrez"))
               .map("map")
                   .list("list").add("A").add("B").add("C").end()
                   .map("map").put("one", 1).put("two", 2).end()

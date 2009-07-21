@@ -1,5 +1,7 @@
 package com.goodworkalan.prattle;
 
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -42,9 +44,28 @@ public class CoreLog implements Log
         return objects;
     }
     
-    public Log bean(String id, Object object)
+    public Log object(String id, Object object)
     {
         getObjects().put(id, object);
+        return this;
+    }
+    
+    public Log freeze(String name, Object object, Class<?>...freeze)
+    {
+        getObjects().put(name, Bean.freeze(object, freeze));
+        return this;
+    }
+    
+    public Log serialize(String name, Serializable serializable)
+    {
+        try
+        {
+            getObjects().put(name, Serialization.getInstance(serializable));
+        }
+        catch (IOException e)
+        {
+            throw new PrattleException(0, e);
+        }
         return this;
     }
     
