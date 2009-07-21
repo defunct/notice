@@ -6,6 +6,10 @@ public interface Log
     
     public Log bean(String id, Object object);
     
+    // public Log freeze(String id, Object object);
+    
+    // public Log serialize(String id, Object object);
+    
     public Log string(String id, Object object);
     
     public Mapper<Log> map(String id);
