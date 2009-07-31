@@ -15,6 +15,12 @@ public final class PrattleException extends RuntimeException
 
     /** A list of arguments to the formatted error message. */
     private final List<Object> arguments = new ArrayList<Object>();
+    
+    /** A variable substitution in the property file creates an infinite loop. */
+    public final static int PROPERTY_LOOP = 101;
+    
+    /** A property value ends with a backslash character, does not actually escape anything. */
+    public final static int TERMINAL_BACKSLASH = 102;
 
     /**
      * Create a Sheaf exception with the given error code.
@@ -77,7 +83,7 @@ public final class PrattleException extends RuntimeException
     public String getMessage()
     {
         String key = Integer.toString(code);
-        ResourceBundle exceptions = ResourceBundle.getBundle("com.goodworkalan.addendum.exceptions");
+        ResourceBundle exceptions = ResourceBundle.getBundle("com.goodworkalan.prattle.exceptions");
         String format;
         try
         {
