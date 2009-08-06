@@ -63,14 +63,28 @@ public final class PrattleException extends RuntimeException
      * Add an argument to the list of arguments to provide the formatted error
      * message associated with the error code.
      * 
-     * @param argument
-     *            The format argument.
+     * @param args
+     *            The format arguments.
      * @return This sheaf exception for chained invocation of add.
      */
-    public PrattleException add(Object argument)
+    public PrattleException add(Object...args)
     {
-        arguments.add(argument);
+        for (Object arg : args)
+        {
+            arguments.add(arg);
+        }
         return this;
+    }
+
+    /**
+     * Return the path to the message bundle. Derived classes can override
+     * this to provide messages for their own error code.
+     * 
+     * @return The message bundle path.
+     */
+    protected String getMessageBundlePath()
+    {
+        return "com.goodworkalan.prattle.exceptions";
     }
 
     /**
@@ -83,7 +97,7 @@ public final class PrattleException extends RuntimeException
     public String getMessage()
     {
         String key = Integer.toString(code);
-        ResourceBundle exceptions = ResourceBundle.getBundle("com.goodworkalan.prattle.exceptions");
+        ResourceBundle exceptions = ResourceBundle.getBundle(getMessageBundlePath());
         String format;
         try
         {
