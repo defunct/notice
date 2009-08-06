@@ -4,12 +4,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Map;
-import java.util.Properties;
 
 import org.yaml.snakeyaml.Dumper;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
+import com.goodworkalan.prattle.Configuration;
 import com.goodworkalan.prattle.PrattleException;
 import com.goodworkalan.prattle.Recorder;
 
@@ -23,9 +23,9 @@ public class YamlRecorder implements Recorder
     {
     }
     
-    public void initialize(String prefix, Properties properties)
+    public void initialize(String prefix, Configuration configuration)
     {
-        String file = properties.getProperty(prefix + "file", null);
+        String file = configuration.getProperty(prefix + "file", null);
         if (file == null)
         {
             throw new PrattleException(0);
