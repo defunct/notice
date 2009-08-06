@@ -8,7 +8,7 @@ import javax.naming.NamingException;
 
 import org.testng.annotations.Test;
 
-public class VariablePropertiesTest
+public class ConfigurationTest
 {
     @Test
     public void unescape()
@@ -20,7 +20,7 @@ public class VariablePropertiesTest
         properties.setProperty("f", "\\f");
         properties.setProperty("b", "\\b");
         properties.setProperty("a", "\\a");
-        VariableProperties variables = new VariableProperties(properties);
+        Configuration variables = new Configuration(properties);
         assertEquals(variables.getProperty("n"), "\n");
         assertEquals(variables.getProperty("r"), "\r");
         assertEquals(variables.getProperty("t"), "\t");
@@ -34,7 +34,7 @@ public class VariablePropertiesTest
     {
         Properties properties = new Properties();
         properties.put("a", "a");
-        VariableProperties variables = new VariableProperties(properties);
+        Configuration variables = new Configuration(properties);
         assertEquals(variables.getProperty("a", "b"), "a");
         assertEquals(variables.getProperty("b", "b"), "b");
     }
@@ -45,7 +45,7 @@ public class VariablePropertiesTest
         System.setProperty("testing.prattle.expand", "a");
         Properties properties = new Properties();
         properties.put("a", "<${testing.prattle.expand}>");
-        VariableProperties variables = new VariableProperties(properties);
+        Configuration variables = new Configuration(properties);
         assertEquals(variables.getProperty("a"), "<a>");
     }
     
@@ -55,7 +55,7 @@ public class VariablePropertiesTest
         Properties properties = new Properties();
         properties.put("a", "<${b}>");
         properties.put("b", "b");
-        VariableProperties variables = new VariableProperties(properties);
+        Configuration variables = new Configuration(properties);
         assertEquals(variables.getProperty("a"), "<b>");
     }
     
@@ -66,7 +66,7 @@ public class VariablePropertiesTest
         
         Properties properties = new Properties();
         properties.put("a", "<${naming}>");
-        VariableProperties variables = new VariableProperties(properties);
+        Configuration variables = new Configuration(properties);
         assertEquals(variables.getProperty("a"), "<a>");
     }
     
@@ -77,7 +77,7 @@ public class VariablePropertiesTest
         
         Properties properties = new Properties();
         properties.put("a", "<${b}>");
-        VariableProperties variables = new VariableProperties(properties);
+        Configuration variables = new Configuration(properties);
         assertEquals(variables.getProperty("a"), "<>");
         
         System.setProperty(Context.INITIAL_CONTEXT_FACTORY, BadInitialContextFactory.class.getName());
@@ -91,7 +91,7 @@ public class VariablePropertiesTest
         Properties properties = new Properties();
         properties.setProperty("a", "${b}");
         properties.setProperty("b", "${a}");
-        VariableProperties variables = new VariableProperties(properties);
+        Configuration variables = new Configuration(properties);
         variables.getProperty("a");
     }
     
@@ -100,7 +100,7 @@ public class VariablePropertiesTest
     {
         Properties properties = new Properties();
         properties.put("a", "\\");
-        VariableProperties variables = new VariableProperties(properties);
+        Configuration variables = new Configuration(properties);
         variables.getProperty("a");
     }
     
@@ -111,7 +111,7 @@ public class VariablePropertiesTest
         
         Properties properties = new Properties();
         properties.put("a", "$$");
-        VariableProperties variables = new VariableProperties(properties);
+        Configuration variables = new Configuration(properties);
         assertEquals(variables.getProperty("a"), "$$");
     }
     
@@ -120,7 +120,7 @@ public class VariablePropertiesTest
     {
         Properties properties = new Properties();
         properties.setProperty("a", "}");
-        VariableProperties variables = new VariableProperties(properties);
+        Configuration variables = new Configuration(properties);
         assertEquals(variables.getProperty("a"), "}");
     }
 }

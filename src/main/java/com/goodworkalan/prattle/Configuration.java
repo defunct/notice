@@ -9,12 +9,12 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 
 /**
- * An implementation of <code>Properties</code> that performs variable
- * substitution on the property values.
- *
+ * An wrapper around <code>Properties</code> that performs variable substitution
+ * on the property values.
+ * 
  * @author Alan Gutierrez
  */
-public class VariableProperties
+public class Configuration
 {
     /** The serial version id. */
     private static final long serialVersionUID = 1L;
@@ -28,7 +28,7 @@ public class VariableProperties
      * @param properties
      *            The properties.
      */
-    VariableProperties(Properties properties)
+    Configuration(Properties properties)
     {
         this.properties = properties;
     }

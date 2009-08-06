@@ -35,7 +35,7 @@ public final class Prattle
             String className = properties.getProperty(prefix);
             Class<?> recorderClass = Class.forName(className);
             Recorder recorder = (Recorder) recorderClass.newInstance();
-            recorder.initialize(prefix + ".", properties);
+            recorder.initialize(prefix + ".", new Configuration(properties));
             recorders.add(recorder);
         }
     }
