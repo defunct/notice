@@ -7,14 +7,17 @@ import org.yaml.snakeyaml.representer.Representer;
 import com.goodworkalan.prattle.Bean;
 import com.goodworkalan.prattle.Serialization;
 
+// TODO Document
 public class PrattleRepresenter extends Representer
 {
+    // TODO Document
     public PrattleRepresenter()
     {
         this.representers.put(Bean.class, new BeanRepresent());
         this.representers.put(Serialization.class, new SerializationRepresent());
     }
     
+    // TODO Document
     public class BeanRepresent implements Represent
     {
         public Node representData(Object data)

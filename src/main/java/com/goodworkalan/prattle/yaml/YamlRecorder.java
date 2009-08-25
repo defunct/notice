@@ -13,16 +13,35 @@ import com.goodworkalan.prattle.Configuration;
 import com.goodworkalan.prattle.PrattleException;
 import com.goodworkalan.prattle.Recorder;
 
+/**
+ * Writes a Prattle message to a rotating YAML log file.
+ * 
+ * @author Alan Gutierrez
+ */
 public class YamlRecorder implements Recorder
 {
+    /** The YAML serailizer and parser. */
     private Yaml yaml;
     
+    /** A destination writer. */
     private Writer writer;
     
+    /**
+     * Default constructor.
+     */
     public YamlRecorder()
     {
     }
-    
+
+    /**
+     * Initialize the YAML recorder reading the properties with the given prefix
+     * from the given configuration.
+     * 
+     * @param prefix
+     *            The property prefix.
+     * @param configuration
+     *            The configuration.
+     */
     public void initialize(String prefix, Configuration configuration)
     {
         String file = configuration.getProperty(prefix + "file", null);
@@ -44,12 +63,21 @@ public class YamlRecorder implements Recorder
             throw new PrattleException(0);
         }
     }
-    
+
+    /**
+     * Write the given Prattle message map to a log file.
+     * 
+     * @param map
+     *            The Prattle message as a map.
+     */
     public void record(Map<String, Object> map)
     {
         yaml.dump(map, writer);
     }
     
+    /**
+     * Close the recorder.
+     */
     public void close()
     {
         try
