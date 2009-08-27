@@ -1,0 +1,94 @@
+CASSANDRA
+
+A base class for meaningful exceptions.
+
+PURPOSE
+
+Cassandra encourages the recording of variables of interest when an exception is
+thrown. It contains a map to record named values. A Cassandra exception can be
+caught at a point further up the stack, named values can be added from that
+stack frame, and the exception rethrown. This makes it easier to gather up
+useful information for error reporting and debugging.
+
+MOTIVATION
+
+Cassandra is the basis of a practice that I've developed of evolving exceptions
+by first assigning a code to the exception that is represented by a public
+constant with a descriptive name. The discriptive name documents the error in
+the code, while the Javadoc attached to the constant declaration documents the
+error in the Javadoc.
+
+After the code has settled, I begin to write error messages that are meaningful
+that include relevant variables. Cassandra will make this simpiler.
+CassandraException has a report structure to record relevant variables.
+CassandraException formats the exception messages with a format message bundle
+that has messages with named parameters.
+
+There is little to gain from attempting to gather the error codes and group them
+by subsystem or severity. It is usually enough to have a meaningful constant
+declaration and a separate error code for each throw statement. The idea is to
+signal clearly to the client programmer the specify spot in my code where things
+went awry.
+
+The groupings are not too meaningful, because the caller usually can only
+meainginfully respond to a specific error code, or a specific set of error
+codes. If they need a grouping, they can create a grouping using a switch
+statement.
+
+Error codes allow the client programmer to respond to specific errors. I cannot
+forsee the many ways in which my code may fail. The error codes attept to signal
+the exact source to the client programmer, so that the client programmer can
+take command of the situation. I do not want to burden the client programmer
+with an opaque mystery exception.
+
+Given the source code to inspect, the client programmer can usually determine
+from the calling context and the error code what sort of trouble has occured.
+
+Without an error code it is on me to foree the possible call stacks and ensure
+that my code resolves ambiguous exceptions by throwing different exception
+types.
+
+Otherwise, a programatic response may have to dependend on a stack trace
+inspection to resolve an ambiguous exception, or worse, looking at the exception
+message, which is not longer descriptive and subject to rewirting or
+internatinalization. In these cases the stack trace and error message become
+part of the API.
+
+The error code is a meaningful, constant part of the API. Error code constants
+are a great way to track this part of your API as it evolves, producing
+documentation for the exception API when the project completes.
+
+Cassandra also provides a means for creating a reporting structure. This is a
+way to send information to the client programmer, to provide arguments for
+format messages, and to provide something more to look at if all you can do it
+dump the exception.
+
+The client programmer can obtain specific variable values using an exceedingly
+simple path langauge built into the excpetion. The exception makes it easy to
+build nested data structures. The contents of this nested data structure also
+becomes part of the exception API. Pack the exception with anything that may be
+of use to the client programmer.
+
+The contents of the structure usually resolve to immutable types, Java
+primatives or Java utility classes like Date, URI, or Class<?>. You must never
+put a value into an exception if that value is liable to change. You must never
+put a value into an exception that cannot be serialized, however there is no
+enforcement of that must never, so you might, but you'll defeat some reporting
+strategies.
+
+The contents of the structure are harder to document, but it can be very useful
+to the client programmer to know which file was not found, if your program is
+opening up a list of files given by the client programmer.
+
+The type information is lost, though. The client programmer needs to know that
+the not found file is kept in your exception.
+
+However, it does not seem that people have ever made much use of the fact that
+Java exceptions are objects.  Maybe it is difficult enough to write a library,
+that modeling the unwinding of of the stack at an exception is too much of a
+deisgn challenge that pays too few dividends, when for the most part, exceptions
+are exceptional, and all the client programmer can do is dump and die.
+
+The Cassandra report structure is a way of saying to the client programmer,
+"here's what I know", without turing each exception you raise into a new
+Exception class with error specific properties.
