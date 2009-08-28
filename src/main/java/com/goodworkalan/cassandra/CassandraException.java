@@ -3,7 +3,6 @@ package com.goodworkalan.cassandra;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.MissingResourceException;
@@ -26,27 +25,37 @@ public abstract class CassandraException extends RuntimeException {
     private final int code;
 
     /**
-     * Create an exception with the given error code.
+     * Create an exception with the given error code and the given initial
+     * report structure.
      * 
      * @param code
      *            The error code.
+     * @param report
+     *            An initial report structure.
      */
-    public CassandraException(int code) {
-        this.code = code;
+    public CassandraException(int code, Report report) {
+        this(code, report, null);
     }
 
     /**
-     * Create an exception with the given error code that wraps the given cause
-     * exception.
+     * Create an exception with the given error code and the given initial
+     * report structure that wraps the given cause exception.
      * 
      * @param The
      *            error code.
+     * @param report
+     *            An initial report structure.
      * @param The
      *            cause.
      */
-    public CassandraException(int code, Throwable cause) {
+    public CassandraException(int code, Report report, Throwable cause) {
         super(null, cause);
         this.code = code;
+        this.map.putAll(report.getReportMap());
+    }
+    
+    public int getCode() {
+        return code;
     }
 
     /**

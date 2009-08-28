@@ -189,7 +189,7 @@ public class CassandraExceptionTest {
      */
     @Test
     public void noCanonicalClassName() {
-        assertEquals(new CassandraException(101) {
+        assertEquals(new CassandraException(101, new Report()) {
             private static final long serialVersionUID = 1L;
         }.getMessage(), "101");
     }
