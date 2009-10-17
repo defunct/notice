@@ -110,11 +110,8 @@ public class Report {
     }
 
     /**
-     * Remove all of the properties assigned since the given marker was return
-     * from a call to mark.
-     * 
-     * @param mark
-     *            A marker returned by a call to mark.
+     * Remove all of the properties assigned since the last call to
+     * {@link #mark()}.
      */
     public void clear() {
         if (markers.isEmpty()) {

@@ -41,19 +41,24 @@ public abstract class CassandraException extends RuntimeException {
      * Create an exception with the given error code and the given initial
      * report structure that wraps the given cause exception.
      * 
-     * @param The
-     *            error code.
+     * @param code
+     *            The error code.
      * @param report
      *            An initial report structure.
-     * @param The
-     *            cause.
+     * @param cause
+     *            The cause.
      */
     public CassandraException(int code, Report report, Throwable cause) {
         super(null, cause);
         this.code = code;
         this.map.putAll(report.getReportMap());
     }
-    
+
+    /**
+     * Get the error code.
+     * 
+     * @return The error code.
+     */
     public int getCode() {
         return code;
     }

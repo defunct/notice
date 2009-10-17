@@ -302,4 +302,12 @@ public class CassandraExceptionTest {
     public void nullInFormat() {
         assertEquals(new TestException(111).getMessage(), "Value is null.");
     }
+    
+    /**
+     * Test the code accessor.
+     */
+    @Test
+    public void getCode() {
+        assertEquals(new TestException(101).getCode(), 101);
+    }
 }
