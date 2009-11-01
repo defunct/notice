@@ -3,7 +3,7 @@ package com.goodworkalan.prattle.yaml.viewer.paste;
 import com.goodworkalan.paste.Connector;
 import com.goodworkalan.paste.Router;
 import com.goodworkalan.paste.forward.Forward;
-import com.goodworkalan.paste.paths.FormatArguments;
+import com.goodworkalan.paste.paths.ControllerClassName;
 import com.goodworkalan.prattle.yaml.viewer.controller.LandingView;
 
 public class PrattleYamlViewRouter implements Router
@@ -15,9 +15,9 @@ public class PrattleYamlViewRouter implements Router
                 .path("").or().path("/").to(LandingView.class).end()
                 .end();
         connector
-            .view()
+            .render()
                 .controller(LandingView.class)
-                .with(Forward.class).format("/freemarker.directory/controllers/%s.ftl", FormatArguments.CONTROLLER_CLASS_NAME)
+                .with(Forward.class).format("/freemarker.directory/controllers/%s.ftl", ControllerClassName.class)
                 .end();
     }
 }
