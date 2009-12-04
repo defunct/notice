@@ -56,11 +56,11 @@ public class YamlRecorder implements Recorder
         yaml = new Yaml(new Dumper(new PrattleRepresenter(), options));
         try
         {
-            writer = new FileWriter(file);
+            writer = new FileWriter(file, true);
         }
         catch (IOException e)
         {
-            throw new PrattleException(0);
+            throw new PrattleException(0, e);
         }
     }
 
