@@ -93,7 +93,7 @@ public class CassandraExceptionTest {
                 .end();
         Map<String, Object> report = e.getReport();
         assertEquals(report.size(), 3);
-        assertEquals(report.get("one"), (Integer) 1);
+        assertEquals(report.get("one"), 1);
         List<?> list = (List<?>) report.get("two");
         assertEquals(list.size(), 3);
         assertEquals(list.get(0), "a");
@@ -103,18 +103,18 @@ public class CassandraExceptionTest {
         assertEquals(list.get(2), null);
         Map<?, ?> subMap = (Map<?, ?>) subList.get(1);
         assertEquals(subMap.size(), 1);
-        assertEquals(subMap.get("three"), (Integer) 3);
+        assertEquals(subMap.get("three"), 3);
         Map<?, ?> map = (Map<?, ?>) report.get("four");
         assertEquals(map.size(), 2);
         assertEquals(map.get("five"), Arrays.asList(1, 2, 3));
         subMap = (Map<?, ?>) map.get("six");
         assertEquals(subMap.size(), 1);
-        assertEquals(subMap.get("seven"), (Integer) 7);
+        assertEquals(subMap.get("seven"), 7);
         
-        assertEquals(e.get("four.six.seven"),  (Integer) 7);
+        assertEquals(e.get("four.six.seven"),  7);
         assertNull(e.get("six.seven"));
 
-        assertEquals(e.getMap("four.six").get("seven"),  (Integer) 7);
+        assertEquals(e.getMap("four.six").get("seven"),  7);
         assertNull(e.getMap("four.six.seven"));
         assertNull(e.getMap("four.six.eight"));
         assertNull(e.getMap("four.six.eight.nine"));

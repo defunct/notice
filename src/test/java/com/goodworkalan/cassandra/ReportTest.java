@@ -63,12 +63,12 @@ public class ReportTest {
         report.clear();
         report.put("g", 5);
         CassandraException e = new TestException(101, report);
-        assertEquals(e.get("a"), (Integer) 1);
+        assertEquals(e.get("a"), 1);
         assertEquals(e.get("b"), Arrays.asList(1, 2, 3));
-        assertEquals(e.get("c.d"), (Integer) 1);
+        assertEquals(e.get("c.d"), 1);
         assertNull(e.get("e"));
         assertNull(e.get("f"));
-        assertEquals(e.get("g"), (Integer) 5);
+        assertEquals(e.get("g"), 5);
     }
 
     /**
