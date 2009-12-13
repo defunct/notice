@@ -1,10 +1,10 @@
 package com.goodworkalan.prattle;
 
 /**
- * A consumer of prattle message events.
+ * A consumer strategy for Prattle messages, either the core consumer or a null
+ * consumer if no recorders are available.
  * 
  * @author Alan Gutierrez
- * 
  */
 interface Consumer {
     /**
