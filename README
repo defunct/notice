@@ -1,0 +1,48 @@
+PRATTLE
+
+Structured logging.
+
+    Source: http://github.com/bigeasy/prattle/tree/master
+    Wiki: http://wiki.github.com/bigeasy/prattle
+
+    Issues and Tasks: http://github.com/bigeasy/prattle/issues
+
+    License: The MIT License
+
+    Contact: alan@blogometer.com
+
+    Dependencies:
+        Cassandra:      http://github.com/bigeasy/cassandra
+        Reflective:     http://github.com/bigeasy/reflective
+        Furnish:        http://github.com/bigeasy/furnish
+
+PURPOSE
+
+Create your logging messages after the fact, start your logging now by simply
+dumping what you suspect will be important into your logging sink.
+
+logger.info().put("file", file).put("person", person).send(WRITE_PERSON_TO_FILE);
+
+Prattle will record the file and explode the person object and write it to a log
+of structured messages that you can inspect later.
+
+Prattle will record the file and explode the person object and write it to a log
+of structured log messages. It will also write a standard formatted Java message
+to your slf4j log.
+
+If something goes wrong with your application, and the information you need was
+not recorded in your foramtted message, it may well be in your structured log message.
+
+MOTIVATION
+
+I'd rather run my code than step by code, but I step a lot, because I need to
+inspect variables. Adding print statements and removing them is a cumbersome way
+to instrument a program. 
+
+Standard Java logging displays a single flat string. Sometimes, it is difficult
+to get the variables you need to inspect into that string, they may be nested
+in an object, making for long and cumbersome logging statements in your code.
+
+Prattle lets you pump your objects into a logging structure, then dump the
+structure for later inspection. You can format your logging messages using
+object path notation to pluck variables out of the dumped structure.
