@@ -13,9 +13,9 @@ import java.util.Properties;
  * 
  * FIXME Rename sink.
  */
-public final class Prattle {
+public final class Sink {
     /** The single instance. */
-    private final static Prattle INSTANCE = create();
+    private final static Sink INSTANCE = create();
     
     private final Consumer consumer;
 
@@ -27,7 +27,7 @@ public final class Prattle {
      * @param consumer
      *            The Prattle consumer.
      */
-    public Prattle(Consumer consumer) {
+    public Sink(Consumer consumer) {
         this.consumer = consumer;
     }
 
@@ -43,7 +43,7 @@ public final class Prattle {
      * 
      * @return The Singleton longer instance.
      */
-    public static Prattle getInstance() {
+    public static Sink getInstance() {
         return INSTANCE;
     }
 
@@ -70,7 +70,7 @@ public final class Prattle {
      * 
      * @return The singleton sink instance.
      */
-    private static Prattle create()
+    private static Sink create()
     {
         List<Recorder> recorders = new ArrayList<Recorder>();
         try {
@@ -86,15 +86,15 @@ public final class Prattle {
         } catch (Exception e) {
             System.err.println("Unable to configure Prattle extended logging.");
             e.printStackTrace();
-            return new Prattle(new NullConsumer());
+            return new Sink(new NullConsumer());
         }
     
         if (recorders.isEmpty())
         {
-            return new Prattle(new NullConsumer());
+            return new Sink(new NullConsumer());
         }
 
-        return new Prattle(new CoreConsumer(recorders));
+        return new Sink(new CoreConsumer(recorders));
     }
     
     /**

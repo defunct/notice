@@ -6,7 +6,7 @@ import org.testng.annotations.Test;
 
 import com.goodworkalan.prattle.Logger;
 import com.goodworkalan.prattle.LoggerFactory;
-import com.goodworkalan.prattle.Prattle;
+import com.goodworkalan.prattle.Sink;
 
 public class LoggerTest
 {
@@ -32,6 +32,6 @@ public class LoggerTest
                   .add("three")
                   .end()
               .send();
-        Prattle.getInstance().shutdown();
+        Sink.getInstance().shutdown();
     }
 }
