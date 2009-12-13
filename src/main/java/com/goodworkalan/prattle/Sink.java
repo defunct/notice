@@ -6,6 +6,7 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
 
+import com.goodworkalan.madlib.VariableProperties;
 import com.goodworkalan.reflective.ReflectiveException;
 import com.goodworkalan.reflective.ReflectiveFactory;
 
@@ -80,7 +81,7 @@ public final class Sink {
             } catch (ReflectiveException e) {
                 throw new PrattleException(0, e);
             }
-            recorder.initialize(prefix + ".", new Configuration(properties));
+            recorder.initialize(prefix + ".", new VariableProperties(properties, true));
             recorders.add(recorder);
         }
     }
