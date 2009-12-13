@@ -84,17 +84,13 @@ class CoreConsumer implements Consumer, Runnable
     }
 
     /**
-     * Join the consumer thread, waiting for it to finish.
+     * Shutdown the consumer thread, blocking until it finishes.
      */
-    public void join()
-    {
+    public void shutdown() {
         queue.offer(new Terminate());
-        try
-        {
+        try {
             thread.join();
-        }
-        catch (InterruptedException e)
-        {
+        } catch (InterruptedException e) {
         }
     }
 }

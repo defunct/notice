@@ -6,20 +6,34 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
 
-public final class Prattle
-{
+/**
+ * Singleton factory that consumes prattle messages.
+ *  
+ * @author Alan Gutierrez
+ */
+public final class Prattle {
+    /** The single instance. */
     private final static Prattle INSTANCE = create();
     
     private final Consumer consumer;
-    
-    public Prattle(Consumer consumer)
-    {
+
+    /**
+     * Construct an instance of the Prattle logger that feeds messages to the
+     * given consumer strategy. The consumer strategy is either the core
+     * strategy or a null strategy if Prattle is disabled.
+     * 
+     * @param consumer
+     *            The Prattle consumer.
+     */
+    public Prattle(Consumer consumer) {
         this.consumer = consumer;
     }
-    
-    public void shutdown()
-    {
-        consumer.join();
+
+    /**
+     * Shutdown the consumer thread, blocking until it finishes.
+     */
+    public void shutdown() {
+        consumer.shutdown();
     }
     
     public static Prattle getInstance()

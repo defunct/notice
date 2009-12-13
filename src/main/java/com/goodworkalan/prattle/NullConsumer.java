@@ -6,7 +6,7 @@ class NullConsumer implements Consumer
     {
     }
     
-    public void join()
+    public void shutdown()
     {
     }
 }

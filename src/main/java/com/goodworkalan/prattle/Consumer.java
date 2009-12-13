@@ -16,7 +16,7 @@ interface Consumer {
     public void consume(Message message);
 
     /**
-     * Join the consumer thread, waiting for it to finish.
+     * Shutdown the consumer thread, waiting for it to finish.
      */
-    public void join();
+    public void shutdown();
 }
