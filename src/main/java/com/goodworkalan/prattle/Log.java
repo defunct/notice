@@ -2,8 +2,7 @@ package com.goodworkalan.prattle;
 
 import java.io.Serializable;
 
-public interface Log
-{
+public interface Log {
     /**
      * Add a message that will be written to the default application log as well
      * as sent to the message recivers.
@@ -14,7 +13,7 @@ public interface Log
      *            The arguments to pass to the format.
      * @return This log language element to continue the logging statement.
      */
-    public Log message(String format, Object...args);
+    public Log message(String format, Object... args);
 
     /**
      * Write the given object property flagged with the given name. The name
@@ -46,7 +45,7 @@ public interface Log
      *            The classes to freeze when encountered.
      * @return This log language element to continue the logging statement.
      */
-    public Log freeze(String name, Object object, Class<?>...freeze);
+    public Log freeze(String name, Object object, Class<?>... freeze);
 
     /**
      * Write an object property flagged with the given name, serializing the
@@ -83,7 +82,7 @@ public interface Log
      * @return A map building language element to build a map to log.
      */
     public Mapper<Log> map(String id);
-    
+
     /**
      * Create a map building language element to build a map that will be
      * written to the log flagged with the given property name.
