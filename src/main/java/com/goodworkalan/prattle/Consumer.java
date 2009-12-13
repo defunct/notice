@@ -4,10 +4,9 @@ package com.goodworkalan.prattle;
  * A consumer of prattle message events.
  * 
  * @author Alan Gutierrez
- *
+ * 
  */
-interface Consumer
-{
+interface Consumer {
     /**
      * Consume a message.
      * 
