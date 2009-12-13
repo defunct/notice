@@ -16,15 +16,14 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Represents a frozen Java bean. 
- *
+ * A frozen Java been that has been converted into a map.
+ * 
  * @author Alan Gutierrez
  */
-public class Bean
-{
+public class Bean {
     /** The bean class. */
     private final Class<?> beanClass;
-    
+
     /** The bean properties. */
     private final Map<String, Object> properties;
 
@@ -37,8 +36,7 @@ public class Bean
      * @param properties
      *            The bean properties;
      */
-    Bean(Class<?> beanClass, Map<String, Object> properties)
-    {
+    Bean(Class<?> beanClass, Map<String, Object> properties) {
         this.beanClass = beanClass;
         this.properties = properties;
     }
@@ -48,8 +46,7 @@ public class Bean
      * 
      * @return The bean class.
      */
-    public Class<?> getBeanClass()
-    {
+    public Class<?> getBeanClass() {
         return beanClass;
     }
 
@@ -58,8 +55,7 @@ public class Bean
      * 
      * @return The bean properties.
      */
-    public Map<String, Object> getProperties()
-    {
+    public Map<String, Object> getProperties() {
         return properties;
     }
 
@@ -73,11 +69,10 @@ public class Bean
      *            The list of classes to freeze when encountered.
      * @return A frozen object.
      */
-    public static Object freeze(Object object, Class<?>...freeze)
-    {
+    public static Object freeze(Object object, Class<?>... freeze) {
         return freeze(object, new HashSet<Class<?>>(Arrays.asList(freeze)));
     }
-    
+
     /**
      * Freeze the given object, copying all arrays and Java collections classes,
      * turning all the classes specified in the list classes into frozen beans.
@@ -88,55 +83,43 @@ public class Bean
      *            The set of classes to freeze when encountered.
      * @return A frozen object.
      */
-    private static Object freeze(Object object, Set<Class<?>> freeze)
-    {
-        if (object == null)
-        {
+    private static Object freeze(Object object, Set<Class<?>> freeze) {
+        if (object == null) {
             return null;
         }
-        if (object instanceof Map<?, ?>)
-        {
+        if (object instanceof Map<?, ?>) {
             Map<?, ?> original = (Map<?, ?>) object;
             Map<String, Object> copy = new LinkedHashMap<String, Object>();
-            for (Map.Entry<?, ?> entry : original.entrySet())
-            {
+            for (Map.Entry<?, ?> entry : original.entrySet()) {
                 copy.put(entry.getKey().toString(), freeze(entry.getValue(), freeze));
             }
             return copy;
         }
-        if (object instanceof Set<?>)
-        {
+        if (object instanceof Set<?>) {
             Set<?> original = (Set<?>) object;
             Set<Object> copy = new LinkedHashSet<Object>();
-            for (Object item : original)
-            {
+            for (Object item : original) {
                 copy.add(freeze(item, freeze));
             }
             return copy;
         }
-        if (object instanceof Collection<?>)
-        {
+        if (object instanceof Collection<?>) {
             Collection<?> original = (Collection<?>) object;
             List<Object> copy = new ArrayList<Object>();
-            for (Object item : original)
-            {
+            for (Object item : original) {
                 copy.add(freeze(item, freeze));
             }
             return copy;
         }
-        if (object.getClass().isAnnotation())
-        {
+        if (object.getClass().isAnnotation()) {
             Object[] original = (Object[]) object;
             Object[] copy = new Object[original.length];
-            for (int i = 0, stop = original.length; i < stop; i++)
-            {
+            for (int i = 0, stop = original.length; i < stop; i++) {
                 copy[i] = freeze(original[i], freeze);
             }
         }
-        for (Class<?> freezeClass : freeze)
-        {
-            if (freezeClass.isAssignableFrom(object.getClass()))
-            {
+        for (Class<?> freezeClass : freeze) {
+            if (freezeClass.isAssignableFrom(object.getClass())) {
                 return getInstance(object, freeze);
             }
         }
@@ -155,30 +138,21 @@ public class Bean
      *            The set of classes to freeze when encountered.
      * @return A frozen bean.
      */
-    private static Bean getInstance(Object object, Set<Class<?>> freeze)
-    {
+    private static Bean getInstance(Object object, Set<Class<?>> freeze) {
         Class<?> beanClass = object.getClass();
         Map<String, Object> properties = new LinkedHashMap<String, Object>();
         BeanInfo beanInfo;
-        try
-        {
+        try {
             beanInfo = Introspector.getBeanInfo(beanClass, Object.class);
-        }
-        catch (IntrospectionException e)
-        {
+        } catch (IntrospectionException e) {
             throw new PrattleException(0, e);
         }
-        for (PropertyDescriptor descriptor : beanInfo.getPropertyDescriptors())
-        {
+        for (PropertyDescriptor descriptor : beanInfo.getPropertyDescriptors()) {
             Method read = descriptor.getReadMethod();
-            if (read != null)
-            {
-                try
-                {
+            if (read != null) {
+                try {
                     properties.put(descriptor.getName(), freeze(read.invoke(object), freeze));
-                }
-                catch (Exception e)
-                {
+                } catch (Exception e) {
                     throw new PrattleException(0, e);
                 }
             }
