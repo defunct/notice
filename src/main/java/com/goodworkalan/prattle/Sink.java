@@ -17,6 +17,7 @@ public final class Sink {
     /** The single instance. */
     private final static Sink INSTANCE = create();
     
+    /** The consume strategy. */
     private final Consumer consumer;
 
     /**
@@ -27,7 +28,7 @@ public final class Sink {
      * @param consumer
      *            The Prattle consumer.
      */
-    public Sink(Consumer consumer) {
+    Sink(Consumer consumer) {
         this.consumer = consumer;
     }
 
