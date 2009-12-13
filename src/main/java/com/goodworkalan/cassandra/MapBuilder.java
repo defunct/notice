@@ -49,7 +49,7 @@ public class MapBuilder<T> {
      *         the report structure.
      */
     public MapBuilder<T> put(String name, Object object) {
-        if (!CassandraException.checkJavaIdentifier(name)) {
+        if (!Message.checkJavaIdentifier(name)) {
             throw new IllegalArgumentException();
         }
         map.put(name, object);
@@ -64,7 +64,7 @@ public class MapBuilder<T> {
      * @return A list builder for a list added to the map currently being built.
      */
     public ListBuilder<MapBuilder<T>> list(String name) {
-        if (!CassandraException.checkJavaIdentifier(name)) {
+        if (!Message.checkJavaIdentifier(name)) {
             throw new IllegalArgumentException();
         }
         List<Object> list = new ArrayList<Object>();
@@ -80,7 +80,7 @@ public class MapBuilder<T> {
      * @return A map builder for a map added to the map currently being built.
      */
     public MapBuilder<MapBuilder<T>> map(String name) {
-        if (!CassandraException.checkJavaIdentifier(name)) {
+        if (!Message.checkJavaIdentifier(name)) {
             throw new IllegalArgumentException();
         }
         Map<String, Object> subMap = new HashMap<String, Object>();

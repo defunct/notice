@@ -23,8 +23,8 @@ public class CassandraExceptionTest {
      */
     @Test
     public void validJavaIdentifier() {
-        assertTrue(CassandraException.checkJavaIdentifier("a"));
-        assertTrue(CassandraException.checkJavaIdentifier("ab"));
+        assertTrue(Message.checkJavaIdentifier("a"));
+        assertTrue(Message.checkJavaIdentifier("ab"));
     }
 
     /**
@@ -32,9 +32,9 @@ public class CassandraExceptionTest {
      */
     @Test
     public void invalidJavaIdentifier() {
-        assertFalse(CassandraException.checkJavaIdentifier(""));
-        assertFalse(CassandraException.checkJavaIdentifier("1"));
-        assertFalse(CassandraException.checkJavaIdentifier("a!"));
+        assertFalse(Message.checkJavaIdentifier(""));
+        assertFalse(Message.checkJavaIdentifier("1"));
+        assertFalse(Message.checkJavaIdentifier("a!"));
     }
 
     /**
@@ -42,7 +42,7 @@ public class CassandraExceptionTest {
      */
     @Test(expectedExceptions = NullPointerException.class)
     public void nullJavaIdentifier() {
-        CassandraException.checkJavaIdentifier(null);
+        Message.checkJavaIdentifier(null);
     }
 
     /**
@@ -50,8 +50,8 @@ public class CassandraExceptionTest {
      */
     @Test
     public void isInteger() {
-        assertTrue(CassandraException.isInteger("10"));
-        assertFalse(CassandraException.isInteger("!"));
+        assertTrue(Message.isInteger("10"));
+        assertFalse(Message.isInteger("!"));
     }
 
     /**

@@ -65,7 +65,7 @@ public class Report {
      *         methods.
      */
     public Report put(String name, Object object) {
-        if (!CassandraException.checkJavaIdentifier(name)) {
+        if (!Message.checkJavaIdentifier(name)) {
             throw new IllegalArgumentException();
         }
         recordName(name);
@@ -82,7 +82,7 @@ public class Report {
      * @return A list builder to specify the list contents.
      */
     public ListBuilder<Report> list(String name) {
-        if (!CassandraException.checkJavaIdentifier(name)) {
+        if (!Message.checkJavaIdentifier(name)) {
             throw new IllegalArgumentException();
         }
         recordName(name);
@@ -100,7 +100,7 @@ public class Report {
      * @return A map builder to specify the map contents.
      */
     public MapBuilder<Report> map(String name) {
-        if (!CassandraException.checkJavaIdentifier(name)) {
+        if (!Message.checkJavaIdentifier(name)) {
             throw new IllegalArgumentException();
         }
         recordName(name);

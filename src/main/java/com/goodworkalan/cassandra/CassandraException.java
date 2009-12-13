@@ -6,7 +6,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.MissingResourceException;
-import java.util.NoSuchElementException;
 import java.util.ResourceBundle;
 
 /**
@@ -23,6 +22,9 @@ public abstract class CassandraException extends RuntimeException {
 
     /** The error code. */
     private final int code;
+    
+    /** The message structure. */
+    private final Message message;
 
     /**
      * Create an exception with the given error code and the given initial
@@ -50,8 +52,25 @@ public abstract class CassandraException extends RuntimeException {
      */
     public CassandraException(int code, Report report, Throwable cause) {
         super(null, cause);
+        String key = Integer.toString(code);
+
+        ResourceBundle exceptions = null;
+        
+        String name = getClass().getCanonicalName();
+        if (name != null) {
+            try {
+                exceptions = ResourceBundle.getBundle(getClass().getCanonicalName());
+            } catch (MissingResourceException e) {
+            }
+        }
+        
+        if (exceptions == null) {
+            exceptions = ResourceBundle.getBundle(CassandraException.class.getPackage().getName() + ".empty");
+        }
+        
         this.code = code;
         this.map.putAll(report.getReportMap());
+        this.message = new Message(exceptions, map, key, "%s");
     }
 
     /**
@@ -75,7 +94,7 @@ public abstract class CassandraException extends RuntimeException {
      *         methods.
      */
     public CassandraException put(String name, Object object) {
-        if (!checkJavaIdentifier(name)) {
+        if (!Message.checkJavaIdentifier(name)) {
             throw new IllegalArgumentException();
         }
         map.put(name, object);
@@ -91,7 +110,7 @@ public abstract class CassandraException extends RuntimeException {
      * @return A list builder to specify the list contents.
      */
     public ListBuilder<CassandraException> list(String name) {
-        if (!checkJavaIdentifier(name)) {
+        if (!Message.checkJavaIdentifier(name)) {
             throw new IllegalArgumentException();
         }
         List<Object> list = new ArrayList<Object>();
@@ -108,107 +127,12 @@ public abstract class CassandraException extends RuntimeException {
      * @return A map builder to specify the map contents.
      */
     public MapBuilder<CassandraException> map(String name) {
-        if (!checkJavaIdentifier(name)) {
+        if (!Message.checkJavaIdentifier(name)) {
             throw new IllegalArgumentException();
         }
         Map<String, Object> subMap = new LinkedHashMap<String, Object>();
         map.put(name, Collections.unmodifiableMap(subMap));
         return new MapBuilder<CassandraException>(this, subMap);
-    }
-
-    /**
-     * Determine whether a string represents an integer.
-     * 
-     * @param name
-     *            The integer string.
-     * @return True if the string represents an integer.
-     */
-    static boolean isInteger(String name) {
-        for (int i = 0, stop = name.length(); i < stop; i++) {
-            if (!Character.isDigit(name.charAt(i))) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * Determine if the given name is a valid Java identifier.
-     * 
-     * @param name
-     *            The name to check.
-     * @return True if the name is valid Java identifier.
-     * @exception NullPointerException
-     *                If the name is null.
-     */
-    static boolean checkJavaIdentifier(String name) {
-        if (name == null) {
-            throw new NullPointerException();
-        }
-        if (name.length() == 0) {
-            return false;
-        }
-        if (!Character.isJavaIdentifierStart(name.charAt(0))) {
-            return false;
-        }
-        for (int i = 1, stop = name.length(); i < stop; i++) {
-            if (!Character.isJavaIdentifierPart(name.charAt(i))) {
-                return false;
-            }
-        }
-        return true;
-    }
-    
-    /**
-     * Get the report structure.
-     * 
-     * @return The report structure.
-     */
-    public Map<String, Object> getReport() {
-        return Collections.unmodifiableMap(map);
-    }
-
-    /**
-     * Evaluate the given path against the report structure.
-     * 
-     * @param path
-     *            The path.
-     * @return The value found by navigating the path or null if the path does
-     *         not exist.
-     * @exception IllegalArgumentException
-     *                If any part of the given path is not a valid Java
-     *                identifier or list index.
-     */
-    private Object getValue(String path) {
-        String[] parts = path.trim().split("\\.");
-        Object current = map;
-        for (int j = 0; j < parts.length; j++) {
-            if (current == null) {
-                throw new NoSuchElementException();
-            }
-            if (current instanceof List<?>) {
-                if (!isInteger(parts[j])) {
-                    if (!checkJavaIdentifier(parts[j])) {
-                        throw new IllegalArgumentException();
-                    }
-                    throw new NoSuchElementException();
-                }
-                int index = Integer.parseInt(parts[j], 10);
-                List<?> list = (List<?>) current;
-                if (index >= list.size()) {
-                    throw new NoSuchElementException();
-                }
-                current = list.get(index);
-            } else if (current instanceof Map<?, ?>) {
-                if (!checkJavaIdentifier(parts[j])) {
-                    throw new IllegalArgumentException();
-                }
-                current = ((Map<?, ?>) current).get(parts[j]);
-            } else {
-                throw new NoSuchElementException();
-            }
-        }
-        return current;
     }
 
     /**
@@ -223,13 +147,9 @@ public abstract class CassandraException extends RuntimeException {
      *                identifier or list index.
      */
     public Object get(String path) {
-        try {
-            return getValue(path);
-        } catch (NoSuchElementException e) {
-            return null;
-        }
+        return message.get(path);
     }
-
+    
     /**
      * Get the list in the report structure at the given path.
      * 
@@ -242,20 +162,7 @@ public abstract class CassandraException extends RuntimeException {
      *                identifier or list index.
      */
     public List<Object> getList(String path) {
-        Object object;
-        try {
-            object = getValue(path);
-        } catch (NoSuchElementException e) {
-            return null;
-        }
-        if (object == null) {
-            return null;
-        }
-        if (object instanceof List<?>) {
-            // The copy constructor satisfies my aversion to @SuppressWarnings.
-            return Collections.unmodifiableList(new ArrayList<Object>((List<?>) object));
-        }
-        return null;
+        return message.getList(path);
     }
 
     /**
@@ -270,24 +177,16 @@ public abstract class CassandraException extends RuntimeException {
      *                identifier or list index.
      */
     public Map<String, Object> getMap(String path) {
-        Object object;
-        try {
-            object = getValue(path);
-        } catch (NoSuchElementException e) {
-            return null;
-        }
-        if (object == null) {
-            return null;
-        }
-        if (object instanceof Map<?, ?>) {
-            // We will have no @SuppressWarnings.
-            Map<String, Object> map = new LinkedHashMap<String, Object>();
-            for (Map.Entry<?, ?> entry : ((Map<?, ?>) object).entrySet()) {
-                map.put(entry.getKey().toString(), entry.getValue());
-            }
-            return Collections.unmodifiableMap(map);
-        }
-        return null;
+        return message.getMap(path);
+    }
+
+    /**
+     * Get the report structure.
+     * 
+     * @return The report structure.
+     */
+    public Map<String, Object> getReport() {
+        return Collections.unmodifiableMap(map);
     }
 
     /**
@@ -298,48 +197,6 @@ public abstract class CassandraException extends RuntimeException {
      */
     @Override
     public String getMessage() {
-        String key = Integer.toString(code);
-        String name = getClass().getCanonicalName();
-        if (name == null) {
-            return key;
-        }
-        ResourceBundle exceptions;
-        try {
-            exceptions = ResourceBundle.getBundle(getClass().getCanonicalName());
-        } catch (MissingResourceException e) {
-            return key;
-        }
-        String format;
-        try {
-            format = exceptions.getString(key);
-        } catch (MissingResourceException e) {
-            return key;
-        }
-        format = format.trim();
-        if (format.length() == 0) {
-            return key;
-        }
-        if (!format.contains("~")) {
-            return format;
-        }
-        String[] record = format.split("~", 2);
-        String[] paths = record[0].split(",");
-        Object[] arguments = new Object[paths.length];
-        for (int i = 0, stop = paths.length; i < stop; i++) {
-            Object argument;
-            try {
-                argument = getValue(paths[i]);
-            } catch (IllegalArgumentException e) {
-                return key;
-            } catch (NoSuchElementException e) {
-                return key;
-            }
-            arguments[i] = argument;
-        }
-        try {
-            return String.format(record[1], arguments);
-        } catch (Throwable e) {
-            return key;
-        }
+        return message.toString();
     }
 }
