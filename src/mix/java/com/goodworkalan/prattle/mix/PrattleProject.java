@@ -21,7 +21,7 @@ public class PrattleProject extends ProjectModule {
                     .depends()
                         .artifact(new Artifact("org.slf4j/slf4j-log4j12/1.4.2"))
                         .artifact(new Artifact("log4j/log4j/1.2.14"))
-                        .artifact(new Artifact("org.testng/testng/5.10"))
+                        .artifact(new Artifact("org.testng/testng/5.10/jdk15"))
                         .artifact(new Artifact("org.mockito/mockito-core/1.6"))
                         .end()
                     .end()
