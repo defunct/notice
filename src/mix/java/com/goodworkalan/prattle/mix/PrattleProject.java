@@ -14,6 +14,7 @@ public class PrattleProject extends ProjectModule {
                 .main()
                     .depends()
                         .artifact(new Artifact("com.goodworkalan/furnish/0.1"))
+                        .artifact(new Artifact("com.goodworkalan/reflective/0.1"))
                         .artifact(new Artifact("org.slf4j/slf4j-api/1.4.2"))
                         .end()
                     .end()

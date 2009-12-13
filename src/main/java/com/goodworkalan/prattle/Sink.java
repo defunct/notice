@@ -6,14 +6,21 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Properties;
 
+import com.goodworkalan.reflective.ReflectiveException;
+import com.goodworkalan.reflective.ReflectiveFactory;
+
 /**
- * Singleton instance of a Prattle sink that consumes Prattle messages.
- *  
- * @author Alan Gutierrez
+ * Singleton instance of a sink that consumes Prattle messages.
+ * <p>
+ * Prattle messages are consumed by the sink by passign them to method
+ * {@link #send(Message) send}.
  * 
- * FIXME Rename sink.
+ * @author Alan Gutierrez
  */
 public final class Sink {
+    /** The reflective factory used to build recorders. */
+    private final static ReflectiveFactory reflectiveFactory = new ReflectiveFactory();
+    
     /** The single instance. */
     private final static Sink INSTANCE = create();
     
@@ -48,13 +55,31 @@ public final class Sink {
         return INSTANCE;
     }
 
-    private static void read(Properties properties, List<Recorder> recorders)
-    throws Exception {
+    /**
+     * Read a <code>prattle.properties</code> configuraiton file, constructing
+     * the specified recorders and appending them to the given list.
+     * 
+     * @param properties
+     *            The Prattle properties file to load.
+     * @param recorders
+     *            The list of recorders.
+     */
+    private static void read(Properties properties, List<Recorder> recorders) {
         for (String recorderName : properties.getProperty("prattle.recorders", "").split(",\\s*")) {
             String prefix = "prattle.recorder." + recorderName;
             String className = properties.getProperty(prefix);
-            Class<?> recorderClass = Class.forName(className);
-            Recorder recorder = (Recorder) recorderClass.newInstance();
+            Class<?> recorderClass;
+            try {
+                recorderClass = Class.forName(className);
+            } catch (ClassNotFoundException e) {
+                throw new PrattleException(0, e);
+            }
+            Recorder recorder;
+            try {
+                recorder = (Recorder) reflectiveFactory.getConstructor(recorderClass).newInstance();
+            } catch (ReflectiveException e) {
+                throw new PrattleException(0, e);
+            }
             recorder.initialize(prefix + ".", new Configuration(properties));
             recorders.add(recorder);
         }
@@ -84,14 +109,13 @@ public final class Sink {
                 properties.load(url.openStream());
                 read(properties, recorders);
             }
-        } catch (Exception e) {
+        } catch (Throwable e) {
             System.err.println("Unable to configure Prattle extended logging.");
             e.printStackTrace();
             return new Sink(new NullConsumer());
         }
     
-        if (recorders.isEmpty())
-        {
+        if (recorders.isEmpty()) {
             return new Sink(new NullConsumer());
         }
 
