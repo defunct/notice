@@ -6,18 +6,18 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
- * The {@link Consumer} implementation.
- *
+ * The default {@link Consumer} strategy. The alternate is {@link NullConsumer}
+ * for when no {@link Recorder} instances are available.
+ * 
  * @author Alan Gutierrez
  */
-class CoreConsumer implements Consumer, Runnable
-{
+class CoreConsumer implements Consumer, Runnable {
     /** An array of recorders. */
     private final Recorder[] recorders;
-    
+
     /** A blocking queue of messages to record. */
     private final BlockingQueue<Message> queue;
-    
+
     /** The consumer thread. */
     private final Thread thread;
 
@@ -27,8 +27,7 @@ class CoreConsumer implements Consumer, Runnable
      * @param recorders
      *            A list of recorders.
      */
-    public CoreConsumer(List<Recorder> recorders)
-    {
+    public CoreConsumer(List<Recorder> recorders) {
         this.recorders = recorders.toArray(new Recorder[recorders.size()]);
         this.queue = new LinkedBlockingQueue<Message>();
         this.thread = new Thread(this);
@@ -40,34 +39,26 @@ class CoreConsumer implements Consumer, Runnable
      * Consumes messages from the blocking queue and feeds them to each of the
      * recorders.
      */
-    public void run()
-    {
+    public void run() {
         Recorder[] recorders = this.recorders;
         int recorderCount = recorders.length;
         BlockingQueue<Message> queue = this.queue;
-        
-        for (;;)
-        {
-            try
-            {
-                Message message =  queue.take();
-                if (message.isTerminal())
-                {
+
+        for (;;) {
+            try {
+                Message message = queue.take();
+                if (message.isTerminal()) {
                     break;
                 }
                 Map<String, Object> map = message.toMap();
-                for (int i = 0; i < recorderCount; i++)
-                {
+                for (int i = 0; i < recorderCount; i++) {
                     recorders[i].record(map);
                 }
-            }
-            catch (Throwable e)
-            {
+            } catch (Throwable e) {
             }
         }
-        
-        for (int i = 0; i < recorderCount; i++)
-        {
+
+        for (int i = 0; i < recorderCount; i++) {
             recorders[i].close();
         }
     }
@@ -78,8 +69,7 @@ class CoreConsumer implements Consumer, Runnable
      * @param message
      *            A message.
      */
-    public void consume(Message message)
-    {
+    public void consume(Message message) {
         queue.offer(message);
     }
 
