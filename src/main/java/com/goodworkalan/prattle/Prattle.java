@@ -7,9 +7,11 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * Singleton factory that consumes prattle messages.
+ * Singleton instance of a Prattle sink that consumes Prattle messages.
  *  
  * @author Alan Gutierrez
+ * 
+ * FIXME Rename sink.
  */
 public final class Prattle {
     /** The single instance. */
@@ -35,16 +37,19 @@ public final class Prattle {
     public void shutdown() {
         consumer.shutdown();
     }
-    
-    public static Prattle getInstance()
-    {
+
+    /**
+     * Get the Prattle logger Singleton.
+     * 
+     * @return The Singleton longer instance.
+     */
+    public static Prattle getInstance() {
         return INSTANCE;
     }
 
-    private static void read(Properties properties, List<Recorder> recorders) throws Exception
-    {
-        for (String recorderName : properties.getProperty("prattle.recorders", "").split(",\\s*"))
-        {
+    private static void read(Properties properties, List<Recorder> recorders)
+    throws Exception {
+        for (String recorderName : properties.getProperty("prattle.recorders", "").split(",\\s*")) {
             String prefix = "prattle.recorder." + recorderName;
             String className = properties.getProperty(prefix);
             Class<?> recorderClass = Class.forName(className);
@@ -54,24 +59,31 @@ public final class Prattle {
         }
     }
 
+    /**
+     * Construct the singleton sink instance.
+     * <p>
+     * This method will search for files named <code>prattle.properties</code>
+     * in the class path. It will load these properties files, instantiate the
+     * {@link Recorder} classes specified in the <code>prattle.recorders</code>
+     * property, and pass the properties file to the new recorder for further
+     * configuration.
+     * 
+     * @return The singleton sink instance.
+     */
     private static Prattle create()
     {
         List<Recorder> recorders = new ArrayList<Recorder>();
-        try
-        {
+        try {
             ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
             Enumeration<URL> resources = classLoader.getResources("prattle.properties");
         
-            while (resources.hasMoreElements())
-            {
+            while (resources.hasMoreElements()) {
                 URL url = resources.nextElement();
                 Properties properties = new Properties();
                 properties.load(url.openStream());
                 read(properties, recorders);
             }
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             System.err.println("Unable to configure Prattle extended logging.");
             e.printStackTrace();
             return new Prattle(new NullConsumer());
@@ -85,8 +97,13 @@ public final class Prattle {
         return new Prattle(new CoreConsumer(recorders));
     }
     
-    public void send(Message message)
-    {
+    /**
+     * Feed a message to the consumers thread. This method will insert
+     * the message into an non-blocking queue and return immediately.
+     * 
+     * @param message
+     */
+    public void send(Message message) {
         consumer.consume(message);
     }
 }
