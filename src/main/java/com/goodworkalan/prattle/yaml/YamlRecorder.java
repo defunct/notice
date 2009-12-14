@@ -9,7 +9,7 @@ import org.yaml.snakeyaml.Dumper;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
-import com.goodworkalan.prattle.Configuration;
+import com.goodworkalan.madlib.VariableProperties;
 import com.goodworkalan.prattle.PrattleException;
 import com.goodworkalan.prattle.Recorder;
 
@@ -42,7 +42,7 @@ public class YamlRecorder implements Recorder
      * @param configuration
      *            The configuration.
      */
-    public void initialize(String prefix, Configuration configuration)
+    public void initialize(String prefix, VariableProperties configuration)
     {
         String file = configuration.getProperty(prefix + "file", null);
         if (file == null)
