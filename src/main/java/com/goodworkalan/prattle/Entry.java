@@ -106,18 +106,6 @@ public abstract class Entry {
     }
 
     /**
-     * Write the <code>toString</code> value of the given object to the objects
-     * map of the entry.
-     * 
-     * @param name
-     *            The entry name.
-     * @param object
-     *            The object to convert to a string.
-     * @return This entry to continue the logging statement.
-     */
-    public abstract Entry string(String name, Object object);
-
-    /**
      * Flatten the given object, referencing the Entry configuration to
      * determine if the object should be converted to a <code>Map</code>
      * or converted to a <code>String</code> using <code>toString</code>.
