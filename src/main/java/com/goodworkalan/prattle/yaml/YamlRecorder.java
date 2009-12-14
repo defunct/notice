@@ -53,7 +53,7 @@ public class YamlRecorder implements Recorder
         options.setExplicitStart(true);
         options.setExplicitEnd(true);
         options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
-        yaml = new Yaml(new Dumper(new PrattleRepresenter(), options));
+        yaml = new Yaml(new Dumper(options));
         try
         {
             writer = new FileWriter(file, true);
