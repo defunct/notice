@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentMap;
 
 import com.goodworkalan.cassandra.Message;
 
-public class CoreLog extends Entry {
+public class CoreEntry extends Entry {
     /** Cache of resource bundles. */
     private final static ConcurrentMap<String, ResourceBundle> bundles = new ConcurrentHashMap<String, ResourceBundle>();
     
@@ -29,7 +29,7 @@ public class CoreLog extends Entry {
 
     private Map<String, Object> objects;
 
-    public CoreLog(org.slf4j.Logger logger, Level level, String message) {
+    public CoreEntry(org.slf4j.Logger logger, Level level, String message) {
         this.logger = logger;
         this.level = level;
         this.message = message;
