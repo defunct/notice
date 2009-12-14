@@ -3,31 +3,38 @@ package com.goodworkalan.prattle;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
-public class CoreLog implements Log {
+import com.goodworkalan.cassandra.Message;
+
+public class CoreLog extends Entry {
+    /** Cache of resource bundles. */
+    private final static ConcurrentMap<String, ResourceBundle> bundles = new ConcurrentHashMap<String, ResourceBundle>();
+    
+    /** The SLF4J logger. */
     private final org.slf4j.Logger logger;
 
+    /** The level for this entry. */
     private final Level level;
 
-    private final StringBuilder message;
+    /** The log message. */
+    private final String message;
 
     private Map<String, Object> objects;
 
-    public CoreLog(org.slf4j.Logger logger, Level level) {
+    public CoreLog(org.slf4j.Logger logger, Level level, String message) {
         this.logger = logger;
         this.level = level;
-        this.message = new StringBuilder();
-    }
-
-    public Log message(String format, Object... args) {
-        if (message.length() != 0) {
-            message.append("\n");
-        }
-        message.append(String.format(format, args));
-        return this;
+        this.message = message;
     }
 
     private Map<String, Object> getObjects() {
@@ -37,17 +44,28 @@ public class CoreLog implements Log {
         return objects;
     }
 
-    public Log object(String id, Object object) {
+    public Entry object(String id, Object object) {
         getObjects().put(id, object);
         return this;
     }
 
-    public Log freeze(String name, Object object, Class<?>... freeze) {
-        getObjects().put(name, Bean.freeze(object, freeze));
+    public Entry put(String name, Object object) {
+        getObjects().put(name, flatten(object, SHALLOW));
         return this;
     }
 
-    public Log serialize(String name, Serializable serializable) {
+    public Entry put(String name, Object object, String...paths) {
+        getObjects().put(name, flatten(object, new HashSet<String>(Arrays.asList(paths))));
+        return this;
+    }
+
+    @Override
+    public Entry put(String name, Object object, boolean recurse) {
+        getObjects().put(name, flatten(object, recurse ? DEEP : SHALLOW));
+        return this;
+    }
+
+    public Entry serialize(String name, Serializable serializable) {
         try {
             getObjects().put(name, Serialization.getInstance(serializable));
         } catch (IOException e) {
@@ -56,25 +74,55 @@ public class CoreLog implements Log {
         return this;
     }
 
-    public Log string(String id, Object object) {
+    public Entry string(String id, Object object) {
         getObjects().put(id, object.toString());
         return this;
     }
 
-    public Lister<Log> list(String id) {
+    public Lister<Entry> list(String id) {
         List<Object> list = new ArrayList<Object>();
         getObjects().put(id, list);
-        return new CoreLister<Log>(this, list);
+        return new CoreLister<Entry>(this, list);
     }
 
-    public Mapper<Log> map(String id) {
+    public Mapper<Entry> map(String id) {
         Map<String, Object> map = new LinkedHashMap<String, Object>();
         getObjects().put(id, map);
-        return new CoreMapper<Log>(this, map);
+        return new CoreMapper<Entry>(this, map);
     }
 
     public void send() {
-        String msg = message.toString();
+        String name = logger.getName();
+        int lastDot = name.lastIndexOf(".");
+        String packageName = name.substring(0, lastDot);
+        ResourceBundle bundle = bundles.get(packageName);
+        if (bundle == null) {
+            try {
+                bundle = ResourceBundle.getBundle(packageName + ".prattle");
+            } catch (MissingResourceException e) {
+                bundle = ResourceBundle.getBundle("com.goodworkalan.prattle.missing");
+            }
+            bundles.put(packageName, bundle);
+        }
+        String className = name.substring(lastDot + 1);
+
+        Map<String, Object> map = new LinkedHashMap<String, Object>();
+        
+        Thread thread = Thread.currentThread();
+        
+        map.put("logger", logger);
+        map.put("name", message);
+        map.put("date", new Date());
+        map.put("level", level.toString());
+        map.put("threadId", thread.getId());
+        map.put("threadName", thread.getPriority());
+
+        if (objects != null) {
+            map.put("vars", objects);
+        }
+
+        String msg = new Message(bundle, map, className + "/" + message, "name~%s").toString();
+        map.put("message", msg);
         switch (level) {
         case TRACE:
             logger.trace(msg);
@@ -92,8 +140,6 @@ public class CoreLog implements Log {
             logger.error(msg);
             break;
         }
-
-        Sink.getInstance().send(
-                new CoreMessage(logger.getName(), msg, level, objects));
+        Sink.getInstance().send(map);
     }
 }

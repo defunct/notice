@@ -1,44 +1,45 @@
 package com.goodworkalan.prattle;
 
-import java.io.Serializable;
 
-public class NullLog implements Log
+public class NullLog extends Entry
 {
-    public final static Log INSTANCE = new NullLog();
+    public final static Entry INSTANCE = new NullLog();
     
-    public Log message(String format, Object... args)
+    public Entry message(String format, Object... args)
     {
         return this;
     }
     
-    public Log object(String id, Object object)
-    {
+    @Override
+    public Entry put(String name, Object object) {
         return this;
     }
     
-    public Log freeze(String name, Object object, Class<?>...freeze)
-    {
-        return this;
+    @Override
+    public Entry put(String name, Object object, String... paths) {
+        // TODO Auto-generated method stub
+        return null;
     }
     
-    public Log serialize(String name, Serializable serializable)
-    {
-        return this;
+    @Override
+    public Entry put(String name, Object object, boolean recurse) {
+        // TODO Auto-generated method stub
+        return null;
     }
 
-    public Log string(String id, Object object)
+    public Entry string(String id, Object object)
     {
         return this;
     }
     
-    public Lister<Log> list(String id)
+    public Lister<Entry> list(String id)
     {
-        return new NullLister<Log>(this);
+        return new NullLister<Entry>(this);
     }
     
-    public Mapper<Log> map(String id)
+    public Mapper<Entry> map(String id)
     {
-        return new NullMapper<Log>(this);
+        return new NullMapper<Entry>(this);
     }
 
     public void send()

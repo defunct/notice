@@ -1,6 +1,8 @@
 package com.goodworkalan.prattle;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,9 +19,19 @@ public class CoreMapper<T> implements Mapper<T>
         this.map = map;
     }
     
-    public Mapper<T> put(String id, Object bean)
+    public Mapper<T> put(String id, Object object)
     {
-        map.put(id, bean);
+        map.put(id, Entry.flatten(object, Entry.SHALLOW));
+        return this;
+    }
+    
+    public Mapper<T> put(String id, Object object, String...paths) {
+        map.put(id, Entry.flatten(object, new HashSet<String>(Arrays.asList(paths))));
+        return this;
+    }
+    
+    public Mapper<T> put(String id, Object object, boolean recurse) {
+        map.put(id, Entry.flatten(object, recurse ? Entry.DEEP : Entry.SHALLOW));
         return this;
     }
     

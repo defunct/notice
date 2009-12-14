@@ -1,5 +1,6 @@
 package com.goodworkalan.prattle;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
@@ -16,7 +17,7 @@ class CoreConsumer implements Consumer, Runnable {
     private final Recorder[] recorders;
 
     /** A blocking queue of messages to record. */
-    private final BlockingQueue<Message> queue;
+    private final BlockingQueue<Map<String, Object>> queue;
 
     /** The consumer thread. */
     private final Thread thread;
@@ -29,7 +30,7 @@ class CoreConsumer implements Consumer, Runnable {
      */
     public CoreConsumer(List<Recorder> recorders) {
         this.recorders = recorders.toArray(new Recorder[recorders.size()]);
-        this.queue = new LinkedBlockingQueue<Message>();
+        this.queue = new LinkedBlockingQueue<Map<String, Object>>();
         this.thread = new Thread(this);
         thread.setDaemon(true);
         thread.start();
@@ -42,17 +43,16 @@ class CoreConsumer implements Consumer, Runnable {
     public void run() {
         Recorder[] recorders = this.recorders;
         int recorderCount = recorders.length;
-        BlockingQueue<Message> queue = this.queue;
+        BlockingQueue<Map<String, Object>> queue = this.queue;
 
         for (;;) {
             try {
-                Message message = queue.take();
-                if (message.isTerminal()) {
+                Map<String, Object> entry = queue.take();
+                if (entry.containsKey("terminate")) {
                     break;
                 }
-                Map<String, Object> map = message.toMap();
                 for (int i = 0; i < recorderCount; i++) {
-                    recorders[i].record(map);
+                    recorders[i].record(entry);
                 }
             } catch (Throwable e) {
             }
@@ -69,7 +69,7 @@ class CoreConsumer implements Consumer, Runnable {
      * @param message
      *            A message.
      */
-    public void consume(Message message) {
+    public void consume(Map<String, Object> message) {
         queue.offer(message);
     }
 
@@ -77,7 +77,7 @@ class CoreConsumer implements Consumer, Runnable {
      * Shutdown the consumer thread, blocking until it finishes.
      */
     public void shutdown() {
-        queue.offer(new Terminate());
+        queue.offer(Collections.<String, Object>singletonMap("terminate", true));
         try {
             thread.join();
         } catch (InterruptedException e) {

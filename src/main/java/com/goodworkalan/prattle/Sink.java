@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import com.goodworkalan.madlib.VariableProperties;
@@ -46,7 +47,7 @@ public final class Sink {
     public void shutdown() {
         consumer.shutdown();
     }
-
+    
     /**
      * Get the Prattle logger Singleton.
      * 
@@ -129,7 +130,7 @@ public final class Sink {
      * 
      * @param message
      */
-    public void send(Message message) {
-        consumer.consume(message);
+    void send(Map<String, Object> entry) {
+        consumer.consume(entry);
     }
 }

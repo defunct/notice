@@ -1,6 +1,8 @@
 package com.goodworkalan.prattle;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -51,7 +53,17 @@ public class CoreLister<T> implements Lister<T>
      */
     public Lister<T> add(Object object)
     {
-        list.add(object);
+        list.add(Entry.flatten(object, Entry.SHALLOW));
+        return this;
+    }
+    
+    public Lister<T> add(Object object, String...paths) {
+        list.add(Entry.flatten(object, new HashSet<String>(Arrays.asList(paths))));
+        return this;
+    }
+    
+    public Lister<T> add(Object object, boolean recurse) {
+        list.add(Entry.flatten(object, recurse ? Entry.DEEP : Entry.SHALLOW));
         return this;
     }
 

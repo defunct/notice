@@ -1,5 +1,7 @@
 package com.goodworkalan.prattle;
 
+import java.util.Map;
+
 /**
  * A consumer strategy for Prattle messages, either the core consumer or a null
  * consumer if no recorders are available.
@@ -10,10 +12,10 @@ interface Consumer {
     /**
      * Consume a message.
      * 
-     * @param message
-     *            A message.
+     * @param entry
+     *            A log entry converted to hash.
      */
-    public void consume(Message message);
+    public void consume(Map<String, Object> entry);
 
     /**
      * Shutdown the consumer thread, waiting for it to finish.
