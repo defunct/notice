@@ -1,7 +1,5 @@
 package com.goodworkalan.prattle;
 
-import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -62,15 +60,6 @@ public class CoreLog extends Entry {
     @Override
     public Entry put(String name, Object object, boolean recurse) {
         getObjects().put(name, flatten(object, recurse ? DEEP : SHALLOW));
-        return this;
-    }
-
-    public Entry serialize(String name, Serializable serializable) {
-        try {
-            getObjects().put(name, Serialization.getInstance(serializable));
-        } catch (IOException e) {
-            throw new PrattleException(0, e);
-        }
         return this;
     }
 
