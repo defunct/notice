@@ -37,6 +37,7 @@ public abstract class Entry {
         converters.put(Object.class, BeanConverter.INSTANCE);
         converters.put(Map.class, new MapConverter());
         converters.put(Collection.class, new CollectionConverter());
+        converters.put(Class.class, new ClassConverter());
         toString(URL.class);
         toString(URI.class);
         toString(Class.class);
