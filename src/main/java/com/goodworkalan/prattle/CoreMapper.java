@@ -34,13 +34,7 @@ public class CoreMapper<T> implements Mapper<T>
         map.put(id, Entry.flatten(object, recurse ? Entry.DEEP : Entry.SHALLOW));
         return this;
     }
-    
-    public Mapper<T> string(String id, Object object)
-    {
-        map.put(id, object.toString());
-        return this;
-    }
-    
+
     public Lister<Mapper<T>> list(String id)
     {
         List<Object> subList = new ArrayList<Object>();

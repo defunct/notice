@@ -74,11 +74,6 @@ public class CoreLog extends Entry {
         return this;
     }
 
-    public Entry string(String id, Object object) {
-        getObjects().put(id, object.toString());
-        return this;
-    }
-
     public Lister<Entry> list(String id) {
         List<Object> list = new ArrayList<Object>();
         getObjects().put(id, list);

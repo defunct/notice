@@ -68,21 +68,6 @@ public class CoreLister<T> implements Lister<T>
     }
 
     /**
-     * Add the string value of the object to the list. This method calls
-     * {@link Object#toString()} on the given object.
-     * 
-     * @param object
-     *            The object to convert to a string.
-     * @return This list building language element to continue the list
-     *         construction statement.
-     */
-    public Lister<T> string(Object object)
-    {
-        list.add(object.toString());
-        return this;
-    }
-
-    /**
      * Add a list to the list. Calls to create lists using the list builder
      * interfaces can be nested. This method will return a list builder whose
      * {@link Lister#end()} method will return this list builder.
