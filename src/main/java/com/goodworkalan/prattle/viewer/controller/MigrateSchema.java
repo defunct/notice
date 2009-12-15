@@ -1,4 +1,4 @@
-package com.goodworkalan.minimal.controller;
+package com.goodworkalan.prattle.viewer.controller;
 
 import java.sql.SQLException;
 
@@ -8,7 +8,7 @@ import com.goodworkalan.paste.stop.Abnormality;
 
 public class MigrateSchema implements Runnable {
     /** The naming entry for the data source name. */
-    public final static String DATA_SOURCE_NAME = "java:comp/env/minimal/datasource";
+    public final static String DATA_SOURCE_NAME = "java:comp/env/prattle/viewer/datasource";
 
     public void run() {
         try {

@@ -1,8 +1,5 @@
-package com.goodworkalan.minimal.paste;
+package com.goodworkalan.prattle.viewer.paste;
 
-import com.goodworkalan.minimal.controller.FreemarkerController;
-import com.goodworkalan.minimal.controller.LandingView;
-import com.goodworkalan.minimal.controller.MigrateSchema;
 import com.goodworkalan.paste.Connector;
 import com.goodworkalan.paste.Router;
 import com.goodworkalan.paste.Startup;
@@ -10,13 +7,16 @@ import com.goodworkalan.paste.forward.Forward;
 import com.goodworkalan.paste.paths.ControllerClassName;
 import com.goodworkalan.paste.redirect.Redirect;
 import com.goodworkalan.paste.redirect.Redirection;
+import com.goodworkalan.prattle.viewer.controller.FreemarkerController;
+import com.goodworkalan.prattle.viewer.controller.LandingView;
+import com.goodworkalan.prattle.viewer.controller.MigrateSchema;
 
 /**
  * Routes URL paths to controllers and specifies renderers for controllers.
  * 
  * @author Alan Gutierrez
  */
-public class MinimalRouter implements Router {
+public class PrattleViewerRouter implements Router {
     /**
      * Route the applications URL paths to their controllers and specify
      * renderers for controllers.

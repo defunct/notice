@@ -1,4 +1,4 @@
-package com.goodworkalan.minimal.controller;
+package com.goodworkalan.prattle.viewer.controller;
 
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -16,7 +16,7 @@ public class NamedValues {
      * The key indicating whether he application should collect analytics 3rd
      * party analytics tools.
      */
-    public static final String JNDI_ANALYZING_NAME = "java:comp/env/minimal/analyzing";
+    public static final String JNDI_ANALYZING_NAME = "java:comp/env/prattle/viewer/analyzing";
 
     /** Add analytics if true. */
     private final boolean analyzing;

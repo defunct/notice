@@ -1,4 +1,4 @@
-package com.goodworkalan.minimal.persistence;
+package com.goodworkalan.prattle.viewer.persistence;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -6,17 +6,17 @@ import javax.persistence.EntityManagerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.goodworkalan.minimal.guice.MinimalModule;
 import com.goodworkalan.paste.Request;
 import com.goodworkalan.paste.janitor.Janitor;
 import com.goodworkalan.paste.janitor.JanitorQueue;
+import com.goodworkalan.prattle.viewer.guice.PrattleViewerModule;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 /**
  * Provides and entity manager using the singleton entity manager factory that
  * is closed at the end of the request. This entity manager provider is bound to
- * the request scope in {@link MinimalModule}.
+ * the request scope in {@link PrattleViewerModule}.
  * 
  * @author Alan Gutierrez
  */

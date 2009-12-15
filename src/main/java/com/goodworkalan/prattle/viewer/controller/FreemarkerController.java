@@ -1,4 +1,4 @@
-package com.goodworkalan.minimal.controller;
+package com.goodworkalan.prattle.viewer.controller;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -23,8 +23,7 @@ public class FreemarkerController {
      * @param request
      *            The HTTP request.
      */
-    public FreemarkerController(NamedValues namedValues,
-            HttpServletRequest request) {
+    public FreemarkerController(NamedValues namedValues, HttpServletRequest request) {
         this.namedValues = namedValues;
         this.request = request;
     }

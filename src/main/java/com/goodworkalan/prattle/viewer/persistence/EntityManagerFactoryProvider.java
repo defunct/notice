@@ -1,4 +1,4 @@
-package com.goodworkalan.minimal.persistence;
+package com.goodworkalan.prattle.viewer.persistence;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;

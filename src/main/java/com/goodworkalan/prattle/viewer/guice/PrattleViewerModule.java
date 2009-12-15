@@ -1,4 +1,4 @@
-package com.goodworkalan.minimal.guice;
+package com.goodworkalan.prattle.viewer.guice;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -6,11 +6,11 @@ import javax.persistence.EntityManagerFactory;
 import com.goodworkalan.infuse.CollectionFactory;
 import com.goodworkalan.infuse.ObjectFactory;
 import com.goodworkalan.infuse.guice.GuiceFactory;
-import com.goodworkalan.minimal.persistence.EntityFactoryProvider;
-import com.goodworkalan.minimal.persistence.EntityManagerFactoryProvider;
-import com.goodworkalan.minimal.persistence.EntityManagerProvider;
 import com.goodworkalan.paste.ApplicationScoped;
 import com.goodworkalan.paste.RequestScoped;
+import com.goodworkalan.prattle.viewer.persistence.EntityFactoryProvider;
+import com.goodworkalan.prattle.viewer.persistence.EntityManagerFactoryProvider;
+import com.goodworkalan.prattle.viewer.persistence.EntityManagerProvider;
 import com.google.inject.AbstractModule;
 import com.google.inject.multibindings.Multibinder;
 
@@ -19,7 +19,7 @@ import com.google.inject.multibindings.Multibinder;
  *
  * @author Alan Gutierrez
  */
-public class MinimalModule extends AbstractModule {
+public class PrattleViewerModule extends AbstractModule {
     /**
      * Bind interfaces to implementations and providers.
      */
