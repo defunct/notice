@@ -6,7 +6,7 @@ import com.goodworkalan.mix.ProjectModule;
 import com.goodworkalan.mix.builder.Builder;
 import com.goodworkalan.mix.builder.JavaProject;
 
-public class MinimalProject extends ProjectModule {
+public class PrattleViewerProject extends ProjectModule {
     @Override
     public void build(Builder builder) {
         builder
