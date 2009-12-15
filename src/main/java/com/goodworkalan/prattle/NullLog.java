@@ -11,6 +11,16 @@ public class NullLog extends Entry
     }
     
     @Override
+    public Entry start(String name) {
+        return this;
+    }
+    
+    @Override
+    public Entry stop(String name) {
+        return this;
+    }
+    
+    @Override
     public Entry put(String name, Object object) {
         return this;
     }

@@ -3,6 +3,7 @@ package com.goodworkalan.prattle;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -28,6 +29,8 @@ public class CoreEntry extends Entry {
     private final String message;
 
     private Map<String, Object> objects;
+    
+    private Map<String, StopWatch> stopWatches = new HashMap<String, StopWatch>();
 
     public CoreEntry(org.slf4j.Logger logger, Level level, String message) {
         this.logger = logger;
@@ -41,9 +44,26 @@ public class CoreEntry extends Entry {
         }
         return objects;
     }
-
+    
     public Entry object(String id, Object object) {
         getObjects().put(id, object);
+        return this;
+    }
+    
+    @Override
+    public Entry start(String name) {
+        StopWatch stopWatch = stopWatches.get(name);
+        if (stopWatch == null) {
+            stopWatch = new StopWatch();
+            stopWatches.put(name, stopWatch);
+        }
+        stopWatch.start();
+        return this;
+    }
+    
+    @Override
+    public Entry stop(String name) {
+        stopWatches.get(name).stop();
         return this;
     }
 
@@ -76,6 +96,9 @@ public class CoreEntry extends Entry {
     }
 
     public void send() {
+        for (Map.Entry<String, StopWatch> stopWatch : stopWatches.entrySet()) {
+            put(stopWatch.getKey(), stopWatch.getValue());
+        }
         String name = logger.getName();
         int lastDot = name.lastIndexOf(".");
         String packageName = name.substring(0, lastDot);

@@ -35,6 +35,7 @@ public abstract class Entry {
         converters.put(Double.class, NullConverter.INSTANCE);
         converters.put(String.class, NullConverter.INSTANCE);
         converters.put(Object.class, BeanConverter.INSTANCE);
+        converters.put(StopWatch.class, new StopWatchConverter());
         converters.put(Map.class, new MapConverter());
         converters.put(Collection.class, new CollectionConverter());
         converters.put(Class.class, new ClassConverter());
@@ -104,6 +105,10 @@ public abstract class Entry {
         }
         return null;
     }
+
+    public abstract Entry start(String name);
+    
+    public abstract Entry stop(String name);
 
     /**
      * Flatten the given object, referencing the Entry configuration to
