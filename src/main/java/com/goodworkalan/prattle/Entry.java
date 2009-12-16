@@ -106,6 +106,19 @@ public abstract class Entry {
         return null;
     }
 
+    /**
+     * Start the stop watch with the given name if it is not already running. A
+     * stop watch will write a duration in milliseconds into the log entry at
+     * the given log entry variable name.
+     * <p>
+     * The stop watch can be stopped by calling the {@link #stop(String) stop}
+     * method. Any stop watches running when the entry is written by the
+     * {@link #send() send} method are stopped before recording.
+     * 
+     * @param name
+     *            The stop watch name.
+     * @return This entry to chain variable recording method calls.
+     */
     public abstract Entry start(String name);
     
     public abstract Entry stop(String name);

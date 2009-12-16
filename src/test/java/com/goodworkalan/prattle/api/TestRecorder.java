@@ -11,6 +11,9 @@ public class TestRecorder implements Recorder {
 
     public void record(Map<String, Object> map) {
     }
+    
+    public void flush() {
+    }
 
     public void close() {
     }

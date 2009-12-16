@@ -1,5 +1,6 @@
 package com.goodworkalan.prattle;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -44,16 +45,24 @@ class CoreConsumer implements Consumer, Runnable {
         Recorder[] recorders = this.recorders;
         int recorderCount = recorders.length;
         BlockingQueue<Map<String, Object>> queue = this.queue;
-
-        for (;;) {
+        List<Map<String, Object>> entries = new ArrayList<Map<String,Object>>();
+        CONSUMER: for (;;) {
             try {
-                Map<String, Object> entry = queue.take();
-                if (entry.containsKey("terminate")) {
-                    break;
+                entries.add(queue.take());
+                queue.drainTo(entries);
+                for (int i = 0, stop = entries.size(); i < stop; i++) {
+                    Map<String, Object> entry = entries.get(i);
+                    if (entry.containsKey("terminate")) {
+                        break CONSUMER;
+                    }
+                    for (int j = 0; j < recorderCount; j++) {
+                        recorders[j].record(entry);
+                    }
                 }
                 for (int i = 0; i < recorderCount; i++) {
-                    recorders[i].record(entry);
+                    recorders[i].flush();
                 }
+                entries.clear();
             } catch (Throwable e) {
             }
         }

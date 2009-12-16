@@ -10,5 +10,7 @@ public interface Recorder
     
     public void initialize(String prefix, VariableProperties configuration);
     
+    public void flush();
+
     public void close();
 }
