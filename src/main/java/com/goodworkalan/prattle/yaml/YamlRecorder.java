@@ -74,6 +74,14 @@ public class YamlRecorder implements Recorder
     {
         yaml.dump(map, writer);
     }
+
+    public void flush() {
+        try {
+            writer.flush();
+        } catch (IOException e) {
+            throw new PrattleException(0, e);
+        }
+    }
     
     /**
      * Close the recorder.
