@@ -7,6 +7,8 @@ import com.goodworkalan.paste.forward.Forward;
 import com.goodworkalan.paste.paths.ControllerClassName;
 import com.goodworkalan.paste.redirect.Redirect;
 import com.goodworkalan.paste.redirect.Redirection;
+import com.goodworkalan.paste.stream.Stream;
+import com.goodworkalan.prattle.viewer.controller.EntryGet;
 import com.goodworkalan.prattle.viewer.controller.FreemarkerController;
 import com.goodworkalan.prattle.viewer.controller.LandingView;
 import com.goodworkalan.prattle.viewer.controller.MigrateSchema;
@@ -31,12 +33,18 @@ public class PrattleViewerRouter implements Router {
                 .with(MigrateSchema.class)
             .connect()
                 .path("").or().path("/").to(LandingView.class).end()
+                .path("/entries/(id)").to(EntryGet.class).end()
                 .end()
             .render()
                 .exception(Redirection.class).with(Redirect.class).end()
             .render()
                 .controller(FreemarkerController.class)
                 .with(Forward.class).format("/freemarker.directory/%s.ftl", ControllerClassName.class)
+                .end()
+            .render()
+                .controller(EntryGet.class)
+                    .with(Stream.class)
+                    .contentType("text/plain")
                 .end();
     }
 }

@@ -4,7 +4,11 @@ import java.sql.SQLException;
 
 import com.goodworkalan.addendum.Addenda;
 import com.goodworkalan.addendum.NamingConnector;
+import com.goodworkalan.addendum.jpa.CreateEntity;
 import com.goodworkalan.paste.stop.Abnormality;
+import com.goodworkalan.prattle.viewer.model.Column;
+import com.goodworkalan.prattle.viewer.model.Grid;
+import com.goodworkalan.prattle.viewer.model.Log;
 
 public class MigrateSchema implements Runnable {
     /** The naming entry for the data source name. */
@@ -26,6 +30,12 @@ public class MigrateSchema implements Runnable {
      */
     private void migrate() throws SQLException {
         Addenda addenda = new Addenda(new NamingConnector(DATA_SOURCE_NAME));
+        addenda
+            .addendum()
+                .create(new CreateEntity(Log.class)).end()
+                .create(new CreateEntity(Grid.class)).end()
+                .create(new CreateEntity(Column.class)).end()
+                .commit();
         addenda.amend();
     }
 }

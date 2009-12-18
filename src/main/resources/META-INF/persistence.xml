@@ -7,7 +7,10 @@
     <persistence-unit name="default">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <non-jta-data-source>java:comp/env/prattle/viewer/datasource</non-jta-data-source>
-        <properties>
+        <class>com.goodworkalan.prattle.viewer.model.Log</class>
+        <class>com.goodworkalan.prattle.viewer.model.Column</class>
+        <class>com.goodworkalan.prattle.viewer.model.Grid</class>
+		<properties>
             <property name="hibernate.archive.autodetection" value="class, hbm"/>
             <property name="hibernate.show_sql" value="false"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
