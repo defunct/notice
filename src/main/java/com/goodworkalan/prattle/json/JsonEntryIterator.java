@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class JsonEntryIterator implements Iterator<JsonEntry> {
+class JsonEntryIterator implements Iterator<JsonEntry> {
     private final BufferedReader reader;
 
     private String line;

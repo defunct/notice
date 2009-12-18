@@ -8,7 +8,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.regex.Pattern;
 
-public class JsonLogFileIterator implements Iterator<JsonEntry> {
+class JsonLogFileIterator implements Iterator<JsonEntry> {
     private final File directory;
 
     private final Pattern pattern;
