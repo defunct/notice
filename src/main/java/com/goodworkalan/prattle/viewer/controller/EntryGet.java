@@ -16,6 +16,7 @@ import com.goodworkalan.prattle.json.JsonEntryReader;
 import com.goodworkalan.prattle.viewer.model.Log;
 import com.google.inject.Inject;
 
+// FIXME EntriesGet.
 @Actors(value = InfusionActor.class)
 public class EntryGet {
     /** The log id. */

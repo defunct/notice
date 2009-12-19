@@ -8,8 +8,10 @@ import com.goodworkalan.paste.paths.ControllerClassName;
 import com.goodworkalan.paste.redirect.Redirect;
 import com.goodworkalan.paste.redirect.Redirection;
 import com.goodworkalan.paste.stream.Stream;
+import com.goodworkalan.prattle.viewer.controller.ColumnsGet;
 import com.goodworkalan.prattle.viewer.controller.EntryGet;
 import com.goodworkalan.prattle.viewer.controller.FreemarkerController;
+import com.goodworkalan.prattle.viewer.controller.GridView;
 import com.goodworkalan.prattle.viewer.controller.LandingView;
 import com.goodworkalan.prattle.viewer.controller.MigrateSchema;
 
@@ -34,6 +36,8 @@ public class PrattleViewerRouter implements Router {
             .connect()
                 .path("").or().path("/").to(LandingView.class).end()
                 .path("/entries/(id)").to(EntryGet.class).end()
+                .path("/grid/(grid[id] [0-9]+)").to(GridView.class).end()
+                .path("/columns/(grid[id] [0-9]+)").to(ColumnsGet.class).end()
                 .end()
             .render()
                 .exception(Redirection.class).with(Redirect.class).end()
@@ -45,6 +49,11 @@ public class PrattleViewerRouter implements Router {
                 .controller(EntryGet.class)
                     .with(Stream.class)
                     .contentType("text/plain")
+                .end()
+            .render()
+                .controller(ColumnsGet.class)
+                    .with(Stream.class)
+                    .contentType("application/json")
                 .end();
     }
 }
