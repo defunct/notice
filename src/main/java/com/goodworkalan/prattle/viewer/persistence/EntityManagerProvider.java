@@ -3,9 +3,6 @@ package com.goodworkalan.prattle.viewer.persistence;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.goodworkalan.paste.Request;
 import com.goodworkalan.paste.janitor.Janitor;
 import com.goodworkalan.paste.janitor.JanitorQueue;
@@ -21,9 +18,6 @@ import com.google.inject.Provider;
  * @author Alan Gutierrez
  */
 public class EntityManagerProvider implements Provider<EntityManager> {
-    /** The application logger. */
-    private final static Logger logger = LoggerFactory.getLogger(EntityManagerProvider.class);
-
     /** The entity manager factory. */
     private final EntityManagerFactory emf;
 
@@ -52,14 +46,10 @@ public class EntityManagerProvider implements Provider<EntityManager> {
      * @return An entity manager.
      */
     public EntityManager get() {
-        logger.info("Creating an EntityManager.");
-
         final EntityManager em = emf.createEntityManager();
 
         janitors.add(new Janitor() {
             public void cleanUp() {
-                logger.info("Rolling back and closing an EntityManager.");
-
                 if (em.getTransaction().isActive()) {
                     em.getTransaction().rollback();
                 }
