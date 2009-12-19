@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
@@ -91,6 +92,13 @@ public abstract class Entry {
             return null;
         }
         return getConverter(object.getClass()).convert(object, new StringBuilder(), includes);
+    }
+    
+    public static Object flatten(Object object, String...includes) {
+        if (object == null) {
+            return null;
+        }
+        return getConverter(object.getClass()).convert(object, new StringBuilder(), new HashSet<String>(Arrays.asList(includes)));
     }
     
     private static Converter interfaceConverter(Class<?>[] ifaces) {

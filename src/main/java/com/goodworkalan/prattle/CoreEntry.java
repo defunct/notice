@@ -146,7 +146,7 @@ class CoreEntry extends Entry {
         
         Thread thread = Thread.currentThread();
         
-        map.put("date", new Date());
+        map.put("date", new Date().getTime());
         map.put("logger", name);
         map.put("name", message);
         map.put("level", level.toString());
