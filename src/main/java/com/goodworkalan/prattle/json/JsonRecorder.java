@@ -93,7 +93,7 @@ public class JsonRecorder implements Recorder {
     }
     
     public void record(Map<String,Object> map) {
-        Date date = (Date) map.get("date");
+        Date date = new Date((Long) map.get("date"));
         
         if (date.after(rotateAfter)) {
             try {
@@ -113,7 +113,7 @@ public class JsonRecorder implements Recorder {
 
         StringBuilder builder = new StringBuilder();
 
-        builder.append(((Date) map.get("date")).getTime()).append(" ");
+        builder.append(map.get("date")).append(" ");
         
         builder.append(map.get("logger")).append(" ");
         builder.append(map.get("name")).append(" ");
