@@ -78,6 +78,7 @@ public class Start {
         new Resource("prattle/viewer/datasource", dataSource);
 
         new EnvEntry("prattle/viewer/analyzing", Boolean.FALSE, true);
+        new EnvEntry("prattle/viewer/password", "password", true);
 
         try {
             System.out.println(">>> STARTING EMBEDDED JETTY SERVER, PRESS ANY KEY TO STOP");

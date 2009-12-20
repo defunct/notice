@@ -30,6 +30,12 @@
         <env-entry-type>java.lang.Boolean</env-entry-type>
     </env-entry>
 	
+    <env-entry>
+        <env-entry-name>prattle/viewer/password</env-entry-name>
+        <env-entry-value>false</env-entry-value>
+        <env-entry-type>java.lang.String</env-entry-type>
+    </env-entry>
+	
     <filter>
         <filter-name>PasteFilter</filter-name>
         <filter-class>com.goodworkalan.paste.PasteFilter</filter-class>

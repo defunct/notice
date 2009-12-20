@@ -13,7 +13,10 @@ import com.goodworkalan.prattle.viewer.controller.EntryGet;
 import com.goodworkalan.prattle.viewer.controller.FreemarkerController;
 import com.goodworkalan.prattle.viewer.controller.GridView;
 import com.goodworkalan.prattle.viewer.controller.LandingView;
+import com.goodworkalan.prattle.viewer.controller.LoginView;
+import com.goodworkalan.prattle.viewer.controller.LogoutGet;
 import com.goodworkalan.prattle.viewer.controller.MigrateSchema;
+import com.goodworkalan.prattle.viewer.controller.VerifyLogin;
 
 /**
  * Routes URL paths to controllers and specifies renderers for controllers.
@@ -34,13 +37,22 @@ public class PrattleViewerRouter implements Router {
                 .to(Startup.class)
                 .with(MigrateSchema.class)
             .connect()
+                .path("")
+                    .or().path("/")
+                    .or().path("/(base ^(?!^login|logout$)[^.]+$)/(rest)*")
+                    .to(VerifyLogin.class)
+                    .end()
+                .end()
+            .connect()
                 .path("").or().path("/").to(LandingView.class).end()
+                .path("/login").to(LoginView.class).end()
+                .path("/logout").to(LogoutGet.class).end()
                 .path("/entries/(id)").to(EntryGet.class).end()
                 .path("/grid/(grid[id] [0-9]+)").to(GridView.class).end()
                 .path("/columns/(grid[id] [0-9]+)").to(ColumnsGet.class).end()
                 .end()
             .render()
-                .exception(Redirection.class).with(Redirect.class).end()
+                .exception(Redirection.class).priority(1).with(Redirect.class).end()
             .render()
                 .controller(FreemarkerController.class)
                 .with(Forward.class).format("/freemarker.directory/%s.ftl", ControllerClassName.class)
