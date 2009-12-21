@@ -157,10 +157,11 @@ function SlickGrid($container,data,columns,options)
 			if (!m.formatter)
 				m.formatter = defaultFormatter;
 			
-			var header = $("<div class='h c" + i + "' cell=" + i + " id='" + m.id + "' />")
-				.html(m.name)
+			var header = $("<div class='h c" + i + "' cell=" + i + " id='" + m.id + "'><div class='name'/></div>")
 				.width(m.width)
-				.appendTo($divHeaders);
+				.appendTo($divHeaders)
+                .find('.name')
+				.html(m.name)
 		}
 		
 		$divHeaders.find(".h").each(function() {
@@ -228,9 +229,9 @@ function SlickGrid($container,data,columns,options)
 			
 	
 		$divHeaders.bind("click", function(e) {
-			if (!$(e.target).hasClass(".h")) return;
-			
-			var id = $(e.target).attr("id");
+			if (!$(e.target).hasClass(".name")) return;
+
+			var id = $(e.target).parents('.h').attr("id");
 			
 			if (self.onColumnHeaderClick)
 				self.onColumnHeaderClick(columns[columnsById[id]]);
@@ -542,12 +543,12 @@ function SlickGrid($container,data,columns,options)
         var hidden = column.hidden != columns[index].hidden
         var width = column.width != columns[index].width
         if (index == null) 
-			throw "Grid : setColumn : column does not exist";
-        columns[index] = $.extend(columns[index], column);
+			    throw "Grid : setColumn : column does not exist";
+        var m = columns[index] = $.extend(columns[index], column);
 		console.time("hideHeader");
-		$divHeaders.find(".h[id=" + columns[index].id + "]").
-                    css('display', columns[index].hidden ? 'none' : 'block').
-                    html(columns[index].name);
+		$divHeaders.find(".h[id=" + m.id + "]")
+            .css('display', m.hidden ? 'none' : 'block')
+            .find('.name').html(m.name);
 		console.timeEnd("hideHeader");
 		console.time("cssRules");
         if (hidden || width)  {

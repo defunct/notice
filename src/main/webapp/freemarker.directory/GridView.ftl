@@ -17,6 +17,22 @@
   <link href="${controller.applicationPath}/static.directory/stylesheets/slick.grid.css" media="print, screen, projection" rel="stylesheet" type="text/css">
 </@layout.head>
 <@layout.body>
+  <div id="column_error"></div> 
+  <div id="column_editor">
+    <label>
+      <span class="label">Column Name</span>
+      <span class="control"><input id="column_name"></span>
+    </label>
+    <label>
+      <span class="label">Expression</span>
+      <span class="control"><textarea id="expression" rows="4" cols="40"></textarea></span>
+    </label>
+    <div class="buttons">
+      <button id="column_edit_preview">Preview</button>
+      <button id="column_edit_ok">OK</button>
+      <button id="column_edit_cancel">Cancel</button>
+    </div>
+  </div>
   <div id="grid"></div>
 </@layout.body>
 </@layout.document>
