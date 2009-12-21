@@ -260,6 +260,67 @@ function SlickGrid($container,data,columns,options)
 					return false; 
 				};
 	}
+
+    function removeColumn(id) {
+        var i = columnsById[id];
+		$divHeaders.find(".h.c" + i).resizable("destroy").remove();
+        $.rule("." + uid + " .grid-canvas .c" + i, "style").remove();
+        columns.splice(i, 1);
+		resizeCanvas();
+        removeAllRows();
+        render();
+    }
+
+    function addColumn(m) {
+        columns.push(m);
+        var i = columns.length - 1;
+        columnsById[m.id] = i;
+        
+        if (!m.width)
+            m.width = options.defaultColumnWidth;
+            
+        if (!m.formatter)
+            m.formatter = defaultFormatter;
+        
+        var header = $("<div class='h c" + i + "' cell=" + i + " id='" + m.id + "'><div class='name'/></div>")
+            .width(m.width)
+            .appendTo($divHeaders)
+            .find('.name')
+            .html(m.name)
+		
+		$divHeaders.find(".h.c" + i).each(function() {
+			var cell = parseInt($(this).attr("cell"));
+			var m = columns[cell];
+			
+			if (m.resizable === false) return;
+			
+			$(this).resizable({
+				handles: "e",
+				minWidth: (m.minWidth) ? m.minWidth : null,
+				maxWidth: (m.maxWidth) ? m.maxWidth : null,
+				stop: function(e, ui) {
+					var cellId = $(this).attr("id");
+					var cell = columnsById[cellId];
+					columns[cell].width = $(this).width();
+					$.rule("." + uid + " .grid-canvas .c" + cell, "style").css("width", columns[cell].width + "px");
+					resizeCanvas();
+					
+					// todo:  rerender single column instead of everything
+					if (columns[cell].rerenderOnResize)
+						removeAllRows();
+					
+					render();
+				}
+			});
+		});
+        $.rule("." + uid + " .grid-canvas .c" + i + " {" + 
+            "width:" + columns[i].width + "px; " + 
+            "display: " + (columns[i].hidden ? 'none' : 'block') +
+        "}").appendTo("style");
+		resizeCanvas();
+        removeAllRows();
+        render();
+    }
 	
 	function createCssRules() {
 		$.rule(".grid-canvas .r .c { height:" + (options.rowHeight-5) + "px;}").appendTo("style");
@@ -1187,6 +1248,8 @@ function SlickGrid($container,data,columns,options)
 		"setColumnHeaderCssClass":	setColumnHeaderCssClass,
 
         "setColumn":       setColumn,
+        "addColumn":       addColumn,
+        "removeColumn":    removeColumn,
 		
 		// IEditor implementation
 		"commitCurrentEdit":	commitCurrentEdit,
