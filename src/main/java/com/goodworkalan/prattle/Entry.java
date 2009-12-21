@@ -93,7 +93,21 @@ public abstract class Entry {
         }
         return getConverter(object.getClass()).convert(object, new StringBuilder(), includes);
     }
+
+    public static Object flatten(Object object) {
+        if (object == null) {
+            return null;
+        }
+        return getConverter(object.getClass()).convert(object, new StringBuilder(), Collections.singleton("\0"));
+    }
     
+    public static Object flatten(Object object, boolean recurse) {
+        if (object == null) {
+            return null;
+        }
+        return getConverter(object.getClass()).convert(object, new StringBuilder(), recurse ? Collections.<String>emptySet() : Collections.singleton("\0"));
+    }
+
     public static Object flatten(Object object, String...includes) {
         if (object == null) {
             return null;
