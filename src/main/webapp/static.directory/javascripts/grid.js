@@ -47,31 +47,35 @@ $(document).ready(function () {
                 }
             }
             var filters = [];
-            var filterIds = [];
-            function addFilter(expression) {
+            function addFilter(filter) {
                 try {
-                    filters.push(eval('(function () { return function (entry) { return (' + expression + ') } })()'));
+                    var evaluation = eval('(function () { return function (entry) { return (' + filter.expression + ') } })()');
                 } catch (e) {
                     $('#filter_error').update(e.message);
                     return false;
                 }
+                filters.push($.extend(filter, { evaluation: evaluation }));
                 return true;
             }
-            for (var i = 0; i < results.filters.length; i++) {
-                var f = results.filters[i];
-                addFilter(f.expression);
-                filterIds.push(f.id);
-                $('<div id="filter_' + f.id + '" class="filter"><a href="#"><code><pre>' + f.expression + '</pre></code></a></div>')
+            function displayFilter(filter) {
+                $('<div id="filter_' + filter.id + '" class="filter"><a href="#"><code><pre>' + filter.expression + '</pre></code></a></div>')
                     .appendTo('#filters');
+            }
+            for (var i = 0; i < results.filters.length; i++) {
+                addFilter(results.filters[i]);
+                displayFilter(results.filters[i]);
             }
             lines = null;
             function filter() {
                 rows.length = 0;
+                var evaluations = $.map(filters, function (filter) {
+                    return filter.evaluation;
+                });
                 ENTRY: for (var i = 0; i < entries.length; i++) {
                     var entry = entries[i];
                     var row = {};
-                    for (var j = 0; j < filters.length; j++) {
-                        if (!filters[j](entry)) {
+                    for (var j = 0; j < evaluations.length; j++) {
+                        if (!evaluations[j](entry)) {
                             continue ENTRY;
                         }
                     }
@@ -85,13 +89,17 @@ $(document).ready(function () {
             filter();
             function refreshRows(col) {
                 var k = 0;
+                var evaluations = $.map(filters, function (filter) {
+                    return filter.evaluation;
+                });
                 ENTRY: for (var i = 0; i < entries.length; i++) {
-                    for (var j = 0; j < filters.length; j++) {
-                        if (!filters[j](entry)) {
+                    var entry = entries[i];
+                    for (var j = 0; j < evaluations.length; j++) {
+                        if (!evaluations[j](entry)) {
                             continue ENTRY;
                         }
                     }
-                    rows[k++][col.field] = col.evaluation(entries[i]);
+                    rows[k++][col.field] = col.evaluation(entry);
                 }
                 grid.removeAllRows();
                 grid.render();
@@ -187,33 +195,68 @@ $(document).ready(function () {
             }
             $('#filter_edit_preview').click(function () {
                 var expression = $('#filter_expression').val();
-                if (addFilter(expression)) {
+                if (addFilter({id: 'temp', expression: expression})) {
                     filterAndDisplay();
                     filters.pop();
                 }
             });
+            var editFilter = null;
             $('#filter_edit_ok').click(function () {
                 var expression = $('#filter_expression').val();
-                if (addFilter(expression)) {
-                    filterAndDisplay();
-                    if (adding) {
+                if (adding) {
+                    if (addFilter({id: 'temp', expression: expression})) {
                         $.post('../filters/add', {
                             'filter[grid][id]': gridId,
                             'filter[expression]': expression
                         }, function (response) {
-                            filterIds.push(response.filter.id);
+                            filters[filters.length - 1].id = response.filter.id;
+                            displayFilter(filters[filters.length - 1]);
+                            editFilter = null;
                         }, 'json');
                     }
-                    $('#filter_editor').hide('fast');
+                } else {
+                    if (addFilter({id: editFilter.id, expression: expression})) {
+                        $('#filter_' + editFilter.id + ' pre').html(expression);
+                        $.post('../filters/save', {
+                            'filter[grid][id]': gridId,
+                            'filter[id]': editFilter.id,
+                            'filter[expression]': expression
+                        }, function (response) {
+                            editFilter = null;
+                        }, 'json');
+                    }
                 }
+                filterAndDisplay();
+                $('#filter_editor').hide('fast');
             });
             $('#filter_edit_cancel').click(function () {
+                if (editFilter != null) {
+                    addFilter(editFilter);
+                    editFilter = null;
+                }
                 filterAndDisplay();
                 $('#filter_editor').hide('fast');
             });
             $('#add_filter').click(function () {
                 adding = true;
                 $('#filter_editor').show('fast');
+                return false;
+            });
+            $('#filters').click(function (e) {
+                if (editFilter == null) {
+                    var link = $(e.target).parents('a');
+                    if (link.size() != 0) {
+                        var filterId = /^filter_(\d+)/.exec(link.parents('div').get(0).id)[1];
+                        for (var i = 0; editFilter == null && i < filters.length; i++) {
+                            if (filters[i].id == filterId) {
+                                editFilter = filters.splice(i, 1)[0];
+                            }
+                        }
+                        $('#filter_expression').val(editFilter.expression);
+                        $('#filter_editor').show('fast');
+                        adding = false;
+                    }
+                }
                 return false;
             });
         });
