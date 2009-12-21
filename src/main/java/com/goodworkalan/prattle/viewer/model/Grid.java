@@ -26,9 +26,13 @@ public class Grid {
     /** The grid name. */
     private String name;
     
+    /** The grid filters. */
+    private List<Filter> filters;
+
     /** The grid columns. */
     private List<Column> columns;
 
+    @SuppressWarnings("unchecked")
     public static List<Grid> toList(List list) {
         return list;
     }
@@ -94,6 +98,25 @@ public class Grid {
      */
     public void setName(String name) {
         this.name = name;
+    }
+    /**
+     * Get the grid filters.
+     * 
+     * @return The grid filters.
+     */
+    @OneToMany(mappedBy = "grid")
+    public List<Filter> getFilters() {
+        return filters;
+    }
+    
+    /**
+     * Set the grid filters.
+     * 
+     * @param columns
+     *            The grid filters.
+     */
+    public void setFilters(List<Filter> filters) {
+        this.filters = filters;
     }
 
     /**

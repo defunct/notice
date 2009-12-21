@@ -7,6 +7,7 @@ import com.goodworkalan.addendum.NamingConnector;
 import com.goodworkalan.addendum.jpa.CreateEntity;
 import com.goodworkalan.paste.stop.Abnormality;
 import com.goodworkalan.prattle.viewer.model.Column;
+import com.goodworkalan.prattle.viewer.model.Filter;
 import com.goodworkalan.prattle.viewer.model.Grid;
 import com.goodworkalan.prattle.viewer.model.Log;
 
@@ -35,6 +36,10 @@ public class MigrateSchema implements Runnable {
                 .create(new CreateEntity(Log.class)).end()
                 .create(new CreateEntity(Grid.class)).end()
                 .create(new CreateEntity(Column.class)).end()
+                .commit();
+        addenda
+            .addendum()
+                .create(new CreateEntity(Filter.class)).end()
                 .commit();
         addenda.amend();
     }

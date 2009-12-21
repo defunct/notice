@@ -22,6 +22,6 @@ public class ColumnsGet {
 
     @Output(contentType = "application/json")
     public CharSequence text() {
-        return JSONValue.toJSONString(Entry.flatten(grid, "columns", "log"));
+        return JSONValue.toJSONString(Entry.flatten(grid, "filters", "columns", "log"));
     }
 }

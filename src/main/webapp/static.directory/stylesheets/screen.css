@@ -1,7 +1,7 @@
 body { text-align: left; }
 
-#column_editor { display: none; }
-#column_editor label { display: block; float: left; clear: left; }
-#column_editor .buttons { clear: left; }
+#column_editor, #filter_editor { display: none; }
+#column_editor label, #filter_editor label { display: block; float: left; clear: left; }
+#column_editor .buttons, #filter_editor .buttons { clear: left; }
 
 #grid { clear: left; }

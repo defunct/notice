@@ -10,7 +10,7 @@
   <script src="${controller.applicationPath}/static.directory/javascripts/jquery.rule.js" type="text/javascript"></script>
   <script src="${controller.applicationPath}/static.directory/javascripts/slick.globaleditorlock.js" type="text/javascript"></script>
   <script src="${controller.applicationPath}/static.directory/javascripts/slick.grid.js" type="text/javascript"></script>
-  <script src="${controller.applicationPath}/static.directory/javascripts/slick.remotemodel.js" type="text/javascript"></script>
+  <script src="${controller.applicationPath}/static.directory/javascripts/slick.model.js" type="text/javascript"></script>
   <script src="${controller.applicationPath}/static.directory/javascripts/date.format.js" type="text/javascript"></script>
   <script src="${controller.applicationPath}/static.directory/javascripts/firebugx.js" type="text/javascript"></script>
   <script src="${controller.applicationPath}/static.directory/javascripts/grid.js" type="text/javascript"></script>
@@ -18,7 +18,19 @@
   <link href="${controller.applicationPath}/static.directory/stylesheets/slick.grid.css" media="print, screen, projection" rel="stylesheet" type="text/css">
 </@layout.head>
 <@layout.body>
-  <div id="add"><a href="#">Add Column</a></div>
+  <div><a id="add_column" href="#">Add Column</a> | <a id="add_filter" href="#">Add Filter</a></div>
+  <div id="filter_editor">
+    <label>
+      <span class="label">Expression</span>
+      <span class="control"><textarea id="filter_expression" rows="4" cols="40"></textarea></span>
+    </label>
+    <div class="buttons">
+      <button id="filter_edit_preview">Preview</button>
+      <button id="filter_edit_ok">OK</button>
+      <button id="filter_edit_cancel">Cancel</button>
+    </div>
+  </div>
+  <div id="filters"></div>
   <div id="column_error"></div> 
   <div id="column_editor">
     <label>

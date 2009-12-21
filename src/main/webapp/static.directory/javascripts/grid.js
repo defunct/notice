@@ -46,19 +46,52 @@ $(document).ready(function () {
                     }
                 }
             }
-            lines = null;
-            for (var i = 0; i < entries.length; i++) {
-                var entry = entries[i];
-                var row = {};
-                for (var j = 0; j < columns.length; j++) {
-                    var column = columns[j];
-                    row[column.field] = column.evaluation(entry);
+            var filters = [];
+            var filterIds = [];
+            function addFilter(expression) {
+                try {
+                    filters.push(eval('(function () { return function (entry) { return (' + expression + ') } })()'));
+                } catch (e) {
+                    $('#filter_error').update(e.message);
+                    return false;
                 }
-                rows.push(row);
+                return true;
             }
+            for (var i = 0; i < results.filters.length; i++) {
+                var f = results.filters[i];
+                addFilter(f.expression);
+                filterIds.push(f.id);
+                $('<div id="filter_' + f.id + '" class="filter"><a href="#"><code><pre>' + f.expression + '</pre></code></a></div>')
+                    .appendTo('#filters');
+            }
+            lines = null;
+            function filter() {
+                rows.length = 0;
+                ENTRY: for (var i = 0; i < entries.length; i++) {
+                    var entry = entries[i];
+                    var row = {};
+                    for (var j = 0; j < filters.length; j++) {
+                        if (!filters[j](entry)) {
+                            continue ENTRY;
+                        }
+                    }
+                    for (var j = 0; j < columns.length; j++) {
+                        var column = columns[j];
+                        row[column.field] = column.evaluation(entry);
+                    }
+                    rows.push(row);
+                }
+            }
+            filter();
             function refreshRows(col) {
-                for (var i = 0; i < entries.length; i++) {
-                    rows[i][col.field] = col.evaluation(entries[i]);
+                var k = 0;
+                ENTRY: for (var i = 0; i < entries.length; i++) {
+                    for (var j = 0; j < filters.length; j++) {
+                        if (!filters[j](entry)) {
+                            continue ENTRY;
+                        }
+                    }
+                    rows[k++][col.field] = col.evaluation(entries[i]);
                 }
                 grid.removeAllRows();
                 grid.render();
@@ -135,7 +168,7 @@ $(document).ready(function () {
                 $('#column_editor').hide('fast');
                 editColumn = null;
             });
-            $('#add a').click(function () {
+            $('#add_column').click(function () {
                 if (editColumn == null) {
                     adding = true;
                     $('#column_name').val('New Column');
@@ -144,6 +177,43 @@ $(document).ready(function () {
                     editColumn = newColumn('New Column', 'new', "''")
                     grid.addColumn(editColumn);
                 }
+                return false;
+            });
+            function filterAndDisplay() {
+                filter();
+                grid.updateRowCount();
+                grid.removeAllRows();
+                grid.render();
+            }
+            $('#filter_edit_preview').click(function () {
+                var expression = $('#filter_expression').val();
+                if (addFilter(expression)) {
+                    filterAndDisplay();
+                    filters.pop();
+                }
+            });
+            $('#filter_edit_ok').click(function () {
+                var expression = $('#filter_expression').val();
+                if (addFilter(expression)) {
+                    filterAndDisplay();
+                    if (adding) {
+                        $.post('../filters/add', {
+                            'filter[grid][id]': gridId,
+                            'filter[expression]': expression
+                        }, function (response) {
+                            filterIds.push(response.filter.id);
+                        }, 'json');
+                    }
+                    $('#filter_editor').hide('fast');
+                }
+            });
+            $('#filter_edit_cancel').click(function () {
+                filterAndDisplay();
+                $('#filter_editor').hide('fast');
+            });
+            $('#add_filter').click(function () {
+                adding = true;
+                $('#filter_editor').show('fast');
                 return false;
             });
         });
