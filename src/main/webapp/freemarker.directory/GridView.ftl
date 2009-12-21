@@ -18,6 +18,7 @@
   <link href="${controller.applicationPath}/static.directory/stylesheets/slick.grid.css" media="print, screen, projection" rel="stylesheet" type="text/css">
 </@layout.head>
 <@layout.body>
+  <div id="add"><a href="#">Add Column</a></div>
   <div id="column_error"></div> 
   <div id="column_editor">
     <label>

@@ -540,8 +540,8 @@ function SlickGrid($container,data,columns,options)
 
     function setColumn(column) {
         var index = columnsById[column.id];
-        var hidden = column.hidden != columns[index].hidden
-        var width = column.width != columns[index].width
+        var hidden = column.hidden && column.hidden != columns[index].hidden
+        var width = column.width && column.width != columns[index].width
         if (index == null) 
 			    throw "Grid : setColumn : column does not exist";
         var m = columns[index] = $.extend(columns[index], column);

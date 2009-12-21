@@ -52,20 +52,22 @@ $(document).ready(function () {
             console.log(rows);
             grid = new SlickGrid($('#grid'), rows, columns, options); 
             $("#grid").resizable({ minWidth: 908, maxWidth: 908 });
-            var editColumn = null;
+            var editColumn = null, savedColumn = null;
             grid.onColumnHeaderClick = function (column) {
                 if (editColumn == null) {
                     $('#column_name').val(column.name);
                     $('#expression').val(column.expression);
                     $('#column_editor').show('fast');
                     editColumn = column;
+                    savedColumn = $.extend({}, editColumn);
                 }
             }
-            var preview = function () {
+            var preview = function (name, expression) {
                 $('#column_error').hide('fast');
-                var col = editColumn;
-                col.expression = $('#expression').val();
-                col.name = $('#column_name').val();
+                var col = $.extend(editColumn, {
+                    name: name,
+                    expression: expression
+                });
                 try {
                    col.evaluation =  eval('(function () { return function (entry) { return (' + col.expression + ')} })()')
                 } catch (e) {
@@ -75,16 +77,16 @@ $(document).ready(function () {
                 for (var i = 0; i < entries.length; i++) {
                     rows[i][col.field] = col.evaluation(entries[i]);
                 }
-                grid.setColumn(editColumn);
+                grid.setColumn({ id: col.id, name: col.name });
                 grid.removeAllRows();
                 grid.render();
             };
             $('#column_edit_preview').click(function () {
-                preview();
+                preview($('#column_name').val(), $('#expression').val());
             });
             $('#column_edit_ok').click(function() {
                 if (editColumn != null) {
-                    preview();
+                    preview($('#column_name').val(), $('#expression').val());
                     $('#column_editor').hide('fast');
                     $.post('../columns/save', {
                         'column[id]': /\bcolumn_(\d+)\b/.exec(editColumn.id)[1],
@@ -95,7 +97,10 @@ $(document).ready(function () {
                     editColumn = null;
                 }
             });
-            $('#column_editor_cancel').click(function() {
+            $('#column_edit_cancel').click(function() {
+                preview(savedColumn.name, savedColumn.expression);
+                $('#column_editor').hide('fast');
+                editColumn = null;
             });
         });
     }, 'json');
