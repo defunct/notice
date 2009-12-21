@@ -11,6 +11,7 @@
   <script src="${controller.applicationPath}/static.directory/javascripts/slick.globaleditorlock.js" type="text/javascript"></script>
   <script src="${controller.applicationPath}/static.directory/javascripts/slick.grid.js" type="text/javascript"></script>
   <script src="${controller.applicationPath}/static.directory/javascripts/slick.remotemodel.js" type="text/javascript"></script>
+  <script src="${controller.applicationPath}/static.directory/javascripts/date.format.js" type="text/javascript"></script>
   <script src="${controller.applicationPath}/static.directory/javascripts/firebugx.js" type="text/javascript"></script>
   <script src="${controller.applicationPath}/static.directory/javascripts/grid.js" type="text/javascript"></script>
   <link href="${controller.applicationPath}/static.directory/stylesheets/smoothness/jquery-ui-1.7.2.custom.css" media="print, screen, projection" rel="stylesheet" type="text/css">
