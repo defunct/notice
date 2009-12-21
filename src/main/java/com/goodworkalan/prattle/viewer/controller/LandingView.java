@@ -5,7 +5,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 
-import com.goodworkalan.prattle.viewer.model.Log;
+import com.goodworkalan.prattle.viewer.model.Grid;
 import com.google.inject.Inject;
 
 /**
@@ -14,7 +14,7 @@ import com.google.inject.Inject;
  * @author Alan Gutierrez
  */
 public class LandingView extends FreemarkerController {
-    private final List<Log> logs;
+    private final List<Grid> logs;
     /**
      * Construct a landing view using the given JDNI values and the given HTTP
      * request.
@@ -27,10 +27,10 @@ public class LandingView extends FreemarkerController {
     @Inject
     public LandingView(NamedValues namedValues, HttpServletRequest request, EntityManager em) {
         super(namedValues, request);
-        this.logs = Log.toList(em.createQuery("from Log").getResultList());
+        this.logs = Grid.toList(em.createQuery("select grid from Grid as grid where grid.id in (select min(grid.id) from Grid group by grid.log.id)").getResultList());
     }
     
-    public List<Log> getLogs() {
+    public List<Grid> getGrids() {
         return logs;
     }
 }

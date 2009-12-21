@@ -5,8 +5,8 @@
 </@layout.head>
 <@layout.body>
   <ul>
-    <#list controller.logs as log>
-      <li><a href="/entries/${log.id}">${log.prefix}</a></li>
+    <#list controller.grids as grid>
+      <li><a href="/grid/${grid.id}">${grid.log.prefix}</a></li>
     </#list>
   </ul>
 </@layout.body>

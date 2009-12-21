@@ -29,6 +29,10 @@ public class Grid {
     /** The grid columns. */
     private List<Column> columns;
 
+    public static List<Grid> toList(List list) {
+        return list;
+    }
+
     /**
      * Get the entity id.
      * 
