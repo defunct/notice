@@ -43,6 +43,7 @@ public abstract class Entry {
         toString(URL.class);
         toString(URI.class);
         toString(Class.class);
+        toString(CharSequence.class);
         converters.put(Date.class, new DateConverter());
     }
     
