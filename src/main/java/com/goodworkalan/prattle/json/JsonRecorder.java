@@ -3,12 +3,8 @@ package com.goodworkalan.prattle.json;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
-import java.util.TimeZone;
 
 import org.json.simple.JSONValue;
 
@@ -24,69 +20,26 @@ import com.goodworkalan.prattle.Recorder;
  * @author Alan Gutierrez
  */
 public class JsonRecorder implements Recorder {
-    /** The date format used to format log entry dates. */
-    private final DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.S");
-    
-    private DateFormat fileFormat;
+    private Rotator rotator;
 
     private BufferedWriter writer;
-    
-    private Date rotateAfter;
-    
-    private RotateType rotateType;
+
     
     private String file;
     
     public JsonRecorder() {
-        format.setTimeZone(TimeZone.getTimeZone("GMT"));
     }
     
-    private Calendar getCalendar(Date date) {
-        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
-        calendar.setTime(date);
-        return calendar;
-    }
-    
-    private Calendar getRotation(Calendar calendar) {
-        calendar.set(Calendar.MILLISECOND, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        if (rotateType == RotateType.DAILY) {
-            calendar.set(Calendar.HOUR, 0);
-        }
-        return calendar;
-    }
 
-    private Date getNextRotation(Calendar calendar) {
-        switch (rotateType) {
-        case HOURLY:
-            calendar.add(Calendar.HOUR, 1);
-            break;
-        default:
-            calendar.add(Calendar.DATE, 1);
-        }
-        return calendar.getTime();
-    }
 
     public void initialize(String prefix, VariableProperties configuration) {
         file = configuration.getProperty(prefix + "file", null);
         if (file == null) {
             throw new PrattleException(0);
         }
-        
-        Calendar calendar = getCalendar(new Date());
-        String rotate = configuration.getProperty(prefix + "rotate", "NEVER").trim().toUpperCase();
-        rotateType = RotateType.valueOf(rotate);
-        if (rotateType == RotateType.NEVER) {
-            rotateAfter = new Date(Long.MAX_VALUE);
-            fileFormat = new SimpleDateFormat("");
-        } else {
-            calendar = getRotation(calendar);
-            rotateAfter = getNextRotation(getRotation(getCalendar(calendar.getTime())));
-            fileFormat = new SimpleDateFormat("_yyyy_MM_dd_HH_mm");
-        }
+        rotator = new Rotator(configuration, prefix);
         try {
-            writer = new BufferedWriter(new FileWriter(file + fileFormat.format(calendar.getTime()), true));
+            writer = new BufferedWriter(new FileWriter(file + rotator.getSuffix(), true));
         } catch (IOException e) {
             throw new PrattleException(0, e);
         }
@@ -95,20 +48,18 @@ public class JsonRecorder implements Recorder {
     public void record(Map<String,Object> map) {
         Date date = new Date((Long) map.get("date"));
         
-        if (date.after(rotateAfter)) {
+        if (rotator.shouldRotate(date)) {
             try {
                 writer.close();
             } catch (IOException e) {
                 throw new PrattleException(0, e);
             }
 
-            Calendar calendar = getRotation(getCalendar(new Date()));
             try {
-                writer = new BufferedWriter(new FileWriter(file + fileFormat.format(calendar.getTime()), true));
+                writer = new BufferedWriter(new FileWriter(file + rotator.getSuffix(), true));
             } catch (IOException e) {
                 throw new PrattleException(0, e);
             }
-            rotateAfter = getNextRotation(calendar);
         }
 
         StringBuilder builder = new StringBuilder();
