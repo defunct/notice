@@ -22,7 +22,7 @@ import com.goodworkalan.prattle.Rotator;
  * @author Alan Gutierrez
  */
 public class YamlRecorder implements Recorder {
-    /** The YAML serailizer and parser. */
+    /** The YAML serializer and parser. */
     private Yaml yaml;
     
     /** The rotation tracker. */
