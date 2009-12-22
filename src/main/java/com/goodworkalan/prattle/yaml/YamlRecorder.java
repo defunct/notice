@@ -104,14 +104,10 @@ public class YamlRecorder implements Recorder {
     /**
      * Close the recorder.
      */
-    public void close()
-    {
-        try
-        {
+    public void close() {
+        try {
             writer.close();
-        }
-        catch (IOException e)
-        {
+        } catch (IOException e) {
         }
     }
 }
