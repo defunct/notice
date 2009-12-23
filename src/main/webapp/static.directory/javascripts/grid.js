@@ -42,7 +42,7 @@ $(document).ready(function () {
             columns.push(newColumn(results.columns[i]));
         }
         $.get('../entries/' + results.log.id, {}, function (entries) {
-            var rows = [];
+            // convert lines into entries, hashes and gc the lines
             var lines = entries.split("\n");
             var entries = [];
             for (var i = 0; i < lines.length; i++) {
@@ -55,6 +55,9 @@ $(document).ready(function () {
                     }
                 }
             }
+            lines = null;
+
+            // create entry filters.
             var filters = [];
             function addFilter(filter) {
                 try {
@@ -65,15 +68,19 @@ $(document).ready(function () {
                 }
                 return true;
             }
+
             function displayFilter(filter) {
                 $('<div id="filter_' + filter.id + '" class="filter"><a href="#"><code><pre>' + filter.expression + '</pre></code></a></div>')
                     .appendTo('#filters');
             }
+
             for (var i = 0; i < results.filters.length; i++) {
                 addFilter(results.filters[i]);
                 displayFilter(results.filters[i]);
             }
-            lines = null;
+
+            // run the entry filters to create grid rows.
+            var rows = [];
             function filter() {
                 rows.length = 0;
                 var evaluations = $.map(filters, function (filter) {
@@ -95,6 +102,14 @@ $(document).ready(function () {
                 }
             }
             filter();
+
+            // the main entries grid.
+            grid = new SlickGrid($('#entries .grid'), rows, columns, options); 
+
+            // column editing...
+            var editColumn = null, savedColumn = null;
+
+            // refresh a particular row.
             function refreshRows(col) {
                 var k = 0;
                 var evaluations = $.map(filters, function (filter) {
@@ -112,10 +127,8 @@ $(document).ready(function () {
                 grid.removeAllRows();
                 grid.render();
             }
-            console.log(rows);
-            grid = new SlickGrid($('#entries .grid'), rows, columns, options); 
-//            $("#grid").resizable({ minWidth: 908, maxWidth: 908 });
-            var editColumn = null, savedColumn = null;
+
+            // when a column header is clicked, start editing.
             grid.onColumnHeaderClick = function (column) {
                 if (editColumn == null) {
                     adding = false;
@@ -126,6 +139,10 @@ $(document).ready(function () {
                     savedColumn = $.extend({}, editColumn);
                 }
             }
+
+            // render column values based on the expression in the expression
+            // editor. Show and error if we can't compile the expression into a
+            // function.
             var preview = function (name, expression) {
                 $('#column_error').hide('fast');
                 var col = $.extend(editColumn, {
@@ -146,10 +163,16 @@ $(document).ready(function () {
 
                 return true;
             };
+
+            // preview the currently editing expression.
             $('#column_edit_preview').click(function () {
                 preview($('#column_name').val(), $('#expression').val());
             });
+
             var adding = false;
+
+            // save the currently editing expression, creating it if it is a new
+            // one, and refresh the grid.
             $('#column_edit_ok').click(function() {
                 if (editColumn != null && preview($('#column_name').val(), $('#expression').val())) {
                     $('#column_editor').hide('fast');
@@ -175,6 +198,8 @@ $(document).ready(function () {
                     editColumn = null;
                 }
             });
+
+            // restore the grid to where it was before we started editing.
             $('#column_edit_cancel').click(function() {
                 if (adding) {
                     grid.removeColumn('column_new');
@@ -184,6 +209,8 @@ $(document).ready(function () {
                 $('#column_editor').hide('fast');
                 editColumn = null;
             });
+
+            // add a column.
             $('#add_column').click(function () {
                 if (editColumn == null) {
                     adding = true;
@@ -195,12 +222,16 @@ $(document).ready(function () {
                 }
                 return false;
             });
+
+            // filter editing...
+
             function filterAndDisplay() {
                 filter();
                 grid.updateRowCount();
                 grid.removeAllRows();
                 grid.render();
             }
+
             $('#filter_edit_preview').click(function () {
                 var expression = $('#filter_expression').val();
                 if (addFilter({id: 'temp', expression: expression})) {
@@ -208,7 +239,11 @@ $(document).ready(function () {
                     filters.pop();
                 }
             });
+
             var editFilter = null;
+
+            // save the filter expression we are currently editing, creating it
+            // if it is a new one, and refresh the grid.
             $('#filter_edit_ok').click(function () {
                 var expression = $('#filter_expression').val();
                 if (adding) {
@@ -237,19 +272,42 @@ $(document).ready(function () {
                 filterAndDisplay();
                 $('#filter_editor').hide('fast');
             });
-            $('#filter_edit_cancel').click(function () {
+
+            function filterEditCancel() {
                 if (editFilter != null) {
                     addFilter(editFilter);
                     editFilter = null;
                 }
                 filterAndDisplay();
                 $('#filter_editor').hide('fast');
-            });
+            }
+
+            // restore the grid to where it was before we started editing.
+            $('#filter_edit_cancel').click(filterEditCancel);
+
+            // add a new filter.
             $('#add_filter').click(function () {
                 adding = true;
                 $('#filter_editor').show('fast');
                 return false;
             });
+
+            // delete the filter we are currently editing.
+            $('#filter_delete').click(function() {
+                if (adding) filterEditCancel();
+                else {
+                    $.post('../filters/delete', {
+                        'filter[id]': editFilter.id
+                    }, function (response) {
+                        filterAndDisplay();
+                        editFilter = null;
+                    }, 'json');
+                    $('#filter_' + editFilter.id).remove();
+                    $('#filter_editor').hide('fast');
+                }
+            });
+
+            // edit a selected filter.
             $('#filters').click(function (e) {
                 if (editFilter == null) {
                     var link = $(e.target).parents('a');
@@ -268,8 +326,8 @@ $(document).ready(function () {
                 return false;
             });
             
-            var entry = [];
-            var expanded = [];
+            // entry inspection...
+            var entry = [], expanded = [];
 
             var pathFormatter  = function(row, cell, value, columnDef, record) {
                 var spacer = "<span style='display:inline-block;height:1px;width:" + (15 * record.depth) + "px'></span>";
@@ -282,7 +340,7 @@ $(document).ready(function () {
                 }               
                 else
                     return spacer + " <span class='toggle'></span>&nbsp;" + value;
-        };
+            };
 
             var inspector = new SlickGrid($('#inspector .grid'), expanded, [
                 $.extend({ name: "Path", id: "path", field: "path", formatter: pathFormatter }, prototypeColumn),

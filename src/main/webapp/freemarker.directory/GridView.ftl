@@ -27,6 +27,7 @@
       <span class="control"><textarea id="filter_expression" rows="4" cols="40"></textarea></span>
     </label>
     <div class="buttons">
+      <button id="filter_delete">Delete</button>
       <button id="filter_edit_preview">Preview</button>
       <button id="filter_edit_ok">OK</button>
       <button id="filter_edit_cancel">Cancel</button>
