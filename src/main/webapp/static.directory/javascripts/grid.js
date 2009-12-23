@@ -98,6 +98,7 @@ $(document).ready(function () {
                         var column = columns[j];
                         row[column.field] = column.evaluation(entry);
                     }
+                    row.index = i;
                     rows.push(row);
                 }
             }
@@ -406,9 +407,8 @@ $(document).ready(function () {
             }
 
             grid.onClick = function (e, row, cell) {
-
                 // repopulate the entry array.
-                entry.length = 0; addProperty(entries[row], 0, -1);
+                entry.length = 0; addProperty(entries[rows[row].index], 0, -1);
 
                 // filter to display expanded entries.
                 filterEntry();
