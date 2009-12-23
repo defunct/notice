@@ -1,4 +1,12 @@
 $(document).ready(function () {
+    $("#splitter").splitter({
+        type: "v",
+        outline: true,
+        minLeft: 100, sizeLeft: 150, minRight: 100,
+        resizeToWidth: true,
+        cookie: "vsplitter",
+        accessKey: 'I'
+    });
     var grid;
     var data = [];
     var options = {
@@ -9,20 +17,22 @@ $(document).ready(function () {
     function evaluation(e) {
         return eval('(function() { return function (entry) { return (' + e + ') } })()');
     }
+    var prototypeColumn = {
+        renderOnResize: true,
+        resizable: true
+    };
     function newColumn(name, id, expression) {
         if (name.evaluation) {
             var column = name;
             return newColumn(column.name, column.id, column.evaluation);
         }
-        return {
+        return $.extend({
             name: name,                  // display name.
-            renderOnResize: true,               
-            resizable: true, 
             id: "column_" + id,          // API identifier
             field: "column_" + id,       // bound data field
             expression: expression,
             evaluation: evaluation(expression)
-        };
+        }, prototypeColumn);
     }
     var gridId = /\/(\d+)$/.exec(location.pathname)[1];
     $.get('../columns/' + gridId, {}, function (results) {
@@ -31,7 +41,6 @@ $(document).ready(function () {
             var column = results.columns[i];
             columns.push(newColumn(results.columns[i]));
         }
-        $('#grid').height($(window).height() - 64);
         $.get('../entries/' + results.log.id, {}, function (entries) {
             var rows = [];
             var lines = entries.split("\n");
@@ -49,12 +58,11 @@ $(document).ready(function () {
             var filters = [];
             function addFilter(filter) {
                 try {
-                    var evaluation = eval('(function () { return function (entry) { return (' + filter.expression + ') } })()');
+                    filters.push($.extend(filter, { evaluation: evaluation(filter.expression) }));
                 } catch (e) {
                     $('#filter_error').update(e.message);
                     return false;
                 }
-                filters.push($.extend(filter, { evaluation: evaluation }));
                 return true;
             }
             function displayFilter(filter) {
@@ -105,8 +113,8 @@ $(document).ready(function () {
                 grid.render();
             }
             console.log(rows);
-            grid = new SlickGrid($('#grid'), rows, columns, options); 
-            $("#grid").resizable({ minWidth: 908, maxWidth: 908 });
+            grid = new SlickGrid($('#entries .grid'), rows, columns, options); 
+//            $("#grid").resizable({ minWidth: 908, maxWidth: 908 });
             var editColumn = null, savedColumn = null;
             grid.onColumnHeaderClick = function (column) {
                 if (editColumn == null) {
@@ -259,6 +267,96 @@ $(document).ready(function () {
                 }
                 return false;
             });
+            
+            var entry = [];
+            var expanded = [];
+
+            var pathFormatter  = function(row, cell, value, columnDef, record) {
+                var spacer = "<span style='display:inline-block;height:1px;width:" + (15 * record.depth) + "px'></span>";
+                var index = record.index;
+                if (index + 1 != entry.length && entry[index + 1].depth > entry[index].depth) {
+                    if (record.expanded)
+                        return spacer + " <span class='toggle collapse'></span>&nbsp;" + value;
+                    else
+                        return spacer + " <span class='toggle expand'></span>&nbsp;" + value;
+                }               
+                else
+                    return spacer + " <span class='toggle'></span>&nbsp;" + value;
+        };
+
+            var inspector = new SlickGrid($('#inspector .grid'), expanded, [
+                $.extend({ name: "Path", id: "path", field: "path", formatter: pathFormatter }, prototypeColumn),
+                $.extend({ name: "Value", id: "value", field: "value" }, prototypeColumn)
+            ], options); 
+
+            function createPropertyRow(path, value, depth, parent) {
+                if      (value instanceof Object)   { child = value; value = ''; }
+                else if (value instanceof Array)    { child = value; value = ''; }
+                else                                { child = null; }
+                entry.push({
+                    path: path,             value: value,           parent: parent,
+                    depth: depth,           index: entry.length,
+                    displayed: depth == 0,  expanded: false
+                });
+                if (child) addProperty(child, depth + 1, entry.length - 1);
+            }
+
+            function addProperty(property, depth, parent) {
+                if (property instanceof Object) {
+                    var keys = []; for (var key in property) keys.push(key); keys = keys.sort();
+                    for (var i = 0; i < keys.length; i++)
+                        createPropertyRow(keys[i], property[keys[i]], depth, parent);
+                } else if (property instanceof Array) {
+                    for (var i = 0; i < property.length; i++)
+                        createPropertyRow(i, property[i], depth, parent);
+                }
+            }
+
+            function filterEntry() {
+                expanded.length = 0;
+                for (var i = 0; i < entry.length; i++) if (entry[i].displayed) expanded.push(entry[i]);
+                inspector.updateRowCount();
+                inspector.removeAllRows();
+                inspector.render();
+            }
+
+            function expandProperty(row) {
+                entry[row].expanded = true;
+                for (var i = row + 1; i < entry.length && entry[i].depth > entry[row].depth; i++)
+                    if (entry[i].depth == entry[row].depth + 1)
+                        entry[i].displayed = true; 
+            }
+
+            function collapseProperty(row) {
+                entry[row].expanded = false;
+                var i = row + 1;
+                while (i < entry.length && entry[i].depth > entry[row].depth) {
+                    entry[i].displayed = false; 
+                    if (entry[i].expanded) i = collapseProperty(i);
+                    else i++; 
+                }
+                return i;
+            }
+
+            inspector.onClick = function (e, row, cell) {
+                if ($(e.target).hasClass("toggle")) {
+                    var expand = expanded[row];
+                    if (expand.expanded) collapseProperty(expand.index);
+                    else expandProperty(expand.index);
+                    filterEntry();
+                }
+            }
+
+            grid.onClick = function (e, row, cell) {
+
+                // repopulate the entry array.
+                entry.length = 0; addProperty(entries[row], 0, -1);
+
+                // filter to display expanded entries.
+                filterEntry();
+            }
         });
     }, 'json');
 });
+
+/* vim: set nowrap tw=0: */

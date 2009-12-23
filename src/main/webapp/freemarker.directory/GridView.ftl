@@ -14,6 +14,8 @@
   <script src="${controller.applicationPath}/static.directory/javascripts/date.format.js" type="text/javascript"></script>
   <script src="${controller.applicationPath}/static.directory/javascripts/firebugx.js" type="text/javascript"></script>
   <script src="${controller.applicationPath}/static.directory/javascripts/grid.js" type="text/javascript"></script>
+  <script src="${controller.applicationPath}/static.directory/javascripts/jquery.cookie.js" type="text/javascript"></script>
+  <script src="${controller.applicationPath}/static.directory/javascripts/splitter.js" type="text/javascript"></script>
   <link href="${controller.applicationPath}/static.directory/stylesheets/smoothness/jquery-ui-1.7.2.custom.css" media="print, screen, projection" rel="stylesheet" type="text/css">
   <link href="${controller.applicationPath}/static.directory/stylesheets/slick.grid.css" media="print, screen, projection" rel="stylesheet" type="text/css">
 </@layout.head>
@@ -47,7 +49,10 @@
       <button id="column_edit_cancel">Cancel</button>
     </div>
   </div>
-  <div id="grid"></div>
+  <div id="splitter">
+    <div id="entries"><div class="grid"></div></div>
+    <div id="inspector"><div class="grid"></div></div>
+  </div>
 </@layout.body>
 </@layout.document>
 <#-- vim: set ts=2 sw=2 tw=0 nowrap: -->
