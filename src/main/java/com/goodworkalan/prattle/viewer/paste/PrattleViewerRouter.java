@@ -9,6 +9,7 @@ import com.goodworkalan.paste.redirect.Redirect;
 import com.goodworkalan.paste.redirect.Redirection;
 import com.goodworkalan.paste.stream.Stream;
 import com.goodworkalan.prattle.viewer.controller.ColumnAdd;
+import com.goodworkalan.prattle.viewer.controller.ColumnDelete;
 import com.goodworkalan.prattle.viewer.controller.ColumnSave;
 import com.goodworkalan.prattle.viewer.controller.ColumnsGet;
 import com.goodworkalan.prattle.viewer.controller.EntryGet;
@@ -57,6 +58,7 @@ public class PrattleViewerRouter implements Router {
                 .path("/columns/(grid[id] [0-9]+)").to(ColumnsGet.class).end()
                 .path("/columns/save").to(ColumnSave.class).end()
                 .path("/columns/add").to(ColumnAdd.class).end()
+                .path("/columns/delete").to(ColumnDelete.class).end()
                 .path("/filters/add").to(FilterAdd.class).end()
                 .path("/filters/save").to(FilterSave.class).end()
                 .path("/filters/delete").to(FilterDelete.class).end()
@@ -76,6 +78,7 @@ public class PrattleViewerRouter implements Router {
                 .controller(ColumnsGet.class)
                 .controller(ColumnSave.class)
                 .controller(ColumnAdd.class)
+                .controller(ColumnDelete.class)
                 .controller(FilterAdd.class)
                 .controller(FilterSave.class)
                 .controller(FilterDelete.class)

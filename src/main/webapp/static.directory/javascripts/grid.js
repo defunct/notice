@@ -187,6 +187,7 @@ $(document).ready(function () {
                             var col = newColumn(response.column);
                             grid.addColumn(col);
                             refreshRows(col);
+                            editColumn = null;
                         }, 'json');
                     } else {
                         $.post('../columns/save', {
@@ -194,14 +195,13 @@ $(document).ready(function () {
                             'column[name]': editColumn.name,
                             'column[evaluation]': editColumn.expression
                         }, function (response) {
+                            editColumn = null;
                         }, 'json');
                     }
-                    editColumn = null;
                 }
             });
 
-            // restore the grid to where it was before we started editing.
-            $('#column_edit_cancel').click(function() {
+            function cancelEditColumn() {
                 if (adding) {
                     grid.removeColumn('column_new');
                 } else {
@@ -209,6 +209,23 @@ $(document).ready(function () {
                 }
                 $('#column_editor').hide('fast');
                 editColumn = null;
+            };
+
+            // restore the grid to where it was before we started editing.
+            $('#column_edit_cancel').click(cancelEditColumn);
+
+            // delete the currently selected column.
+            $('#column_delete').click(function() {
+                if (adding) cancelEditColumn();
+                else {
+                    $.post('../columns/delete', {
+                        'column[id]': /\bcolumn_(\d+)\b/.exec(editColumn.id)[1]
+                    }, function (response) {
+                        grid.removeColumn(editColumn.id);
+                        editColumn = null;
+                    }, 'json');
+                    $('#column_editor').hide('fast');
+                }
             });
 
             // add a column.

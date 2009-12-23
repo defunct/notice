@@ -8,6 +8,7 @@ import com.goodworkalan.paste.stream.Output;
 import com.goodworkalan.prattle.Entry;
 import com.goodworkalan.prattle.viewer.model.Grid;
 
+// FIXME Rename GridGet.
 @Actors(InfusionActor.class)
 public class ColumnsGet {
     private Grid grid;

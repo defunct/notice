@@ -45,6 +45,7 @@
       <span class="control"><textarea id="expression" rows="4" cols="40"></textarea></span>
     </label>
     <div class="buttons">
+      <button id="column_delete">Delete</button>
       <button id="column_edit_preview">Preview</button>
       <button id="column_edit_ok">OK</button>
       <button id="column_edit_cancel">Cancel</button>
