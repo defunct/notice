@@ -14,6 +14,7 @@ public class PrattleJsonProject extends ProjectModule {
                 .main()
                     .depends()
                         .artifact(new Artifact("com.goodworkalan/prattle/0.1"))
+                        .artifact(new Artifact("com.goodworkalan/prattle-rotate/0.1"))
                         .artifact(new Artifact("com.googlecode.json-simple/json-simple/1.1"))
                         .end()
                     .end()

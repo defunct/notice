@@ -11,7 +11,7 @@ import org.json.simple.JSONValue;
 import com.goodworkalan.madlib.VariableProperties;
 import com.goodworkalan.prattle.PrattleException;
 import com.goodworkalan.prattle.Recorder;
-import com.goodworkalan.prattle.Rotator;
+import com.goodworkalan.prattle.rotate.Rotator;
 
 /**
  * Implementation of a Prattle recorder the emits a single log file line
