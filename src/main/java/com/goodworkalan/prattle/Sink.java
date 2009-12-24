@@ -98,8 +98,7 @@ public final class Sink {
      * 
      * @return The singleton sink instance.
      */
-    private static Sink create()
-    {
+    private static Sink create() {
         List<Recorder> recorders = new ArrayList<Recorder>();
         try {
             ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
