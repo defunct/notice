@@ -14,7 +14,7 @@ import org.yaml.snakeyaml.Yaml;
 import com.goodworkalan.madlib.VariableProperties;
 import com.goodworkalan.prattle.PrattleException;
 import com.goodworkalan.prattle.Recorder;
-import com.goodworkalan.prattle.Rotator;
+import com.goodworkalan.prattle.rotate.Rotator;
 
 /**
  * Writes a Prattle message to a rotating YAML log file.

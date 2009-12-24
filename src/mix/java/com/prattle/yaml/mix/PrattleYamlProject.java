@@ -14,6 +14,7 @@ public class PrattleYamlProject extends ProjectModule {
                 .main()
                     .depends()
                         .artifact(new Artifact("com.goodworkalan/prattle/0.1"))
+                        .artifact(new Artifact("com.goodworkalan/prattle-rotate/0.1"))
                         .artifact(new Artifact("SnakeYAML/SnakeYAML/1.3"))
                         .end()
                     .end()
