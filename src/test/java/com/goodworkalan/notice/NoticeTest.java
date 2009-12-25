@@ -10,7 +10,7 @@ import org.testng.annotations.Test;
  * 
  * @author Alan Gutierrez
  */
-public class CassandraExceptionTest {
+public class NoticeTest {
     /**
      * Check a valid Java identifier.
      */
@@ -46,6 +46,4 @@ public class CassandraExceptionTest {
         assertTrue(Notice.isInteger("10"));
         assertFalse(Notice.isInteger("!"));
     }
-
-
 }
