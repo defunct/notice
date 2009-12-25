@@ -1,5 +1,6 @@
 package com.goodworkalan.cassandra;
 
+import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,6 +16,9 @@ import com.goodworkalan.notice.Notice;
  * @author Alan Gutierrez
  */
 public class Clue extends Notice<Clue> {
+    /** A place to dump the stack trace. */
+    private final StringWriter stackTrace;
+    
     /** A list of properties added for each marker. */
     private final Map<Object, List<String>> markers = new HashMap<Object, List<String>>();
 
@@ -23,7 +27,20 @@ public class Clue extends Notice<Clue> {
      * exception is thrown.
      */
     public Clue() {
-        super(Clue.class.getCanonicalName(), "level", "EXCEPTION");
+        this(new StringWriter());
+    }
+
+    /**
+     * This constructor is a trick to get the stack trace
+     * <code>StringWriter</code> into a local variable so it can be both passed
+     * to the super constructor and assigned to a member variable.
+     * 
+     * @param stackTrace
+     *            The string writer where the stack trace will be written.
+     */
+    private Clue(StringWriter stackTrace) {
+        super(Clue.class.getCanonicalName(), "exceptions", now("level", "EXCEPTION"), later("stackTrace", stackTrace));
+        this.stackTrace = stackTrace;
     }
 
     /**
@@ -40,7 +57,22 @@ public class Clue extends Notice<Clue> {
      *            The error code.
      */
     Clue(Clue clue, Class<?> context, int code) {
-        super(clue, context.getCanonicalName(), "code", code, "uuid", UUID.randomUUID().toString());
+        super(clue, context.getCanonicalName(), now("code", code), now("uuid", UUID.randomUUID().toString()));
+        stackTrace = clue.stackTrace;
+    }
+
+    /**
+     * Construct a clue that is a wrapper around the given
+     * <code>Throwable</code> instance.
+     * 
+     * @param clue
+     *            The clue to copy.
+     * @param throwable
+     *            The thorwable.
+     */
+    Clue(Clue clue, Throwable throwable) {
+        super(clue, Cassandra.class.getCanonicalName(), now("code", 101), now("e", throwable), now("uuid", UUID.randomUUID().toString()));
+        stackTrace = clue.stackTrace;
     }
 
     /**
@@ -95,6 +127,10 @@ public class Clue extends Notice<Clue> {
             remove(marker);
         }
         markers.remove(object);
+    }
+    
+    StringWriter getStackTrace() {
+        return stackTrace;
     }
     
     @Override

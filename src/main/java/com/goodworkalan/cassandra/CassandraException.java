@@ -1,5 +1,6 @@
 package com.goodworkalan.cassandra;
 
+import java.io.PrintWriter;
 import java.util.Date;
 
 import com.goodworkalan.notice.Lister;
@@ -57,7 +58,7 @@ public  class CassandraException extends RuntimeException implements Noticeable<
     public CassandraException(int code, Clue clue, Throwable cause) {
         super(null, cause);
         this.code = code;
-        this.clue = new Clue(clue, getClass(), 0);
+        this.clue = new Clue(clue, getClass(), code);
     }
 
     public Date getDate() {
@@ -162,6 +163,7 @@ public  class CassandraException extends RuntimeException implements Noticeable<
     }
     
     public void send(Sink sink) {
+        printStackTrace(new PrintWriter(clue.getStackTrace()));
         clue.send(sink);
     }
 }
