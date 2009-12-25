@@ -37,10 +37,10 @@ public interface Lister<T> {
     public Mapper<Lister<T>> map();
 
     /**
-     * Terminate the list creation statement by returning the parent language
-     * element.
+     * Terminate list creation and switch the context of the chained method
+     * calls to the parent object that created this list builder.
      * 
-     * @return The parent language element.
+     * @return The parent object.
      */
     public T end();
 

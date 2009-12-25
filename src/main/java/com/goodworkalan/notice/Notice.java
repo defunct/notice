@@ -20,29 +20,60 @@ import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-
+/**
+ * Abstract implementation of a structured logging or error message.
+ * 
+ * @author Alan Gutierrez
+ * 
+ * @param <Self>
+ *            The type of the descendant class, used to return the descendant
+ *            type from the chained methods that build the structure.
+ */
 public abstract class Notice<Self> implements Noticeable<Self> {
-    final static Object SKIP = new Object();
-    
+    /**
+     * An set to indicate deep copy. An empty set because no includes means
+     * include all.
+     */
     final static Set<String> DEEP = Collections.emptySet();
-    
+
+    /**
+     * A set to indicate a shallow copy. The set contains a single include,
+     * which means check the set for container paths, but the null string will
+     * match no path.
+     */
     final static Set<String> SHALLOW = Collections.singleton("\0");
     
     /** Cache of resource bundles. */
     private final static ConcurrentMap<String, ResourceBundle> bundles = new ConcurrentHashMap<String, ResourceBundle>();
-    
-    private final String context;
-    
+
+    /** The map of the default converters. */
     private static final Map<Class<?>, Converter> defaultConverters = new ConcurrentHashMap<Class<?>, Converter>();
-    
-    /** The map of object converters. */
+
+    /**
+     * The map of maps of object converters, indexed by class loader. The weak
+     * hash map associates a map of converters with a class loader. This will
+     * allow custom object converters to be garbage collected when a class loader
+     * is unloaded and disposed of.
+     */
     private static final WeakHashMap<ClassLoader, ConcurrentMap<Class<?>, Converter>> classLoaderConverters = new WeakHashMap<ClassLoader, ConcurrentMap<Class<?>,Converter>>();
-    
-    /** The log line. */
+
+    /**
+     * The top level map that contains properties set by the notice
+     * implementation. Properties added by the <code>put</code>,
+     * <code>map</code> and <code>list</code> methods are assigned to the
+     * <code>vars</code> map.
+     */
     private final Map<String, Object> line;
     
-    /** The log entry variables. */
-    private final Map<String, Object> objects;
+    /** The notice variables. */
+    private final Map<String, Object> vars;
+
+    /**
+     * The notice context, which is a class name, but it is not a class, because
+     * the class name is sometimes obtained from a SLF4J logger, which converts
+     * a class name into a string for use as its own name.
+     */
+    private final String context;
 
     static {
         defaultConverters.put(Byte.class, NullConverter.INSTANCE);
@@ -64,26 +95,48 @@ public abstract class Notice<Self> implements Noticeable<Self> {
         defaultConverters.put(CharSequence.class, ToStringConverter.INSTANCE);
         defaultConverters.put(Date.class, DateConverter.INSTANCE);
     }
-    
-    protected Notice(Notice<?> entry, String context, Object...extras) {
+
+    /**
+     * Construct a copy of the given notice that will use the given context to
+     * find the message bundle and add the given extras to the top level map.
+     * 
+     * @param notice
+     *            The notice to copy.
+     * @param context
+     *            The context.
+     * @param extras
+     *            An array of extra properties to add to the top level map.
+     */
+    protected Notice(Notice<?> notice, String context, Object...extras) {
+        @SuppressWarnings("unchecked")
+        Map<String, Object> copied = (Map<String, Object>) flatten(notice.vars);
+
         this.context = context;
-        this.objects = entry.objects;
-        this.line = entry.line;
+        this.vars = copied; 
+        this.line = notice.line;
         this.initialize(extras);
+        this.line.put("threadId", notice.get("threadId"));
+        this.line.put("threadName", notice.get("threadName"));
+        this.line.put("date", notice.get("date"));
     }
     
     protected Notice(String context, Object...extras) {
+        Thread thread = Thread.currentThread();
+        
         this.context = context;
-        this.objects = new LinkedHashMap<String, Object>();
+        this.vars = new LinkedHashMap<String, Object>();
         this.line = new LinkedHashMap<String, Object>();
         this.initialize(extras);
+        this.line.put("threadId", thread.getId());
+        this.line.put("threadName", thread.getName());
+        this.line.put("date", new Date().getTime());
     }
     
     private void initialize(Object...extras) {
         for (int i = 0; i < extras.length; i += 2) {
             line.put(extras[i].toString(), flatten(extras[i + 1]));
         }
-        line.put("vars", Collections.unmodifiableMap(objects));
+        line.put("vars", Collections.unmodifiableMap(vars));
     }
     
     private static Map<Class<?>, Converter> getClassLoaderConverters(ClassLoader classLoader) {
@@ -103,15 +156,46 @@ public abstract class Notice<Self> implements Noticeable<Self> {
         }
         return Notice.getClassLoaderConverters(classLoader);
     }
-    
+
+    /**
+     * Assign the given object converter to the given object type. The converter
+     * will be assigned to a map of converters that is associated with the
+     * <code>ClassLoader</code> of the given object type. The assignment will be
+     * inherited by any subsequently created child class loaders of the
+     * associated class loader, but not by existing child class loaders.
+     * 
+     * @param type
+     *            The object type.
+     * @param converter
+     *            The object converter.
+     */
     public static void setConverter(Class<?> type, Converter converter) {
         Notice.getConverters(type.getClassLoader()).put(type, converter);
     }
-    
+
+    /**
+     * Assign the to string converter to the given object type. The converter
+     * will be assigned to a map of converters that is associated with the
+     * <code>ClassLoader</code> of the given object type. The assignment will be
+     * inherited by any subsequently created child class loaders of the
+     * associated class loader, but not by existing child class loaders.
+     * 
+     * @param type
+     *            The object type.
+     * @param converter
+     *            The object converter.
+     */
     public static void toString(Class<?> toStringClass) {
         Notice.setConverter(toStringClass, ToStringConverter.INSTANCE);
     }
-    
+
+    /**
+     * Get the object converter for the given object type.
+     * 
+     * @param type
+     *            The object type.
+     * @return The object converter.
+     */
     public static Converter getConverter(Class<?> type) {
         if (type.isArray()) {
             return ArrayConverter.INSTANCE;
@@ -139,17 +223,42 @@ public abstract class Notice<Self> implements Noticeable<Self> {
         }
     }
 
+    /**
+     * Return this object, but cast to the type needed for the chained variable
+     * map population method. Descendant classes implement this method and
+     * simply return the <code>this</code> object.
+     * 
+     * @return This object.
+     */
     public abstract Self getSelf();
-    
+
+    /**
+     * Called when an object is added to the notice. Descendant classes can take
+     * actions based on the name. This used by <code>Clue</code> in Cassandra to
+     * record the name as part of the mark and clear facility.
+     * 
+     * @param name
+     *            The name.
+     */
+    protected void added(String name) {
+    }
+
+    /**
+     * Remove the object with the given name from the variable map.Descendant
+     * classes can take can remove objects from the variable map. This used by
+     * <code>Clue</code> in Cassandra to record the name as part of the mark and
+     * clear facility.
+     * 
+     * 
+     * @param name
+     *            The object name.
+     */
     protected void remove(String name) {
-        objects.remove(name);
+        vars.remove(name);
     }
-    
-    protected void recordName(String name) {
-    }
-    
-    public Map<String, Object> getObjects() {
-        return objects;
+
+    public Map<String, Object> getVars() {
+        return vars;
     }
 
     /**
@@ -207,8 +316,8 @@ public abstract class Notice<Self> implements Noticeable<Self> {
      * @see com.goodworkalan.prattle.entry.MetaEntry#put(java.lang.String, java.lang.Object)
      */
     public Self put(String name, Object object) {
-        recordName(name);
-        objects.put(name, flatten(object, SHALLOW));
+        added(name);
+        vars.put(name, flatten(object, SHALLOW));
         return getSelf();
     }
 
@@ -216,8 +325,8 @@ public abstract class Notice<Self> implements Noticeable<Self> {
      * @see com.goodworkalan.prattle.entry.MetaEntry#put(java.lang.String, java.lang.Object, java.lang.String)
      */
     public Self put(String name, Object object, String...paths) {
-        recordName(name);
-        objects.put(name, flatten(object, new HashSet<String>(Arrays.asList(paths))));
+        added(name);
+        vars.put(name, flatten(object, new HashSet<String>(Arrays.asList(paths))));
         return getSelf();
     }
 
@@ -225,8 +334,8 @@ public abstract class Notice<Self> implements Noticeable<Self> {
      * @see com.goodworkalan.prattle.entry.MetaEntry#put(java.lang.String, java.lang.Object, boolean)
      */
     public Self put(String name, Object object, boolean recurse) {
-        recordName(name);
-        objects.put(name, flatten(object, recurse ? DEEP : SHALLOW));
+        added(name);
+        vars.put(name, flatten(object, recurse ? DEEP : SHALLOW));
         return getSelf();
     }
 
@@ -234,9 +343,9 @@ public abstract class Notice<Self> implements Noticeable<Self> {
      * @see com.goodworkalan.prattle.entry.MetaEntry#map(java.lang.String)
      */
     public Mapper<Self> map(String name) {
-        recordName(name);
+        added(name);
         Map<String, Object> map = new LinkedHashMap<String, Object>();
-        objects.put(name, Collections.unmodifiableMap(map));
+        vars.put(name, Collections.unmodifiableMap(map));
         return new CoreMapper<Self>(getSelf(), map);
     }
     
@@ -244,9 +353,9 @@ public abstract class Notice<Self> implements Noticeable<Self> {
      * @see com.goodworkalan.prattle.entry.MetaEntry#list(java.lang.String)
      */
     public Lister<Self> list(String name) {
-        recordName(name);
+        added(name);
         List<Object> list = new ArrayList<Object>();
-        objects.put(name, Collections.unmodifiableList(list));
+        vars.put(name, Collections.unmodifiableList(list));
         return new CoreLister<Self>(getSelf(), list);
     }
 
