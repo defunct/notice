@@ -16,6 +16,6 @@ public class BundleMissing extends CassandraException {
      *            The error code.
      */
     public BundleMissing(int code) {
-        super(code, new Report());
+        super(code, new Clue());
     }
 }

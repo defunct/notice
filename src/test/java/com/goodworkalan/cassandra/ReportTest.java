@@ -15,7 +15,7 @@ public class ReportTest {
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void putInvalidName() {
-        Report report = new Report();
+        Clue report = new Clue();
         report.put("!", null);
     }
     
@@ -24,7 +24,7 @@ public class ReportTest {
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void listInvalidName() {
-        new Report().list("!");
+        new Clue().list("!");
     }
     
     /**
@@ -32,7 +32,7 @@ public class ReportTest {
      */
     @Test(expectedExceptions = IllegalArgumentException.class)
     public void mapInvalidName() {
-        new Report().map("!");
+        new Clue().map("!");
     }
     
     /**
@@ -40,9 +40,9 @@ public class ReportTest {
      */
     @Test
     public void markAndClear() {
-        Report report = new Report();
+        Clue report = new Clue();
         report.put("a", 1);
-        report.mark();
+        Object mark1 = report.mark();
         report
             .list("b")
                 .add(1).add(2).add(3)
@@ -56,11 +56,11 @@ public class ReportTest {
             .list("f")
                 .add(4).add(5)
                 .end();
-        report.mark();
+        Object mark2 = report.mark();
         report
             .put("g", 4);
-        report.clear();
-        report.clear();
+        report.clear(mark1);
+        report.clear(mark2);
         report.put("g", 5);
         CassandraException e = new TestException(101, report);
         assertEquals(e.get("a"), 1);
@@ -76,6 +76,6 @@ public class ReportTest {
      */
     @Test(expectedExceptions = IllegalStateException.class)
     public void clearNegative() {
-        new Report().clear();
+        new Clue().clear(new Object());
     }
 }

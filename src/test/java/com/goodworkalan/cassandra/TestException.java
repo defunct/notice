@@ -16,7 +16,7 @@ public class TestException extends CassandraException {
      *            The error code.
      */
     public TestException(int code) {
-        super(code, new Report());
+        super(code, new Clue());
     }
 
     /**
@@ -29,7 +29,7 @@ public class TestException extends CassandraException {
      *            The cause.
      */
     public TestException(int code, Throwable cause) {
-        super(code, new Report(), cause);
+        super(code, new Clue(), cause);
     }
 
     /**
@@ -39,7 +39,7 @@ public class TestException extends CassandraException {
      * @param code
      *            The error code.
      */
-    public TestException(int code, Report report) {
+    public TestException(int code, Clue report) {
         super(code, report);
     }
 }

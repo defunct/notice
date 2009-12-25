@@ -1,10 +1,8 @@
 package com.goodworkalan.cassandra;
 
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertSame;
-import static org.testng.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.List;
@@ -12,48 +10,7 @@ import java.util.Map;
 
 import org.testng.annotations.Test;
 
-/**
- * Test for the CassandraException class.
- * 
- * @author Alan Gutierrez
- */
 public class CassandraExceptionTest {
-    /**
-     * Check a valid Java identifier.
-     */
-    @Test
-    public void validJavaIdentifier() {
-        assertTrue(Message.checkJavaIdentifier("a"));
-        assertTrue(Message.checkJavaIdentifier("ab"));
-    }
-
-    /**
-     * Check invalid Java identifiers.
-     */
-    @Test
-    public void invalidJavaIdentifier() {
-        assertFalse(Message.checkJavaIdentifier(""));
-        assertFalse(Message.checkJavaIdentifier("1"));
-        assertFalse(Message.checkJavaIdentifier("a!"));
-    }
-
-    /**
-     * Check a null Java identifier.
-     */
-    @Test(expectedExceptions = NullPointerException.class)
-    public void nullJavaIdentifier() {
-        Message.checkJavaIdentifier(null);
-    }
-
-    /**
-     * Test the integer determination method.
-     */
-    @Test
-    public void isInteger() {
-        assertTrue(Message.isInteger("10"));
-        assertFalse(Message.isInteger("!"));
-    }
-
     /**
      * Test the wrapper constructor.
      */
@@ -91,7 +48,7 @@ public class CassandraExceptionTest {
                     .put("seven", 7)
                     .end()
                 .end();
-        Map<String, Object> report = e.getReport();
+        Map<?, ?> report = (Map<?, ?>) e.get("vars");
         assertEquals(report.size(), 3);
         assertEquals(report.get("one"), 1);
         List<?> list = (List<?>) report.get("two");
@@ -111,19 +68,19 @@ public class CassandraExceptionTest {
         assertEquals(subMap.size(), 1);
         assertEquals(subMap.get("seven"), 7);
         
-        assertEquals(e.get("four.six.seven"),  7);
-        assertNull(e.get("six.seven"));
+        assertEquals(e.get("vars.four.six.seven"),  7);
+        assertNull(e.get("vars.six.seven"));
 
-        assertEquals(e.getMap("four.six").get("seven"),  7);
-        assertNull(e.getMap("four.six.seven"));
-        assertNull(e.getMap("four.six.eight"));
-        assertNull(e.getMap("four.six.eight.nine"));
+        assertEquals(((Map<?, ?>) e.get("vars.four.six")).get("seven"),  7);
+        assertNull(e.get("vars.four.six.seven"));
+        assertNull(e.get("vars.four.six.eight"));
+        assertNull(e.get("vars.four.six.eight.nine"));
 
         assertEquals(e.get("two.1.0"), "b");
-        assertEquals(e.getList("two.1").get(0),  "b");
-        assertNull(e.getList("two.1.0"));
-        assertNull(e.getList("two.2"));
-        assertNull(e.getList("two.1.10"));
+        assertEquals(((List<?>) e.get("two.1")).get(0),  "b");
+        assertNull(e.get("vars.two.1.0"));
+        assertNull(e.get("vars.two.2"));
+        assertNull(e.get("vars.two.1.10"));
     }
 
     /**
@@ -189,7 +146,7 @@ public class CassandraExceptionTest {
      */
     @Test
     public void noCanonicalClassName() {
-        assertEquals(new CassandraException(101, new Report()) {
+        assertEquals(new CassandraException(101, new Clue()) {
             private static final long serialVersionUID = 1L;
         }.getMessage(), "101");
     }
