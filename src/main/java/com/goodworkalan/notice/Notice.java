@@ -1,5 +1,6 @@
 package com.goodworkalan.notice;
 
+import java.io.StringWriter;
 import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
@@ -35,6 +36,10 @@ public abstract class Notice<Self> implements Noticeable<Self> {
      * include all.
      */
     final static Set<String> DEEP = Collections.emptySet();
+    
+    final static Set<String> IGNORE = new HashSet<String>(Arrays.asList(new String[]{
+            "context", "threadId", "threadName", "vars", "date", "message"
+    }));
 
     /**
      * A set to indicate a shallow copy. The set contains a single include,
@@ -57,6 +62,9 @@ public abstract class Notice<Self> implements Noticeable<Self> {
      */
     private static final WeakHashMap<ClassLoader, ConcurrentMap<Class<?>, Converter>> classLoaderConverters = new WeakHashMap<ClassLoader, ConcurrentMap<Class<?>,Converter>>();
 
+    /** The bundle name to be appended to the context package. */
+    private final String bundleName;
+
     /**
      * The top level map that contains properties set by the notice
      * implementation. Properties added by the <code>put</code>,
@@ -67,6 +75,8 @@ public abstract class Notice<Self> implements Noticeable<Self> {
     
     /** The notice variables. */
     private final Map<String, Object> vars;
+    
+    private final List<Property> deferred;
 
     /**
      * The notice context, which is a class name, but it is not a class, because
@@ -93,9 +103,18 @@ public abstract class Notice<Self> implements Noticeable<Self> {
         defaultConverters.put(URI.class, ToStringConverter.INSTANCE);
         defaultConverters.put(Class.class, ClassConverter.INSTANCE);
         defaultConverters.put(CharSequence.class, ToStringConverter.INSTANCE);
+        defaultConverters.put(StringWriter.class, ToStringConverter.INSTANCE);
         defaultConverters.put(Date.class, DateConverter.INSTANCE);
     }
 
+    protected static Property now(String name, Object value) {
+        return new Property(name, value, SHALLOW, false);
+    }
+    
+    protected static Property later(String name, Object value) {
+        return new Property(name, value, SHALLOW, true);
+    }
+    
     /**
      * Construct a copy of the given notice that will use the given context to
      * find the message bundle and add the given extras to the top level map.
@@ -107,34 +126,41 @@ public abstract class Notice<Self> implements Noticeable<Self> {
      * @param extras
      *            An array of extra properties to add to the top level map.
      */
-    protected Notice(Notice<?> notice, String context, Object...extras) {
-        @SuppressWarnings("unchecked")
-        Map<String, Object> copied = (Map<String, Object>) flatten(notice.vars);
-
+    protected Notice(Notice<?> notice, String context, Property...properties) {
         this.context = context;
-        this.vars = copied; 
+        this.bundleName = notice.bundleName;
+        this.vars = MapConverter.INSTANCE.modifiable(notice.vars, new StringBuilder(), DEEP);
         this.line = notice.line;
-        this.initialize(extras);
+        this.deferred = notice.deferred;
+        this.initialize(properties);
+        this.line.put("context", context);
         this.line.put("threadId", notice.get("threadId"));
         this.line.put("threadName", notice.get("threadName"));
         this.line.put("date", notice.get("date"));
     }
     
-    protected Notice(String context, Object...extras) {
+    protected Notice(String context, String bundleName, Property...properties) {
         Thread thread = Thread.currentThread();
         
+        this.bundleName = bundleName;
         this.context = context;
         this.vars = new LinkedHashMap<String, Object>();
         this.line = new LinkedHashMap<String, Object>();
-        this.initialize(extras);
+        this.deferred = new ArrayList<Property>();
+        this.initialize(properties);
+        this.line.put("context", context);
         this.line.put("threadId", thread.getId());
         this.line.put("threadName", thread.getName());
         this.line.put("date", new Date().getTime());
     }
     
-    private void initialize(Object...extras) {
-        for (int i = 0; i < extras.length; i += 2) {
-            line.put(extras[i].toString(), flatten(extras[i + 1]));
+    private void initialize(Property...properties) {
+        for (Property property : properties) {
+            if (property.isDeferred()) {
+                deferred.add(property);
+            } else {
+                property.put(line);
+            }
         }
         line.put("vars", Collections.unmodifiableMap(vars));
     }
@@ -481,23 +507,29 @@ public abstract class Notice<Self> implements Noticeable<Self> {
     protected abstract String getMessageKey();
 
     public void send(Sink sink) {
+        if (!deferred.isEmpty()) {
+            for (Property property : deferred) {
+                property.put(line);
+            }
+        }
         sending();
         line.put("message", toString());
-        Sink.getInstance().send(line);
+        sink.send(line);
         sent();
     }
     
     public String toString() {
         int lastDot = context.lastIndexOf('.');
         String packageName = context.substring(0, lastDot == -1 ? context.length() : lastDot);
-        ResourceBundle bundle = bundles.get(packageName);
+        String bundlePath = packageName + "." + bundleName;
+        ResourceBundle bundle = bundles.get(bundlePath);
         if (bundle == null) {
             try {
-                bundle = ResourceBundle.getBundle(packageName + ".prattle");
+                bundle = ResourceBundle.getBundle(bundlePath);
             } catch (MissingResourceException e) {
-                bundle = ResourceBundle.getBundle("com.goodworkalan.prattle.missing");
+                bundle = ResourceBundle.getBundle("com.goodworkalan.notice.missing");
             }
-            bundles.put(packageName, bundle);
+            bundles.put(bundlePath, bundle);
         }
         String key = getMessageKey();
         String format;
@@ -549,6 +581,33 @@ public abstract class Notice<Self> implements Noticeable<Self> {
             return String.format(format, arguments);
         } catch (RuntimeException e) {
             return key;
+        }
+    }
+    
+    protected final static class Property {
+        private final String name;
+        
+        private final Object object;
+        
+        private final Set<String> includes;
+        
+        private final boolean deferred;
+
+        public Property(String name, Object object, Set<String> includes, boolean deferred) {
+            this.name = name;
+            this.object = object;
+            this.includes = includes;
+            this.deferred = deferred;
+        }
+        
+        protected void put(Map<String, Object> map) {
+            if (!IGNORE.contains(name)) {
+                map.put(name, flatten(object, includes));
+            }
+        }
+        
+        public boolean isDeferred() {
+            return deferred;
         }
     }
 }

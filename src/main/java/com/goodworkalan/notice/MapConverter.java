@@ -6,9 +6,13 @@ import java.util.Map;
 import java.util.Set;
 
 public class MapConverter implements Converter {
-    public final static Converter INSTANCE = new MapConverter();
+    public final static MapConverter INSTANCE = new MapConverter();
 
     public Object convert(Object object, StringBuilder path, Set<String> includes) {
+        return Collections.unmodifiableMap(modifiable(object, path, includes));
+    }
+    
+    public Map<String, Object> modifiable(Object object, StringBuilder path, Set<String> includes) {
         int index = path.length();
         Map<?, ?> original = (Map<?, ?>) object;
         Map<String, Object> copy = new LinkedHashMap<String, Object>();
@@ -27,7 +31,7 @@ public class MapConverter implements Converter {
             }
             path.setLength(index);
         }
-        return Collections.unmodifiableMap(copy);
+        return copy;
     }
     
     public boolean isContainer() {
