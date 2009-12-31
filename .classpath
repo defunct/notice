@@ -14,11 +14,6 @@
 			<attribute name="javadoc_location" value="jar:file:/Users/alan/.m2/repository/com/goodworkalan/furnish/0.1/furnish-0.1-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="var" path="M2_REPO/com/goodworkalan/cassandra/0.7/cassandra-0.7.jar" sourcepath="M2_REPO/com/goodworkalan/cassandra/0.7/cassandra-0.7-sources.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:file:/Users/alan/.m2/repository/com/goodworkalan/cassandra/0.7/cassandra-0.7-javadoc.jar!/"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="var" path="M2_REPO/com/goodworkalan/reflective/0.1/reflective-0.1.jar" sourcepath="M2_REPO/com/goodworkalan/reflective/0.1/reflective-0.1-sources.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:file:/Users/alan/.m2/repository/com/goodworkalan/reflective/0.1/reflective-0.1-javadoc.jar!/"/>
@@ -37,6 +32,6 @@
 			<attribute name="javadoc_location" value="jar:file:/Users/alan/.m2/repository/org/objenesis/objenesis/1.0/objenesis-1.0-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry combineaccessrules="false" kind="src" path="/prattle-entry"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/notice"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

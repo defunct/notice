@@ -4,9 +4,9 @@ import java.net.URI;
 
 import org.testng.annotations.Test;
 
+import com.goodworkalan.notice.Sink;
 import com.goodworkalan.prattle.Logger;
 import com.goodworkalan.prattle.LoggerFactory;
-import com.goodworkalan.prattle.Sink;
 
 public class LoggerTest
 {

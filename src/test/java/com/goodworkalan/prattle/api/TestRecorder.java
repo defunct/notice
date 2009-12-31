@@ -3,7 +3,7 @@ package com.goodworkalan.prattle.api;
 import java.util.Map;
 
 import com.goodworkalan.madlib.VariableProperties;
-import com.goodworkalan.prattle.Recorder;
+import com.goodworkalan.notice.Recorder;
 
 public class TestRecorder implements Recorder {
     public void initialize(String prefix, VariableProperties configuration) {

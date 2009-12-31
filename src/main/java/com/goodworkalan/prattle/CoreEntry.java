@@ -1,41 +1,23 @@
 package com.goodworkalan.prattle;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
-import com.goodworkalan.cassandra.Message;
+import com.goodworkalan.notice.Notice;
+import com.goodworkalan.notice.Sink;
 
 /**
  * Default implementation of a log entry builder.
  * 
  * @author Alan Gutierrez
  */
-class CoreEntry extends Entry {
-    /** Cache of resource bundles. */
-    private final static ConcurrentMap<String, ResourceBundle> bundles = new ConcurrentHashMap<String, ResourceBundle>();
-    
+class CoreEntry extends Notice<Entry> implements Entry {
     /** The SLF4J logger. */
     private final org.slf4j.Logger logger;
 
     /** The level for this entry. */
     private final Level level;
 
-    /** The log message. */
-    private final String message;
-
-    /** The log entry variables. */
-    private final Map<String, Object> objects = new LinkedHashMap<String, Object>();
-    
     /** The log entry stop watches. */
     private final Map<String, StopWatch> stopWatches = new HashMap<String, StopWatch>();
 
@@ -50,10 +32,14 @@ class CoreEntry extends Entry {
      * @param name
      *            The name of the entry.
      */
-    public CoreEntry(org.slf4j.Logger logger, Level level, String name) {
+    public CoreEntry(org.slf4j.Logger logger, Level level, String code) {
+        super(logger.getName(), "prattle", now("level", level.toString()), now("code", code));
         this.logger = logger;
         this.level = level;
-        this.message = name;
+    }
+    
+    public Entry getSelf() {
+        return this;
     }
 
     /**
@@ -69,8 +55,7 @@ class CoreEntry extends Entry {
      *            The stop watch name.
      * @return This entry to chain variable recording method calls.
      */
-    @Override
-    public Entry start(String name) {
+    public CoreEntry start(String name) {
         StopWatch stopWatch = stopWatches.get(name);
         if (stopWatch == null) {
             stopWatch = new StopWatch();
@@ -90,92 +75,49 @@ class CoreEntry extends Entry {
      * @return This entry to chain variable recording method calls.
      * @see #start(String)
      */
-    @Override
-    public Entry stop(String name) {
+    public CoreEntry stop(String name) {
         stopWatches.get(name).stop();
         return this;
     }
-
-    public Entry put(String name, Object object) {
-        objects.put(name, flatten(object, SHALLOW));
-        return this;
-    }
-
-    public Entry put(String name, Object object, String...paths) {
-        objects.put(name, flatten(object, new HashSet<String>(Arrays.asList(paths))));
-        return this;
-    }
-
+    
     @Override
-    public Entry put(String name, Object object, boolean recurse) {
-        objects.put(name, flatten(object, recurse ? DEEP : SHALLOW));
-        return this;
+    protected String getMessageKey() {
+        String className = getContext();
+        int index = className.lastIndexOf('.');
+        if (index > -1) {
+            className = className.substring(index + 1);
+        }
+        return className + "/" + get("code");
     }
 
-    public Lister<Entry> list(String id) {
-        List<Object> list = new ArrayList<Object>();
-        objects.put(id, list);
-        return new CoreLister<Entry>(this, list);
-    }
-
-    public Mapper<Entry> map(String id) {
-        Map<String, Object> map = new LinkedHashMap<String, Object>();
-        objects.put(id, map);
-        return new CoreMapper<Entry>(this, map);
-    }
-
-    public void send() {
+    protected void sending() {
         for (Map.Entry<String, StopWatch> stopWatch : stopWatches.entrySet()) {
             put(stopWatch.getKey(), stopWatch.getValue());
         }
-        String name = logger.getName();
-        int lastDot = name.lastIndexOf(".");
-        String packageName = name.substring(0, lastDot);
-        ResourceBundle bundle = bundles.get(packageName);
-        if (bundle == null) {
-            try {
-                bundle = ResourceBundle.getBundle(packageName + ".prattle");
-            } catch (MissingResourceException e) {
-                bundle = ResourceBundle.getBundle("com.goodworkalan.prattle.missing");
-            }
-            bundles.put(packageName, bundle);
-        }
-        String className = name.substring(lastDot + 1);
-
-        Map<String, Object> map = new LinkedHashMap<String, Object>();
-        
-        Thread thread = Thread.currentThread();
-        
-        map.put("date", new Date().getTime());
-        map.put("logger", name);
-        map.put("name", message);
-        map.put("level", level.toString());
-        map.put("threadId", thread.getId());
-        map.put("threadName", thread.getPriority());
-
-        if (objects != null) {
-            map.put("vars", objects);
-        }
-
-        String msg = new Message(bundle, map, className + "/" + message, "name~%s").toString();
-        map.put("message", msg);
+    }
+    
+    protected void sent() {
+        String message = (String) get("message");
         switch (level) {
         case TRACE:
-            logger.trace(msg);
+            logger.trace(message);
             break;
         case DEBUG:
-            logger.debug(msg);
+            logger.debug(message);
             break;
         case INFO:
-            logger.info(msg);
+            logger.info(message);
             break;
         case WARN:
-            logger.warn(msg);
+            logger.warn(message);
             break;
         default:
-            logger.error(msg);
+            logger.error(message);
             break;
         }
-        Sink.getInstance().send(map);
+    }
+    
+    public void send() {
+        send(Sink.getInstance());
     }
 }

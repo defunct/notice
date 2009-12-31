@@ -1,6 +1,13 @@
 package com.goodworkalan.prattle;
 
+import com.goodworkalan.notice.Notice;
+
+
 public class StopWatch {
+    static {
+        Notice.setConverter(StopWatch.class, new StopWatchConverter());
+    }
+
     private int duration;
     
     private long start = -1;
