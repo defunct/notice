@@ -39,7 +39,7 @@ public class Clue extends Notice<Clue> {
      *            The string writer where the stack trace will be written.
      */
     private Clue(StringWriter stackTrace) {
-        super(Clue.class.getCanonicalName(), "exceptions", now("level", "EXCEPTION"), later("stackTrace", stackTrace));
+        super(Clue.class.getCanonicalName(), "exceptions", "missing", now("level", "EXCEPTION"), later("stackTrace", stackTrace));
         this.stackTrace = stackTrace;
     }
 
@@ -57,7 +57,7 @@ public class Clue extends Notice<Clue> {
      *            The error code.
      */
     Clue(Clue clue, Class<?> context, int code) {
-        super(clue, context.getCanonicalName(), now("code", code), now("uuid", UUID.randomUUID().toString()));
+        super(clue, context.getCanonicalName(), Integer.toString(code), now("code", code), now("uuid", UUID.randomUUID().toString()));
         stackTrace = clue.stackTrace;
     }
 
@@ -71,7 +71,7 @@ public class Clue extends Notice<Clue> {
      *            The thorwable.
      */
     Clue(Clue clue, Throwable throwable) {
-        super(clue, Cassandra.class.getCanonicalName(), now("code", 101), now("e", throwable), now("uuid", UUID.randomUUID().toString()));
+        super(clue, Cassandra.class.getCanonicalName(), "101", now("code", 101), now("e", throwable), now("uuid", UUID.randomUUID().toString()));
         stackTrace = clue.stackTrace;
     }
 
@@ -131,10 +131,5 @@ public class Clue extends Notice<Clue> {
     
     StringWriter getStackTrace() {
         return stackTrace;
-    }
-    
-    @Override
-    protected String getMessageKey() {
-        return ((Integer) get("code")).toString();
     }
 }

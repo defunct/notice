@@ -61,10 +61,6 @@ public  class CassandraException extends RuntimeException implements Noticeable<
         this.clue = new Clue(clue, getClass(), code);
     }
 
-    public Date getDate() {
-        return new Date((Long) get("date"));
-    }
-
     /**
      * Get the error code.
      * 
@@ -73,15 +69,39 @@ public  class CassandraException extends RuntimeException implements Noticeable<
     public int getCode() {
         return code;
     }
-    
+
+    /**
+     * The time stamp for the diagnostic information.
+     * 
+     * @return The time stamp.
+     */
+    public Date getDate() {
+        return new Date((Long) get("date"));
+    }
+
+    /**
+     * Get the UUID for the exception.
+     * 
+     * @return The UUID for the exception.
+     */
     public String getUuid() {
         return (String) get("uuid");
     }
 
+    /**
+     * Get the id of the thread that created the exception.
+     * 
+     * @return The thread id.
+     */
     public long getThreadId() {
         return (Long) get("threadId");
     }
-    
+
+    /**
+     * Get the name of the thread that created the exception.
+     * 
+     * @return The thread name.
+     */
     public String getThreadName() {
         return (String) get("threadName");
     }
