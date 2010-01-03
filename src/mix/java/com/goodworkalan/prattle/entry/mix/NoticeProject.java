@@ -13,6 +13,7 @@ public class NoticeProject extends ProjectModule {
                 .produces(new Artifact("com.goodworkalan/notice/0.1"))
                 .main()
                     .depends()
+                        .artifact(new Artifact("com.github.bigeasy.notice/notice-message/0.1"))
                         .artifact(new Artifact("com.goodworkalan/furnish/0.1"))
                         .artifact(new Artifact("com.goodworkalan/reflective/0.1"))
                         .artifact(new Artifact("com.goodworkalan/madlib/0.1"))
