@@ -8,7 +8,31 @@ import java.util.ResourceBundle;
 import java.util.concurrent.ConcurrentMap;
 
 public class Message {
-    /** Cache of resource bundles. */
+    /**
+     * Cache of resource bundles.
+     * <p>
+     * This is my clever idea to get around PermGen and ClassLoader agony. If
+     * the cache was a static member of Message, I would not be able to use it
+     * in a container and also use it in the applications contained by the
+     * container. When the container reloads and application, the bundles for
+     * that application get cached. A new version of the bundle in the reloaded
+     * application would be ignored.
+     * <p>
+     * Thus, this idea, have another class provide the bundle hash, it can be
+     * kept in a static member in the right place. That way, anyone can use this
+     * class, it is so simple it will stabilize, and then version annoyances
+     * will be few and far between, and the container and applications can
+     * share.
+     * <p>
+     * This can also apply to notice logging, but it doesn't have for any
+     * application I'm currently developing. There is no need to implement this
+     * in notice for Mix, but the new Danger project can be used everywhere
+     * where I once used Cassandra.
+     * <p>
+     * I'm finding that I am recreating the same formatted message exception
+     * class over and over, one of two, contextual messages, for exceptions that
+     * get reused, and coded messages, for specific exceptions.
+     */
     private final ConcurrentMap<String, ResourceBundle> bundles;
     
     /**
