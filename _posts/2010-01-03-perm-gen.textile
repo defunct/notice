@@ -1,0 +1,27 @@
+---
+layout: default
+title: PermGen Error
+---
+
+h1. {{ page.title }}
+
+p(meta). January 3rd, 2010
+
+Cache of resource bundles.
+ 
+This is my clever idea to get around PermGen and ClassLoader agony. If the cache was a static member of Message, I would not be able to use it in a container and also use it in the applications contained by the container. When the container reloads and application, the bundles for that application get cached. A new version of the bundle in the reloaded application would be ignored.
+
+Thus, this idea, have another class provide the bundle hash, it can be kept in a static member in the right place. That way, anyone can use this class, it is so simple it will stabilize, and then version annoyances will be few and far between, and the container and applications can share.
+
+This can also apply to notice logging, but it doesn't have for any application I'm currently developing. There is no need to implement this in notice for Mix, but the new Danger project can be used everywhere where I once used Cassandra.
+
+I'm finding that I am recreating the same formatted message exception class over and over, one of two, contextual messages, for exceptions that get reused, and coded messages, for specific exceptions.
+
+This could be used to deal with converters as well. Loggers get created by a singleton that a package creates, that singleton provides a cache for converters.
+
+<pre>
+public static LoggerFactory LOGGERS = new LoggerFactory(); // Caches be here.
+public static Logger logger = TwitterDb.LOGGERS.getLogger(Hello.class);
+
+Entry info = logger.info("foo");
+</pre>
