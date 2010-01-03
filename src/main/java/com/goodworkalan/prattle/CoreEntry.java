@@ -33,7 +33,7 @@ class CoreEntry extends Notice<Entry> implements Entry {
      *            The name of the entry.
      */
     public CoreEntry(org.slf4j.Logger logger, Level level, String code) {
-        super(logger.getName(), "prattle", now("level", level.toString()), now("code", code));
+        super(logger.getName(), "prattle", getMessageKey(logger.getName(), code), now("level", level.toString()), now("code", code));
         this.logger = logger;
         this.level = level;
     }
@@ -80,14 +80,12 @@ class CoreEntry extends Notice<Entry> implements Entry {
         return this;
     }
     
-    @Override
-    protected String getMessageKey() {
-        String className = getContext();
+    private static String getMessageKey(String className, String code) {
         int index = className.lastIndexOf('.');
         if (index > -1) {
             className = className.substring(index + 1);
         }
-        return className + "/" + get("code");
+        return className + "/" + code;
     }
 
     protected void sending() {
