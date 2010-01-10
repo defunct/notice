@@ -5,9 +5,27 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * A converter that converts an array in to a <code>List</code>.
+ * 
+ * @author ALan Gutierrez
+ */
 public class ArrayConverter implements Converter {
+    /** The singleton instance of the array converter. */
     public final static Converter INSTANCE = new ArrayConverter();
 
+    /**
+     * Convert the given object appending an array wildcard to the given path.
+     * The given set of included paths is forwarded to converters that generate
+     * hashes.
+     * 
+     * @param object
+     *            The array to convert.
+     * @param path
+     *            The object path in the object graph.
+     * @param includes
+     *            The set of included paths.
+     */
     public Object convert(Object object, StringBuilder path, Set<String> includes) {
         Object[] original = (Object[]) object;
         List<Object> copy = new ArrayList<Object>();
@@ -25,6 +43,12 @@ public class ArrayConverter implements Converter {
         return Collections.unmodifiableList(copy);
     }
 
+    /**
+     * Return true indicating that this is a converter for containers of other
+     * objects.
+     * 
+     * @return True to indicate that this is a container converter.
+     */
     public boolean isContainer() {
         return true;
     }
