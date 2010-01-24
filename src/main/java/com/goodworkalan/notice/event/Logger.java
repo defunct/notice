@@ -1,4 +1,4 @@
-package com.goodworkalan.prattle;
+package com.goodworkalan.notice.event;
 
 public class Logger {
     private final org.slf4j.Logger logger;

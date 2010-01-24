@@ -1,4 +1,4 @@
-package com.goodworkalan.prattle;
+package com.goodworkalan.notice.event;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package com.goodworkalan.prattle.api;
+package com.goodworkalan.notice.event.api;
 
 import java.util.Map;
 

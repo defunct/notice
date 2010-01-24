@@ -1,4 +1,4 @@
-package com.goodworkalan.prattle;
+package com.goodworkalan.notice.event;
 
 import com.goodworkalan.notice.Notice;
 

@@ -1,12 +1,12 @@
-package com.goodworkalan.prattle.api;
+package com.goodworkalan.notice.event.api;
 
 import java.net.URI;
 
 import org.testng.annotations.Test;
 
 import com.goodworkalan.notice.Sink;
-import com.goodworkalan.prattle.Logger;
-import com.goodworkalan.prattle.LoggerFactory;
+import com.goodworkalan.notice.event.Logger;
+import com.goodworkalan.notice.event.LoggerFactory;
 
 public class LoggerTest
 {
