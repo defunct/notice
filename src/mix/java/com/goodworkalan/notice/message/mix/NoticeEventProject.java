@@ -1,16 +1,16 @@
-package com.goodworkalan.prattle.mix;
+package com.goodworkalan.notice.event.mix;
 
 import com.goodworkalan.go.go.Artifact;
 import com.goodworkalan.mix.ProjectModule;
 import com.goodworkalan.mix.builder.Builder;
 import com.goodworkalan.mix.builder.JavaProject;
 
-public class PrattleProject extends ProjectModule {
+public class NoticeEventProject extends ProjectModule {
     @Override
     public void build(Builder builder) {
         builder
             .cookbook(JavaProject.class)
-                .produces(new Artifact("com.goodworkalan/prattle/0.1.1"))
+                .produces(new Artifact("com.goodworkalan/notice-event/0.1.2"))
                 .main()
                     .depends()
                         .artifact(new Artifact("com.goodworkalan/furnish/0.1"))
