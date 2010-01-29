@@ -5,8 +5,6 @@ import static org.testng.Assert.assertTrue;
 
 import org.testng.annotations.Test;
 
-import com.goodworkalan.notice.message.Message;
-
 /**
  * Test for the CassandraException class.
  * 
@@ -18,8 +16,8 @@ public class MessageTest {
      */
     @Test
     public void validJavaIdentifier() {
-        assertTrue(Message.checkJavaIdentifier("a"));
-        assertTrue(Message.checkJavaIdentifier("ab"));
+        assertTrue(Indexes.checkJavaIdentifier("a"));
+        assertTrue(Indexes.checkJavaIdentifier("ab"));
     }
 
     /**
@@ -27,9 +25,9 @@ public class MessageTest {
      */
     @Test
     public void invalidJavaIdentifier() {
-        assertFalse(Message.checkJavaIdentifier(""));
-        assertFalse(Message.checkJavaIdentifier("1"));
-        assertFalse(Message.checkJavaIdentifier("a!"));
+        assertFalse(Indexes.checkJavaIdentifier(""));
+        assertFalse(Indexes.checkJavaIdentifier("1"));
+        assertFalse(Indexes.checkJavaIdentifier("a!"));
     }
 
     /**
@@ -37,7 +35,7 @@ public class MessageTest {
      */
     @Test(expectedExceptions = NullPointerException.class)
     public void nullJavaIdentifier() {
-        Message.checkJavaIdentifier(null);
+        Indexes.checkJavaIdentifier(null);
     }
 
     /**
@@ -45,7 +43,7 @@ public class MessageTest {
      */
     @Test
     public void isInteger() {
-        assertTrue(Message.isInteger("10"));
-        assertFalse(Message.isInteger("!"));
+        assertTrue(Indexes.isInteger("10"));
+        assertFalse(Indexes.isInteger("!"));
     }
 }
