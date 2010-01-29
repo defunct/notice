@@ -1,4 +1,7 @@
-package com.goodworkalan.cassandra;
+package com.goodworkalan.notice.exception.api;
+
+import com.goodworkalan.cassandra.CassandraException;
+import com.goodworkalan.cassandra.Clue;
 
 /**
  * Test exception class for a message with no bundle.

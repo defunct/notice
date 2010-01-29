@@ -57,7 +57,7 @@ public class Clue extends Notice<Clue> {
      *            The error code.
      */
     Clue(Clue clue, Class<?> context, int code) {
-        super(clue, context.getCanonicalName(), Integer.toString(code), now("code", code), now("uuid", UUID.randomUUID().toString()));
+        super(clue, context.getCanonicalName() == null ? context.getName() : context.getCanonicalName(), Integer.toString(code), now("code", code), now("uuid", UUID.randomUUID().toString()));
         stackTrace = clue.stackTrace;
     }
 

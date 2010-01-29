@@ -1,4 +1,4 @@
-package com.goodworkalan.cassandra;
+package com.goodworkalan.notice.exception.api;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNull;
@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.testng.annotations.Test;
+
+import com.goodworkalan.cassandra.CassandraException;
+import com.goodworkalan.cassandra.Clue;
 
 public class CassandraExceptionTest {
     /**
@@ -72,64 +75,14 @@ public class CassandraExceptionTest {
         assertNull(e.get("vars.six.seven"));
 
         assertEquals(((Map<?, ?>) e.get("vars.four.six")).get("seven"),  7);
-        assertNull(e.get("vars.four.six.seven"));
+        assertEquals(e.get("vars.four.six.seven"), 7);
         assertNull(e.get("vars.four.six.eight"));
         assertNull(e.get("vars.four.six.eight.nine"));
 
-        assertEquals(e.get("two.1.0"), "b");
-        assertEquals(((List<?>) e.get("two.1")).get(0),  "b");
-        assertNull(e.get("vars.two.1.0"));
+        assertEquals(e.get("vars.two.1.0"), "b");
+        assertEquals(((List<?>) e.get("vars.two.1")).get(0),  "b");
         assertNull(e.get("vars.two.2"));
         assertNull(e.get("vars.two.1.10"));
-    }
-
-    /**
-     * Test putting an object with an invalid name into an exception report.
-     */
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void badExceptionPutName() {
-        new TestException(101).put("!", 1);
-    }
-
-    /**
-     * Test putting a list with invalid name into an exception report.
-     */
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void badExceptionListName() {
-        new TestException(101).list("!");
-    }
-    
-    /**
-     * Test putting a map with an invalid name into an exception report.
-     */
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void badExceptionMapName() {
-        new TestException(101).map("!");
-    }
-    
-
-    /**
-     * Test putting an object with an invalid name into a map.
-     */
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void badMapPutName() {
-        new TestException(101).map("map").put("!", 1);
-    }
-
-    /**
-     * Test putting a list with invalid name into a map.
-     */
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void badMapListName() {
-        new TestException(101).map("map").list("!");
-    }
-    
-    /**
-     * Test putting a map with an invalid name into a map.
-     */
-    @Test(expectedExceptions = IllegalArgumentException.class)
-    public void badMapMapName() {
-        new TestException(101).map("map").map("!");
     }
 
     /**
