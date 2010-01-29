@@ -16,7 +16,7 @@ import com.goodworkalan.notice.Sink;
  * 
  * @author Alan Gutierrez
  */
-public  class CassandraException extends RuntimeException implements Noticeable<CassandraException> {
+public  class NoticeException extends RuntimeException implements Noticeable<NoticeException> {
     /** Serial version id. */
     private static final long serialVersionUID = 1L;
 
@@ -28,7 +28,7 @@ public  class CassandraException extends RuntimeException implements Noticeable<
 
     // Register the CassandraException converter. 
     static {
-        Notice.setConverter(CassandraException.class, CassandraExceptionConverter.INSTANCE);
+        Notice.setConverter(NoticeException.class, NoticeExceptionConverter.INSTANCE);
     }
     
     /**
@@ -40,7 +40,7 @@ public  class CassandraException extends RuntimeException implements Noticeable<
      * @param clue
      *            The initial structured error report.
      */
-    public CassandraException(int code, Clue clue) {
+    public NoticeException(int code, Clue clue) {
         this(code, clue, null);
     }
 
@@ -55,7 +55,7 @@ public  class CassandraException extends RuntimeException implements Noticeable<
      * @param cause
      *            The cause.
      */
-    public CassandraException(int code, Clue clue, Throwable cause) {
+    public NoticeException(int code, Clue clue, Throwable cause) {
         super(null, cause);
         this.code = code;
         this.clue = new Clue(clue, getClass(), code);
@@ -117,17 +117,17 @@ public  class CassandraException extends RuntimeException implements Noticeable<
      * @return This exception to allow for chained invocation of report builder
      *         methods.
      */
-    public CassandraException put(String name, Object object) {
+    public NoticeException put(String name, Object object) {
         clue.put(name, object);
         return this;
     }
     
-    public CassandraException put(String name, Object object, boolean recurse) {
+    public NoticeException put(String name, Object object, boolean recurse) {
         clue.put(name, object, recurse);
         return this;
     }
 
-    public CassandraException put(String name, Object object, String... paths) {
+    public NoticeException put(String name, Object object, String... paths) {
         clue.put(name, object, paths);
         return this;
     }
@@ -140,8 +140,8 @@ public  class CassandraException extends RuntimeException implements Noticeable<
      *            The list name.
      * @return A list builder to specify the list contents.
      */
-    public Lister<CassandraException> list(String name) {
-        return new ListerLister<CassandraException>(this, clue.list(name));
+    public Lister<NoticeException> list(String name) {
+        return new ListerLister<NoticeException>(this, clue.list(name));
     }
 
     /**
@@ -152,8 +152,8 @@ public  class CassandraException extends RuntimeException implements Noticeable<
      *            The map name.
      * @return A map builder to specify the map contents.
      */
-    public Mapper<CassandraException> map(String name) {
-        return new MapperMapper<CassandraException>(this, clue.map(name));
+    public Mapper<NoticeException> map(String name) {
+        return new MapperMapper<NoticeException>(this, clue.map(name));
     }
     
     /**

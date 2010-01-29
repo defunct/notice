@@ -1,6 +1,6 @@
 package com.goodworkalan.notice.exception.api;
 
-import com.goodworkalan.cassandra.CassandraException;
+import com.goodworkalan.cassandra.NoticeException;
 import com.goodworkalan.cassandra.Clue;
 
 /**
@@ -8,7 +8,7 @@ import com.goodworkalan.cassandra.Clue;
  * 
  * @author Alan Gutierrez
  */
-public class BundleMissing extends CassandraException {
+public class BundleMissing extends NoticeException {
     /** Serial version id. */
     private static final long serialVersionUID = 1L;
 

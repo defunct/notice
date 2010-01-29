@@ -71,7 +71,7 @@ public class Clue extends Notice<Clue> {
      *            The thorwable.
      */
     Clue(Clue clue, Throwable throwable) {
-        super(clue, Cassandra.class.getCanonicalName(), "101", now("code", 101), now("e", throwable), now("uuid", UUID.randomUUID().toString()));
+        super(clue, Exceptions.class.getCanonicalName(), "101", now("code", 101), now("e", throwable), now("uuid", UUID.randomUUID().toString()));
         stackTrace = clue.stackTrace;
     }
 

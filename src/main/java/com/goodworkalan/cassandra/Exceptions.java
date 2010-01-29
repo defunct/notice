@@ -4,7 +4,7 @@ import java.io.PrintWriter;
 
 import com.goodworkalan.notice.Sink;
 
-public class Cassandra {
+public class Exceptions {
     public static void send(Sink sink, Throwable throwable) { 
         send(sink, throwable, new Clue());
     }

@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 import org.testng.annotations.Test;
 
-import com.goodworkalan.cassandra.CassandraException;
+import com.goodworkalan.cassandra.NoticeException;
 import com.goodworkalan.cassandra.Clue;
 
 import static org.testng.Assert.*;
@@ -13,7 +13,7 @@ import static org.testng.Assert.*;
  *
  * @author Alan Gutierrez
  */
-public class ReportTest {
+public class ClueTest {
     /**
      * Test mark and clear.
      */
@@ -41,7 +41,7 @@ public class ReportTest {
         report.clear(mark2);
         report.clear(mark3);
         report.put("g", 5);
-        CassandraException e = new TestException(101, report);
+        NoticeException e = new TestException(101, report);
         assertEquals(e.get("vars.a"), 1);
         assertEquals(e.get("vars.b"), Arrays.asList(1, 2, 3));
         assertEquals(e.get("vars.c.d"), 1);

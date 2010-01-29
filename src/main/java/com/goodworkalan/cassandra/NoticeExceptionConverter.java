@@ -6,14 +6,14 @@ import java.util.Set;
 import com.goodworkalan.notice.Notice;
 import com.goodworkalan.notice.ThrowableConverter;
 
-public class CassandraExceptionConverter extends ThrowableConverter {
+public class NoticeExceptionConverter extends ThrowableConverter {
     /**
      * Add the variables to the exception.
      */
     @Override
     protected Map<String, Object> modifiable(Object object, StringBuilder path, Set<String> includes) {
         Map<String, Object> map = super.modifiable(object, path, includes);
-        CassandraException e = (CassandraException) object;
+        NoticeException e = (NoticeException) object;
         map.put("vars", Notice.flatten(e.get("vars"), true));
         return map;
     }

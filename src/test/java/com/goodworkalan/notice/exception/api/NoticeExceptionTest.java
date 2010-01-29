@@ -10,17 +10,17 @@ import java.util.Map;
 
 import org.testng.annotations.Test;
 
-import com.goodworkalan.cassandra.CassandraException;
+import com.goodworkalan.cassandra.NoticeException;
 import com.goodworkalan.cassandra.Clue;
 
-public class CassandraExceptionTest {
+public class NoticeExceptionTest {
     /**
      * Test the wrapper constructor.
      */
     @Test
     public void wrapperConstructor() {
         NullPointerException cause = new NullPointerException();
-        CassandraException e = new TestException(101, cause);
+        NoticeException e = new TestException(101, cause);
         assertSame(e.getCause(), cause);
     }
 
@@ -29,7 +29,7 @@ public class CassandraExceptionTest {
      */
     @Test
     public void report() {
-        CassandraException e = new TestException(100)
+        NoticeException e = new TestException(100)
             .put("one", 1)
             .list("two")
                 .add("a")
@@ -99,7 +99,7 @@ public class CassandraExceptionTest {
      */
     @Test
     public void noCanonicalClassName() {
-        assertEquals(new CassandraException(101, new Clue()) {
+        assertEquals(new NoticeException(101, new Clue()) {
             private static final long serialVersionUID = 1L;
         }.getMessage(), "101");
     }
