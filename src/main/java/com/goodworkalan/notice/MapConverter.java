@@ -26,7 +26,7 @@ public class MapConverter implements Converter {
                 Converter converter = Notice.getConverter(value.getClass());
                 if (!converter.isContainer() || includes.isEmpty() || includes.contains(path.toString())) {
                     path.append(".");
-                    copy.put(name, converter.convert(object, path, includes));
+                    copy.put(name, converter.convert(value, path, includes));
                 }
             }
             path.setLength(index);
