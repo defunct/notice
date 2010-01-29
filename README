@@ -1,6 +1,18 @@
-CASSANDRA
+NOTICE EXCEPTION
 
 A base class for meaningful exceptions.
+
+    Source: http://github.com/bigeasy/notice/tree/master
+    Wiki: http://wiki.github.com/notice/prattle
+
+    Issues: http://bigeasy.lighthouseapp.com/projects/43663-notice
+
+    License: The MIT License
+
+    Contact: alan@blogometer.com
+
+    Dependencies:
+        Reflective:     http://github.com/bigeasy/reflective
 
 PURPOSE
 
