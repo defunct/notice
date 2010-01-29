@@ -1,5 +1,5 @@
 <projectDescription>
-  <name>cassandra</name>
+  <name>notice-exception</name>
   <comment>Verbose exceptions.</comment>
   <projects/>
   <buildSpec>
