@@ -5,12 +5,12 @@ import com.goodworkalan.mix.ProjectModule;
 import com.goodworkalan.mix.builder.Builder;
 import com.goodworkalan.mix.builder.JavaProject;
 
-public class CassandraProject extends ProjectModule {
+public class NoticeExceptionProject extends ProjectModule {
     @Override
     public void build(Builder builder) {
         builder
             .cookbook(JavaProject.class)
-                .produces(new Artifact("com.goodworkalan/cassandra/0.7.1"))
+                .produces(new Artifact("com.goodworkalan/notice-exception/0.7.2"))
                 .main()
                     .depends()
                         .artifact(new Artifact("com.goodworkalan/notice/0.1"))
