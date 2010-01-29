@@ -417,6 +417,10 @@ public abstract class Notice<Self> implements Noticeable<Self> {
         sent();
     }
     
+    public String toString() {
+        return message.toString();
+    }
+    
     protected final static class Property {
         private final String name;
         
