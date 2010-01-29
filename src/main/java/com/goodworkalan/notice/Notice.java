@@ -20,6 +20,7 @@ import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import com.goodworkalan.notice.message.Indexes;
 import com.goodworkalan.notice.message.Message;
 
 /**
@@ -360,6 +361,9 @@ public abstract class Notice<Self> implements Noticeable<Self> {
      * @see com.goodworkalan.prattle.entry.MetaEntry#map(java.lang.String)
      */
     public Mapper<Self> map(String name) {
+        if (!Indexes.checkJavaIdentifier(name)) {
+            throw new IllegalArgumentException();
+        }
         added(name);
         Map<String, Object> map = new LinkedHashMap<String, Object>();
         vars.put(name, Collections.unmodifiableMap(map));
