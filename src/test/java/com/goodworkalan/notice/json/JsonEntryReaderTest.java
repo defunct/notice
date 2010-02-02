@@ -1,4 +1,4 @@
-package com.goodworkalan.prattle.json;
+package com.goodworkalan.notice.json;
 
 import java.io.File;
 import java.text.ParseException;
@@ -8,6 +8,9 @@ import java.util.Date;
 import static org.testng.Assert.*;
 
 import org.testng.annotations.Test;
+
+import com.goodworkalan.notice.json.JsonEntry;
+import com.goodworkalan.notice.json.JsonEntryReader;
 
 public class JsonEntryReaderTest {
     @Test

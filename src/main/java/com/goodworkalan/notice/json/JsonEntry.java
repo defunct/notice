@@ -1,4 +1,4 @@
-package com.goodworkalan.prattle.json;
+package com.goodworkalan.notice.json;
 
 import java.util.Date;
 
