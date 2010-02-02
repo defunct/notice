@@ -9,8 +9,8 @@ import java.util.Map;
 import org.json.simple.JSONValue;
 
 import com.goodworkalan.madlib.VariableProperties;
-import com.goodworkalan.prattle.PrattleException;
-import com.goodworkalan.prattle.Recorder;
+import com.goodworkalan.notice.NoticeException;
+import com.goodworkalan.notice.Recorder;
 import com.goodworkalan.prattle.rotate.Rotator;
 
 /**
@@ -30,19 +30,17 @@ public class JsonRecorder implements Recorder {
     
     public JsonRecorder() {
     }
-    
-
 
     public void initialize(String prefix, VariableProperties configuration) {
         file = configuration.getProperty(prefix + "file", null);
         if (file == null) {
-            throw new PrattleException(0);
+            throw new NoticeException(0);
         }
         rotator = new Rotator(configuration, prefix);
         try {
             writer = new BufferedWriter(new FileWriter(file + rotator.getSuffix(), true));
         } catch (IOException e) {
-            throw new PrattleException(0, e);
+            throw new NoticeException(0, e);
         }
     }
     
@@ -53,13 +51,13 @@ public class JsonRecorder implements Recorder {
             try {
                 writer.close();
             } catch (IOException e) {
-                throw new PrattleException(0, e);
+                throw new NoticeException(0, e);
             }
 
             try {
                 writer = new BufferedWriter(new FileWriter(file + rotator.getSuffix(), true));
             } catch (IOException e) {
-                throw new PrattleException(0, e);
+                throw new NoticeException(0, e);
             }
         }
 
@@ -67,8 +65,8 @@ public class JsonRecorder implements Recorder {
 
         builder.append(map.get("date")).append(" ");
         
-        builder.append(map.get("logger")).append(" ");
-        builder.append(map.get("name")).append(" ");
+        builder.append(map.get("context")).append(" ");
+        builder.append(map.get("code")).append(" ");
         builder.append(map.get("level")).append(" ");
         builder.append(map.get("threadId")).append(" ");
         
@@ -77,7 +75,7 @@ public class JsonRecorder implements Recorder {
         try {
             writer.append(builder);
         } catch (IOException e) {
-            throw new PrattleException(0, e);
+            throw new NoticeException(0, e);
         }
     }
     
@@ -85,7 +83,7 @@ public class JsonRecorder implements Recorder {
         try {
             writer.flush();
         } catch (IOException e) {
-            throw new PrattleException(0, e);
+            throw new NoticeException(0, e);
         }
     }
 
@@ -93,7 +91,7 @@ public class JsonRecorder implements Recorder {
         try {
             writer.close();
         } catch (IOException e) {
-            throw new PrattleException(0, e);
+            throw new NoticeException(0, e);
         }
     }
 }

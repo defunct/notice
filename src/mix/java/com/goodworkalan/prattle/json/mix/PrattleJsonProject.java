@@ -10,11 +10,11 @@ public class PrattleJsonProject extends ProjectModule {
     public void build(Builder builder) {
         builder
             .cookbook(JavaProject.class)
-                .produces(new Artifact("com.goodworkalan/prattle-json/0.1"))
+                .produces(new Artifact("com.goodworkalan/prattle-json/0.1.1"))
                 .main()
                     .depends()
-                        .artifact(new Artifact("com.goodworkalan/prattle/0.1"))
-                        .artifact(new Artifact("com.goodworkalan/prattle-rotate/0.1"))
+                        .artifact(new Artifact("com.goodworkalan/prattle/0.1.1"))
+                        .artifact(new Artifact("com.goodworkalan/prattle-rotate/0.1.1"))
                         .artifact(new Artifact("com.googlecode.json-simple/json-simple/1.1"))
                         .end()
                     .end()

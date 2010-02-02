@@ -9,9 +9,9 @@ import org.json.simple.parser.ParseException;
 public class JsonEntry {
     private final static int DATE = 0;
     
-    private final static int LOGGER = 1;
+    private final static int CONTEXT = 1;
     
-    private final static int NAME = 2;
+    private final static int CODE = 2;
     
     private final static int LEVEL = 3;
     
@@ -29,12 +29,12 @@ public class JsonEntry {
         return new Date(Long.parseLong(line[DATE]));
     }
     
-    public String getLogger() {
-        return line[LOGGER];
+    public String getContext() {
+        return line[CONTEXT];
     }
     
-    public String getName() {
-        return line[NAME];
+    public String getCode() {
+        return line[CODE];
     }
     
     public String getLevel() {
