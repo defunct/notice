@@ -5,18 +5,15 @@ import com.goodworkalan.mix.ProjectModule;
 import com.goodworkalan.mix.builder.Builder;
 import com.goodworkalan.mix.builder.JavaProject;
 
-public class PrattleRotateProject extends ProjectModule {
+public class NoticeRotateProject extends ProjectModule {
     @Override
     public void build(Builder builder) {
         builder
             .cookbook(JavaProject.class)
-                .produces(new Artifact("com.goodworkalan/prattle-rotate/0.1.1"))
+                .produces(new Artifact("com.goodworkalan/notice-rotate/0.1"))
                 .main()
                     .depends()
-                        .artifact(new Artifact("com.goodworkalan/furnish/0.1"))
-                        .artifact(new Artifact("com.goodworkalan/cassandra/0.7"))
-                        .artifact(new Artifact("com.goodworkalan/reflective/0.1"))
-                        .artifact(new Artifact("com.goodworkalan/madlib/0.1"))
+                        .artifact(new Artifact("com.goodworkalan/notice/0.1"))
                         .artifact(new Artifact("org.slf4j/slf4j-api/1.4.2"))
                         .end()
                     .end()

@@ -1,4 +1,4 @@
-package com.goodworkalan.prattle.rotate;
+package com.goodworkalan.notice.rotate;
 
 public enum RotateType {
     HOURLY, DAILY, WEEKLY, NEVER

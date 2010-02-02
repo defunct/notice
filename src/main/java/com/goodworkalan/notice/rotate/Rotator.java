@@ -1,4 +1,4 @@
-package com.goodworkalan.prattle.rotate;
+package com.goodworkalan.notice.rotate;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
