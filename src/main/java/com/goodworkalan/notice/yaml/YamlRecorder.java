@@ -1,4 +1,4 @@
-package com.goodworkalan.prattle.yaml;
+package com.goodworkalan.notice.yaml;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

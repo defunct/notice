@@ -1,4 +1,4 @@
-package com.goodworkalan.prattle.model;
+package com.goodworkalan.notice.model;
 
 import java.io.Serializable;
 
