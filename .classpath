@@ -44,16 +44,6 @@
 			<attribute name="javadoc_location" value="jar:file:/Users/alan/.m2/repository/com/goodworkalan/infuse-guice/0.1/infuse-guice-0.1-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="var" path="M2_REPO/com/goodworkalan/addendum-jpa/0.1/addendum-jpa-0.1.jar" sourcepath="M2_REPO/com/goodworkalan/addendum-jpa/0.1/addendum-jpa-0.1-sources.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:file:/Users/alan/.m2/repository/com/goodworkalan/addendum-jpa/0.1/addendum-jpa-0.1-javadoc.jar!/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="var" path="M2_REPO/com/goodworkalan/addendum-mysql/0.1/addendum-mysql-0.1.jar" sourcepath="M2_REPO/com/goodworkalan/addendum-mysql/0.1/addendum-mysql-0.1-sources.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:file:/Users/alan/.m2/repository/com/goodworkalan/addendum-mysql/0.1/addendum-mysql-0.1-javadoc.jar!/"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="var" path="M2_REPO/log4j/log4j/1.2.13/log4j-1.2.13.jar" sourcepath="M2_REPO/log4j/log4j/1.2.13/log4j-1.2.13-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-api/1.4.2/slf4j-api-1.4.2.jar" sourcepath="M2_REPO/org/slf4j/slf4j-api/1.4.2/slf4j-api-1.4.2-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-log4j12/1.4.2/slf4j-log4j12-1.4.2.jar" sourcepath="M2_REPO/org/slf4j/slf4j-log4j12/1.4.2/slf4j-log4j12-1.4.2-sources.jar"/>
@@ -131,11 +121,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="var" path="M2_REPO/com/googlecode/json-simple/json-simple/1.1/json-simple-1.1.jar" sourcepath="M2_REPO/com/googlecode/json-simple/json-simple/1.1/json-simple-1.1-sources.jar"/>
-	<classpathentry kind="var" path="M2_REPO/com/goodworkalan/addendum/0.7/addendum-0.7.jar" sourcepath="M2_REPO/com/goodworkalan/addendum/0.7/addendum-0.7-sources.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:file:/Users/alan/.m2/repository/com/goodworkalan/addendum/0.7/addendum-0.7-javadoc.jar!/"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="var" path="M2_REPO/antlr/antlr/2.7.6/antlr-2.7.6.jar" sourcepath="M2_REPO/antlr/antlr/2.7.6/antlr-2.7.6-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/commons-collections/commons-collections/3.1/commons-collections-3.1.jar" sourcepath="M2_REPO/commons-collections/commons-collections/3.1/commons-collections-3.1-sources.jar">
 		<attributes>
@@ -176,5 +161,8 @@
 	</classpathentry>
 	<classpathentry combineaccessrules="false" kind="src" path="/notice"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/notice-json"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/addendum"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/addendum-mysql"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/addendum-jpa"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
