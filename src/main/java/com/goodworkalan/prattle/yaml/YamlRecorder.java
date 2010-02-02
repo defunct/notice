@@ -12,9 +12,9 @@ import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
 
 import com.goodworkalan.madlib.VariableProperties;
-import com.goodworkalan.prattle.PrattleException;
-import com.goodworkalan.prattle.Recorder;
-import com.goodworkalan.prattle.rotate.Rotator;
+import com.goodworkalan.notice.NoticeException;
+import com.goodworkalan.notice.Recorder;
+import com.goodworkalan.notice.rotate.Rotator;
 
 /**
  * Writes a Prattle message to a rotating YAML log file.
@@ -52,7 +52,7 @@ public class YamlRecorder implements Recorder {
     public void initialize(String prefix, VariableProperties configuration) {
         file = configuration.getProperty(prefix + "file", null);
         if (file == null) {
-            throw new PrattleException(0);
+            throw new NoticeException(0);
         }
         rotator = new Rotator(configuration, prefix);
         DumperOptions options = new DumperOptions();
@@ -63,7 +63,7 @@ public class YamlRecorder implements Recorder {
         try {
             writer = new BufferedWriter(new FileWriter(file + rotator.getSuffix(), true));
         } catch (IOException e) {
-            throw new PrattleException(0, e);
+            throw new NoticeException(0, e);
         }
     }
 
@@ -80,13 +80,13 @@ public class YamlRecorder implements Recorder {
             try {
                 writer.close();
             } catch (IOException e) {
-                throw new PrattleException(0, e);
+                throw new NoticeException(0, e);
             }
 
             try {
                 writer = new BufferedWriter(new FileWriter(file + rotator.getSuffix(), true));
             } catch (IOException e) {
-                throw new PrattleException(0, e);
+                throw new NoticeException(0, e);
             }
         }
         
@@ -97,7 +97,7 @@ public class YamlRecorder implements Recorder {
         try {
             writer.flush();
         } catch (IOException e) {
-            throw new PrattleException(0, e);
+            throw new NoticeException(0, e);
         }
     }
     
