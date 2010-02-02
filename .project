@@ -1,5 +1,5 @@
 <projectDescription>
-  <name>prattle-yaml</name>
+  <name>notice-yaml</name>
   <comment>Logging with variable arguments output as YAML.</comment>
   <projects/>
   <buildSpec>
