@@ -7,10 +7,10 @@ import javax.persistence.EntityManager;
 
 import org.json.simple.JSONValue;
 
+import com.goodworkalan.notice.Notice;
 import com.goodworkalan.paste.Actors;
 import com.goodworkalan.paste.infuse.InfusionActor;
 import com.goodworkalan.paste.stream.Output;
-import com.goodworkalan.prattle.Entry;
 import com.goodworkalan.prattle.viewer.model.Column;
 import com.google.inject.Inject;
 
@@ -42,7 +42,7 @@ public class ColumnAdd {
         em.flush();
         Map<String, Object> response = new HashMap<String, Object>();
         response.put("status", "success");
-        response.put("column", Entry.flatten(column));
+        response.put("column", Notice.flatten(column));
         return JSONValue.toJSONString(response);
     }
 }

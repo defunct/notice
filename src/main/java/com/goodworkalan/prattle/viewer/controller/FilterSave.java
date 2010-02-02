@@ -7,10 +7,10 @@ import javax.persistence.EntityManager;
 
 import org.json.simple.JSONValue;
 
+import com.goodworkalan.notice.Notice;
 import com.goodworkalan.paste.Actors;
 import com.goodworkalan.paste.infuse.InfusionActor;
 import com.goodworkalan.paste.stream.Output;
-import com.goodworkalan.prattle.Entry;
 import com.goodworkalan.prattle.viewer.model.Filter;
 import com.google.inject.Inject;
 
@@ -41,7 +41,7 @@ public class FilterSave {
         em.flush();
         Map<String, Object> response = new HashMap<String, Object>();
         response.put("status", "success");
-        response.put("filter", Entry.flatten(filter));
+        response.put("filter", Notice.flatten(filter));
         return JSONValue.toJSONString(response);
     }
 }

@@ -11,12 +11,12 @@ public class PrattleViewerProject extends ProjectModule {
     public void build(Builder builder) {
         builder
             .cookbook(JavaProject.class)
-                .produces(new Artifact("com.goodworkalan/prattle-viewer/0.1"))
+                .produces(new Artifact("com.goodworkalan/prattle-viewer/0.1.1"))
                 .main()
                     .depends()
                         .artifact(new Artifact("com.goodworkalan/paste/0.2"))
-                        .artifact(new Artifact("com.goodworkalan/prattle/0.1"))
-                        .artifact(new Artifact("com.goodworkalan/prattle-json/0.1"))
+                        .artifact(new Artifact("com.goodworkalan/prattle/0.1.1"))
+                        .artifact(new Artifact("com.goodworkalan/prattle-json/0.1.1"))
                         .artifact(new Artifact("com.goodworkalan/infuse-jpa/0.1"))
                         .artifact(new Artifact("com.goodworkalan/infuse-guice/0.1"))
                         .artifact(new Artifact("com.goodworkalan/addendum-jpa/0.1"))

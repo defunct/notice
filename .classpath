@@ -5,7 +5,6 @@
 	<classpathentry kind="src" output="target/test-classes" path="src/test/java"/>
 	<classpathentry excluding="**/*.java" kind="src" output="target/test-classes" path="src/test/resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/prattle-json"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/paste"/>
 	<classpathentry kind="var" path="M2_REPO/org/eclipse/jetty/jetty-xml/7.0.0.RC3/jetty-xml-7.0.0.RC3.jar" sourcepath="M2_REPO/org/eclipse/jetty/jetty-xml/7.0.0.RC3/jetty-xml-7.0.0.RC3-sources.jar">
 		<attributes>
@@ -121,11 +120,6 @@
 			<attribute name="javadoc_location" value="jar:file:/Users/alan/.m2/repository/com/goodworkalan/furnish/0.1/furnish-0.1-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="var" path="M2_REPO/com/goodworkalan/cassandra/0.7/cassandra-0.7.jar" sourcepath="M2_REPO/com/goodworkalan/cassandra/0.7/cassandra-0.7-sources.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:file:/Users/alan/.m2/repository/com/goodworkalan/cassandra/0.7/cassandra-0.7-javadoc.jar!/"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="var" path="M2_REPO/com/goodworkalan/reflective/0.1/reflective-0.1.jar" sourcepath="M2_REPO/com/goodworkalan/reflective/0.1/reflective-0.1-sources.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:file:/Users/alan/.m2/repository/com/goodworkalan/reflective/0.1/reflective-0.1-javadoc.jar!/"/>
@@ -180,6 +174,7 @@
 			<attribute name="javadoc_location" value="jar:file:/Users/alan/.m2/repository/org/eclipse/jetty/jetty-io/7.0.0.RC3/jetty-io-7.0.0.RC3-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry combineaccessrules="false" kind="src" path="/prattle"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/notice"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/notice-json"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
