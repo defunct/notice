@@ -33,7 +33,5 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry combineaccessrules="false" kind="src" path="/notice"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/prattle"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/cassandra"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
