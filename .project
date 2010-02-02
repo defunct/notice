@@ -1,6 +1,6 @@
 <projectDescription>
-  <name>prattle-json</name>
-  <comment>Logging with variable arguments output as YAML.</comment>
+  <name>notice-json</name>
+  <comment>Logging with variable arguments output as JSON.</comment>
   <projects/>
   <buildSpec>
     <buildCommand>
