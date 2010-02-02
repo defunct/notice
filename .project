@@ -1,5 +1,5 @@
 <projectDescription>
-  <name>prattle-rotate</name>
+  <name>notice-rotate</name>
   <comment>Log rotation strategy for Prattle.</comment>
   <projects/>
   <buildSpec>
