@@ -1,4 +1,4 @@
-package com.goodworkalan.cassandra;
+package com.goodworkalan.notice.exception;
 
 import java.util.Map;
 import java.util.Set;

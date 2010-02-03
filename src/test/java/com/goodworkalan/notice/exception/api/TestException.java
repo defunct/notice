@@ -1,7 +1,7 @@
 package com.goodworkalan.notice.exception.api;
 
-import com.goodworkalan.cassandra.NoticeException;
-import com.goodworkalan.cassandra.Clue;
+import com.goodworkalan.notice.exception.Clue;
+import com.goodworkalan.notice.exception.NoticeException;
 
 /**
  * A test exception derived from CassandraException.

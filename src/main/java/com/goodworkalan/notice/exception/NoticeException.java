@@ -1,4 +1,4 @@
-package com.goodworkalan.cassandra;
+package com.goodworkalan.notice.exception;
 
 import java.io.PrintWriter;
 import java.util.Date;
@@ -13,6 +13,8 @@ import com.goodworkalan.notice.Sink;
 
 /**
  * Base class of a more verbose exception mechanism.
+ * <p>
+ * FIXME Rename NoticableException.
  * 
  * @author Alan Gutierrez
  */

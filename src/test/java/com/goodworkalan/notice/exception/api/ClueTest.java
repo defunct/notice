@@ -4,8 +4,8 @@ import java.util.Arrays;
 
 import org.testng.annotations.Test;
 
-import com.goodworkalan.cassandra.NoticeException;
-import com.goodworkalan.cassandra.Clue;
+import com.goodworkalan.notice.exception.Clue;
+import com.goodworkalan.notice.exception.NoticeException;
 
 import static org.testng.Assert.*;
 /**
