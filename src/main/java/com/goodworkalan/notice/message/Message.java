@@ -25,6 +25,17 @@ public class Message {
 
     private final Object variables;
     
+    /**
+     * <p>
+     * The context must always be qualified, it must reference a package other
+     * than the default package.
+     * 
+     * @param bundles
+     * @param context
+     * @param bundleName
+     * @param key
+     * @param variables
+     */
     public Message(ConcurrentMap<String, ResourceBundle> bundles, String context, String bundleName, String key, Object variables) {
         this.bundles = bundles;
         this.context = context;
@@ -117,8 +128,7 @@ public class Message {
     }
 
     public String toString() {
-        int lastDot = context.lastIndexOf('.');
-        String packageName = context.substring(0, lastDot == -1 ? context.length() : lastDot);
+        String packageName = context.substring(0, context.lastIndexOf('.'));
         String bundlePath = packageName + "." + bundleName;
         ResourceBundle bundle = bundles.get(bundlePath);
         if (bundle == null) {

@@ -19,7 +19,7 @@ import org.testng.annotations.Test;
 public class MessageTest {
     /** Create a message with the given variables. */
     private Message makeMessage(String key, Object variables) {
-        return new Message(new ConcurrentHashMap<String, ResourceBundle>(), MessageTest.class.getCanonicalName(), "test_messages", "key", variables);
+        return new Message(new ConcurrentHashMap<String, ResourceBundle>(), MessageTest.class.getCanonicalName(), "test_messages", key, variables);
     }
     
     private Message makePopulatedMessage(String key) {
@@ -123,7 +123,83 @@ public class MessageTest {
      * Test a simple message.
      */
     @Test
-    public void toStringNoSubstitutes() {
-        assertEquals(makePopulatedMessage().toString(), "Hello.");
+    public void toStringNoParameters() {
+        assertEquals(makePopulatedMessage("none").toString(), "Hello.");
+    }
+    
+    /**
+     * Test a parameterized message.
+     */
+    @Test
+    public void toStringOneParameter() {
+        assertEquals(makePopulatedMessage("one").toString(), "Hello, d.");
+    }
+    
+    
+    /**
+     * Test a two parameter message.
+     */
+    @Test
+    public void toStringTwoParameters() {
+        assertEquals(makePopulatedMessage("two").toString(), "Hello, d, b.");
+    }
+    
+    /**
+     * Test the bundle cache.
+     */
+    @Test
+    public void bundleCache() {
+        Message message = makePopulatedMessage("none");
+        assertEquals(message.toString(), "Hello.");
+        assertEquals(message.toString(), "Hello.");
+    }
+    
+    /**
+     * Test missing bundles.
+     */
+    @Test
+    public void missingBundle() {
+        Message message = new Message(new ConcurrentHashMap<String, ResourceBundle>(), "com.missing.missing.Missing", "test_messages", "key", new HashMap<String, String>());
+        assertEquals(message.toString(), "key");
+    }
+    
+    /**
+     * Test missing keys.
+     */
+    @Test
+    public void missingKey() {
+        assertEquals(makePopulatedMessage("missing").toString(), "missing");
+    }
+    
+    /**
+     * Test empty messages.
+     */
+    @Test
+    public void emptyMessage() {
+        assertEquals(makePopulatedMessage("empty").toString(), "empty");
+    }
+    
+    /**
+     * Test illegal format arguments.
+     */
+    @Test
+    public void badArgument() {
+        assertEquals(makePopulatedMessage("bad_argument").toString(), "bad_argument");
+    }
+    
+    /**
+     * Test no such element.
+     */
+    @Test
+    public void noSuchElement() {
+        assertEquals(makePopulatedMessage("no_such_element").toString(), "no_such_element");
+    }
+    
+    /**
+     * Test bad message formats.
+     */
+    @Test
+    public void badFormat() {
+        assertEquals(makePopulatedMessage("bad_format").toString(), "bad_format");
     }
 }
