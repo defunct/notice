@@ -1,8 +1,6 @@
 package com.goodworkalan.notice.message;
 
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertTrue;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -52,41 +50,5 @@ public class MessageTest {
         assertEquals(message.get("a"), "b");
         assertEquals(message.get("b.c"), "d");
         assertEquals(message.get("b.e.1"), "b");
-    }
-    
-    /**
-     * Check a valid Java identifier.
-     */
-    @Test
-    public void validJavaIdentifier() {
-        assertTrue(Indexes.checkJavaIdentifier("a"));
-        assertTrue(Indexes.checkJavaIdentifier("ab"));
-    }
-
-    /**
-     * Check invalid Java identifiers.
-     */
-    @Test
-    public void invalidJavaIdentifier() {
-        assertFalse(Indexes.checkJavaIdentifier(""));
-        assertFalse(Indexes.checkJavaIdentifier("1"));
-        assertFalse(Indexes.checkJavaIdentifier("a!"));
-    }
-
-    /**
-     * Check a null Java identifier.
-     */
-    @Test(expectedExceptions = NullPointerException.class)
-    public void nullJavaIdentifier() {
-        Indexes.checkJavaIdentifier(null);
-    }
-
-    /**
-     * Test the integer determination method.
-     */
-    @Test
-    public void isInteger() {
-        assertTrue(Indexes.isInteger("10"));
-        assertFalse(Indexes.isInteger("!"));
     }
 }
