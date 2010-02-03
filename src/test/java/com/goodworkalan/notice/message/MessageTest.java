@@ -18,18 +18,22 @@ import org.testng.annotations.Test;
  */
 public class MessageTest {
     /** Create a message with the given variables. */
-    private Message makeMessage(Object variables) {
+    private Message makeMessage(String key, Object variables) {
         return new Message(new ConcurrentHashMap<String, ResourceBundle>(), MessageTest.class.getCanonicalName(), "test_messages", "key", variables);
     }
     
-    private Message makePopulatedMessage() {
+    private Message makePopulatedMessage(String key) {
         HashMap<String, Object> map = new HashMap<String, Object>();
         HashMap<String, Object> subMap = new HashMap<String, Object>();
         map.put("a", "b");
         map.put("b", subMap);
         subMap.put("c", "d");
         subMap.put("e", Arrays.asList("a", "b", "c"));
-        return makeMessage(map);
+        return makeMessage(key, map);
+    }
+    
+    private Message makePopulatedMessage() {
+        return makePopulatedMessage("key");
     }
 
     /**
@@ -39,7 +43,7 @@ public class MessageTest {
     public void accessors() {
         HashMap<String, String> map = new HashMap<String, String>();
         map.put("a", "b");
-        Message message = makeMessage(map);
+        Message message = makeMessage("key", map);
         assertEquals(message.getBundleName(), "test_messages");
         assertEquals(message.getMessageKey(), "key");
         assertEquals(message.getContext(), "com.goodworkalan.notice.message.MessageTest");
@@ -101,5 +105,25 @@ public class MessageTest {
     @Test
     public void noSuchStringElementInList() {
         assertNull(makePopulatedMessage().get("b.e.f"));
+    }
+    
+    /** Illegal hash path. */
+    @Test(expectedExceptions=IllegalArgumentException.class) 
+    public void illegalHashPath() {
+        makePopulatedMessage().get("b.!");        
+    }
+    
+    /** Illegal list path. */
+    @Test(expectedExceptions=IllegalArgumentException.class) 
+    public void illegalListPath() {
+        makePopulatedMessage().get("b.e.!");        
+    }
+    
+    /**
+     * Test a simple message.
+     */
+    @Test
+    public void toStringNoSubstitutes() {
+        assertEquals(makePopulatedMessage().toString(), "Hello.");
     }
 }
