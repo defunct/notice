@@ -4,6 +4,7 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -34,6 +35,23 @@ public class MessageTest {
         assertEquals(message.getMessageKey(), "key");
         assertEquals(message.getContext(), "com.goodworkalan.notice.message.MessageTest");
         assertEquals(((Map<?, ?>) message.getVariables()).get("a"), "b");
+    }
+    
+    /**
+     * Check the attribute accessors.
+     */
+    @Test
+    public void paths() {
+        HashMap<String, Object> map = new HashMap<String, Object>();
+        HashMap<String, Object> subMap = new HashMap<String, Object>();
+        map.put("a", "b");
+        map.put("b", subMap);
+        subMap.put("c", "d");
+        subMap.put("e", Arrays.asList("a", "b", "c"));
+        Message message = makeMessage(map);
+        assertEquals(message.get("a"), "b");
+        assertEquals(message.get("b.c"), "d");
+        assertEquals(message.get("b.e.1"), "b");
     }
     
     /**
