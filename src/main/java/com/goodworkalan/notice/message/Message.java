@@ -1,5 +1,6 @@
 package com.goodworkalan.notice.message;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.MissingResourceException;
@@ -24,17 +25,22 @@ public class Message {
     private final String messageKey;
 
     private final Object variables;
-    
+
     /**
      * <p>
      * The context must always be qualified, it must reference a package other
      * than the default package.
      * 
      * @param bundles
+     *            The message bundle cache.
      * @param context
+     *            The message bundle context.
      * @param bundleName
+     *            The message bundle file name.
      * @param key
+     *            The message key.
      * @param variables
+     *            The map of variables.
      */
     public Message(ConcurrentMap<String, ResourceBundle> bundles, String context, String bundleName, String key, Object variables) {
         this.bundles = bundles;
@@ -175,15 +181,29 @@ public class Message {
             }
             String name = paths.substring(start, end);
             start = end;
-            Object argument = "";
-            try {
-                argument = getValue(name);
-            } catch (IllegalArgumentException e) {
-                return key;
-            } catch (NoSuchElementException e) {
-                return key;
+            if (name.equals("$@")) {
+                List<Object> positioned = new ArrayList<Object>();
+                Map<?, ?> map = (Map<?, ?>) variables;
+                for (int i = 1; map.containsKey("$" + i); i++) {
+                    positioned.add(map.get("$" + i));
+                }
+                Object[] resized = new Object[arguments.length + positioned.size() - 1];
+                System.arraycopy(arguments, 0, resized, 0, position);
+                arguments = resized;
+                for (int i = 0; i < positioned.size(); i++) {
+                    arguments[position++] = positioned.get(i);
+                }
+            } else {
+                Object argument = "";
+                try {
+                    argument = getValue(name);
+                } catch (IllegalArgumentException e) {
+                    return key;
+                } catch (NoSuchElementException e) {
+                    return key;
+                }
+                arguments[position++] = argument;
             }
-            arguments[position++] = argument;
         }
         try {
             return String.format(format, arguments);

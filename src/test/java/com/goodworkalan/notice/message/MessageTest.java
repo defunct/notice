@@ -202,4 +202,17 @@ public class MessageTest {
     public void badFormat() {
         assertEquals(makePopulatedMessage("bad_format").toString(), "bad_format");
     }
+    
+    /**
+     * Positioned arguments.
+     */
+    @Test
+    public void positionedArguments() {
+        Map<Object, Object> map = new HashMap<Object, Object>();
+        map.put("$1", "1");
+        map.put("$2", "2");
+        map.put("fred", "fred");
+        Message message = makeMessage("positioned", map);
+        assertEquals(message.toString(), "First: 1, Second: 2, Third: fred.");
+    }
 }
