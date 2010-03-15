@@ -3,8 +3,8 @@ package com.goodworkalan.notice.exception;
 import java.util.Map;
 import java.util.Set;
 
-import com.goodworkalan.notice.Notice;
-import com.goodworkalan.notice.ThrowableConverter;
+import com.goodworkalan.diffuse.Diffuse;
+import com.goodworkalan.diffuse.ThrowableConverter;
 
 public class NoticeExceptionConverter extends ThrowableConverter {
     /**
@@ -14,7 +14,7 @@ public class NoticeExceptionConverter extends ThrowableConverter {
     protected Map<String, Object> modifiable(Object object, StringBuilder path, Set<String> includes) {
         Map<String, Object> map = super.modifiable(object, path, includes);
         NoticeException e = (NoticeException) object;
-        map.put("vars", Notice.flatten(e.get("vars"), true));
+        map.put("vars", Diffuse.flatten(e.get("vars"), true));
         return map;
     }
     
