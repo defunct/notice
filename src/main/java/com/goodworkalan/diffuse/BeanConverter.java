@@ -1,4 +1,4 @@
-package com.goodworkalan.notice;
+package com.goodworkalan.diffuse;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
@@ -9,6 +9,9 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+
+import com.goodworkalan.notice.Converter;
+import com.goodworkalan.notice.NoticeException;
 
 class BeanConverter implements Converter {
     public final static Converter INSTANCE = new BeanConverter();
@@ -42,7 +45,7 @@ class BeanConverter implements Converter {
             if (read != null) {
                 String name = descriptor.getName();
                 path.append(name);
-                Converter converter = Notice.getConverter(read.getReturnType());
+                Converter converter = Diffuse.getConverter(read.getReturnType());
                 if (!converter.isContainer() || includes.isEmpty() || includes.contains(path.toString())) {
                     Object value;
                     try {

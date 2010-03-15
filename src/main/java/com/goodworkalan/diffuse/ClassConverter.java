@@ -1,6 +1,8 @@
-package com.goodworkalan.notice;
+package com.goodworkalan.diffuse;
 
 import java.util.Set;
+
+import com.goodworkalan.notice.Converter;
 
 public class ClassConverter implements Converter {
     public final static Converter INSTANCE = new ClassConverter();

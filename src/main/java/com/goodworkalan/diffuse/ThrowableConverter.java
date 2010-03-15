@@ -1,4 +1,5 @@
-package com.goodworkalan.notice;
+package com.goodworkalan.diffuse;
+
 
 
 public class ThrowableConverter extends BeanConverter {

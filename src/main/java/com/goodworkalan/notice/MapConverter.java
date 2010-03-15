@@ -5,6 +5,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
+import com.goodworkalan.diffuse.Diffuse;
+
+// FIXME Move all of this to a library called diffuse (make weaker, thinner.)
 public class MapConverter implements Converter {
     public final static MapConverter INSTANCE = new MapConverter();
 
@@ -23,7 +26,7 @@ public class MapConverter implements Converter {
             if (value == null) {
                 copy.put(name, value);
             } else {
-                Converter converter = Notice.getConverter(value.getClass());
+                Converter converter = Diffuse.getConverter(value.getClass());
                 if (!converter.isContainer() || includes.isEmpty() || includes.contains(path.toString())) {
                     path.append(".");
                     copy.put(name, converter.convert(value, path, includes));

@@ -9,6 +9,8 @@ import java.util.Set;
 
 import org.testng.annotations.Test;
 
+import com.goodworkalan.diffuse.ArrayConverter;
+
 /**
  * Tests for the array converter.
  *

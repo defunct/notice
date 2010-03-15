@@ -1,10 +1,12 @@
-package com.goodworkalan.notice;
+package com.goodworkalan.diffuse;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+
+import com.goodworkalan.notice.Converter;
 
 class CollectionConverter implements Converter {
     public final static Converter INSTANCE = new CollectionConverter();
@@ -18,7 +20,7 @@ class CollectionConverter implements Converter {
             if (item == null) {
                 copy.add(item);
             } else {
-                copy.add(Notice.getConverter(item.getClass()).convert(item, path, includes));
+                copy.add(Diffuse.getConverter(item.getClass()).convert(item, path, includes));
                 path.setLength(index);
             }
         }

@@ -7,6 +7,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.goodworkalan.diffuse.Diffuse;
+
 public class CoreMapper<T> implements Mapper<T> {
     private final T parent;
 
@@ -21,7 +23,7 @@ public class CoreMapper<T> implements Mapper<T> {
      * @see com.goodworkalan.prattle.entry.Mapper#put(java.lang.String, java.lang.Object)
      */
     public Mapper<T> put(String id, Object object) {
-        map.put(id, Notice.flatten(object, Notice.SHALLOW));
+        map.put(id, Diffuse.flatten(object, Notice.SHALLOW));
         return this;
     }
 
@@ -29,7 +31,7 @@ public class CoreMapper<T> implements Mapper<T> {
      * @see com.goodworkalan.prattle.entry.Mapper#put(java.lang.String, java.lang.Object, java.lang.String)
      */
     public Mapper<T> put(String id, Object object, String... paths) {
-        map.put(id, Notice.flatten(object, new HashSet<String>(Arrays.asList(paths))));
+        map.put(id, Diffuse.flatten(object, new HashSet<String>(Arrays.asList(paths))));
         return this;
     }
 
@@ -37,7 +39,7 @@ public class CoreMapper<T> implements Mapper<T> {
      * @see com.goodworkalan.prattle.entry.Mapper#put(java.lang.String, java.lang.Object, boolean)
      */
     public Mapper<T> put(String id, Object object, boolean recurse) {
-        map.put(id, Notice.flatten(object, recurse ? Notice.DEEP : Notice.SHALLOW));
+        map.put(id, Diffuse.flatten(object, recurse ? Notice.DEEP : Notice.SHALLOW));
         return this;
     }
 

@@ -1,9 +1,11 @@
-package com.goodworkalan.notice;
+package com.goodworkalan.diffuse;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+
+import com.goodworkalan.notice.Converter;
 
 /**
  * A converter that converts an array in to a <code>List</code>.
@@ -36,7 +38,7 @@ public class ArrayConverter implements Converter {
             if (value == null) {
                 copy.add(value);
             } else {
-                copy.add(Notice.getConverter(value.getClass()).convert(value, path, includes));
+                copy.add(Diffuse.getConverter(value.getClass()).convert(value, path, includes));
                 path.setLength(index);
             }
         }

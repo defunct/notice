@@ -1,6 +1,8 @@
-package com.goodworkalan.notice;
+package com.goodworkalan.diffuse;
 
 import java.util.Set;
+
+import com.goodworkalan.notice.Converter;
 
 
 public class ToStringConverter implements Converter {

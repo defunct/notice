@@ -7,6 +7,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.goodworkalan.diffuse.Diffuse;
+
 public class CoreLister<T> implements Lister<T> {
     /**
      * The parent element in the domain-specific language use to create
@@ -36,7 +38,7 @@ public class CoreLister<T> implements Lister<T> {
      * @see com.goodworkalan.prattle.entry.Lister#add(java.lang.Object)
      */
     public Lister<T> add(Object object) {
-        list.add(Notice.flatten(object, Notice.SHALLOW));
+        list.add(Diffuse.flatten(object, Notice.SHALLOW));
         return this;
     }
 
@@ -44,7 +46,7 @@ public class CoreLister<T> implements Lister<T> {
      * @see com.goodworkalan.prattle.entry.Lister#add(java.lang.Object, java.lang.String)
      */
     public Lister<T> add(Object object, String... paths) {
-        list.add(Notice.flatten(object, new HashSet<String>(Arrays.asList(paths))));
+        list.add(Diffuse.flatten(object, new HashSet<String>(Arrays.asList(paths))));
         return this;
     }
     
@@ -52,7 +54,7 @@ public class CoreLister<T> implements Lister<T> {
      * @see com.goodworkalan.prattle.entry.Lister#add(java.lang.Object, boolean)
      */
     public Lister<T> add(Object object, boolean recurse) {
-        list.add(Notice.flatten(object, recurse ? Notice.DEEP : Notice.SHALLOW));
+        list.add(Diffuse.flatten(object, recurse ? Notice.DEEP : Notice.SHALLOW));
         return this;
     }
 
