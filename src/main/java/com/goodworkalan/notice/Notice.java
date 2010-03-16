@@ -14,6 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import com.goodworkalan.diffuse.Diffuse;
+import com.goodworkalan.diffuse.MapConverter;
 import com.goodworkalan.notice.message.Message;
 
 /**
