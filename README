@@ -2,19 +2,17 @@ NOTICE EVENT
 
 Structured logging.
 
-    Source: http://github.com/bigeasy/prattle/tree/master
-    Wiki: http://wiki.github.com/bigeasy/prattle
+    Source: http://github.com/bigeasy/notice/tree/master
+    Wiki: http://wiki.github.com/notice/prattle
 
-    Issues and Tasks: http://github.com/bigeasy/prattle/issues
+    Issues: http://bigeasy.lighthouseapp.com/projects/43663-notice
 
     License: The MIT License
 
     Contact: alan@blogometer.com
 
     Dependencies:
-        Cassandra:      http://github.com/bigeasy/cassandra
         Reflective:     http://github.com/bigeasy/reflective
-        Furnish:        http://github.com/bigeasy/furnish
 
 PURPOSE
 
