@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentMap;
 
 import com.goodworkalan.diffuse.Diffuse;
 import com.goodworkalan.diffuse.MapConverter;
-import com.goodworkalan.notice.message.Message;
+import com.goodworkalan.verbiage.Message;
 
 /**
  * Abstract implementation of a structured logging or error message.
