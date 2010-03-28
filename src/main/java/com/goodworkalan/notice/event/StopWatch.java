@@ -1,11 +1,10 @@
 package com.goodworkalan.notice.event;
 
-import com.goodworkalan.diffuse.Diffuse;
-
+import com.goodworkalan.notice.Notice;
 
 public class StopWatch {
     static {
-        Diffuse.setConverter(StopWatch.class, new StopWatchConverter());
+        Notice.setConverter(StopWatch.class, new StopWatchConverter());
     }
 
     private int duration;
