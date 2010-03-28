@@ -13,8 +13,11 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import com.goodworkalan.diffuse.ClassAsssociation;
+import com.goodworkalan.diffuse.Converter;
 import com.goodworkalan.diffuse.Diffuse;
 import com.goodworkalan.diffuse.MapConverter;
+import com.goodworkalan.diffuse.PerClassLoaderClassAssociation;
 import com.goodworkalan.verbiage.Message;
 
 /**
@@ -27,6 +30,29 @@ import com.goodworkalan.verbiage.Message;
  *            type from the chained methods that build the structure.
  */
 public abstract class Notice<Self> implements Noticeable<Self> {
+    /** The global map of diffuse converters. */
+    private final static ClassAsssociation<Converter> converters = new PerClassLoaderClassAssociation<Converter>();
+
+    /**
+     * Assign the given diffuse object converter to the given object type. The
+     * assignment will be inherited by any subsequently created child class
+     * loaders of the associated class loader, but not by existing child class
+     * loaders.
+     * <p>
+     * The converter will be assigned to a map of converters that is associated
+     * with the <code>ClassLoader</code> of the given object type through a weak
+     * reference so that the converter can be collected if an application
+     * container reloads an application's libraries.
+     * 
+     * @param type
+     *            The object type.
+     * @param converter
+     *            The object converter.
+     */
+    public static void setConverter(Class<?> type, Converter converter) {
+        converters.put(type, converter);
+    }
+    
     /** Cache of resource bundles. */
     private final static ConcurrentMap<String, ResourceBundle> bundles = new ConcurrentHashMap<String, ResourceBundle>();
 
@@ -39,6 +65,12 @@ public abstract class Notice<Self> implements Noticeable<Self> {
     final static Set<String> IGNORE = new HashSet<String>(Arrays.asList(new String[]{
             "context", "threadId", "threadName", "vars", "date", "message"
     }));
+
+    /**
+     * The diffuser used to convert beans into maps of properties and values for
+     * serialization into a log file.
+     */
+    private final Diffuse diffuse;
 
     /**
      * A set to indicate a shallow copy. The set contains a single include,
@@ -84,7 +116,8 @@ public abstract class Notice<Self> implements Noticeable<Self> {
      *            An array of extra properties to add to the top level map.
      */
     protected Notice(Notice<?> notice, String context, String messageKey, Property...properties) {
-        this.vars = MapConverter.INSTANCE.modifiable(notice.vars, new StringBuilder(), DEEP);
+        this.diffuse = notice.diffuse;
+        this.vars = MapConverter.INSTANCE.modifiable(diffuse, notice.vars, new StringBuilder(), DEEP);
         this.line = notice.line;
         this.message = new Message(bundles, context, notice.message.getBundleName(), messageKey, notice.message.getVariables());
         this.deferred = notice.deferred;
@@ -95,9 +128,10 @@ public abstract class Notice<Self> implements Noticeable<Self> {
         this.line.put("date", notice.get("date"));
     }
     
-    protected Notice(String context, String bundleName, String messageKey, Property...properties) {
+    protected Notice(ClassAsssociation<Converter> cache, String context, String bundleName, String messageKey, Property...properties) {
         Thread thread = Thread.currentThread();
         
+        this.diffuse = new Diffuse(cache, converters);
         this.vars = new LinkedHashMap<String, Object>();
         this.line = new LinkedHashMap<String, Object>();
         this.message = new Message(bundles, context, bundleName, messageKey, this.line);
@@ -114,7 +148,7 @@ public abstract class Notice<Self> implements Noticeable<Self> {
             if (property.isDeferred()) {
                 deferred.add(property);
             } else {
-                property.put(line);
+                property.put(diffuse, line);
             }
         }
         line.put("vars", Collections.unmodifiableMap(vars));
@@ -163,7 +197,7 @@ public abstract class Notice<Self> implements Noticeable<Self> {
      */
     public Self put(String name, Object object) {
         added(name);
-        vars.put(name, Diffuse.flatten(object, SHALLOW));
+        vars.put(name, diffuse.flatten(object, SHALLOW));
         return getSelf();
     }
 
@@ -172,7 +206,7 @@ public abstract class Notice<Self> implements Noticeable<Self> {
      */
     public Self put(String name, Object object, String...paths) {
         added(name);
-        vars.put(name, Diffuse.flatten(object, new HashSet<String>(Arrays.asList(paths))));
+        vars.put(name, diffuse.flatten(object, new HashSet<String>(Arrays.asList(paths))));
         return getSelf();
     }
 
@@ -181,7 +215,7 @@ public abstract class Notice<Self> implements Noticeable<Self> {
      */
     public Self put(String name, Object object, boolean recurse) {
         added(name);
-        vars.put(name, Diffuse.flatten(object, recurse ? DEEP : SHALLOW));
+        vars.put(name, diffuse.flatten(object, recurse ? DEEP : SHALLOW));
         return getSelf();
     }
 
@@ -192,7 +226,7 @@ public abstract class Notice<Self> implements Noticeable<Self> {
         added(name);
         Map<String, Object> map = new LinkedHashMap<String, Object>();
         vars.put(name, Collections.unmodifiableMap(map));
-        return new CoreMapper<Self>(getSelf(), map);
+        return new CoreMapper<Self>(diffuse, getSelf(), map);
     }
     
     /* (non-Javadoc)
@@ -202,7 +236,7 @@ public abstract class Notice<Self> implements Noticeable<Self> {
         added(name);
         List<Object> list = new ArrayList<Object>();
         vars.put(name, Collections.unmodifiableList(list));
-        return new CoreLister<Self>(getSelf(), list);
+        return new CoreLister<Self>(diffuse, getSelf(), list);
     }
 
     /**
@@ -233,7 +267,7 @@ public abstract class Notice<Self> implements Noticeable<Self> {
     public void send(Sink sink) {
         if (!deferred.isEmpty()) {
             for (Property property : deferred) {
-                property.put(line);
+                property.put(diffuse, line);
             }
         }
         sending();
@@ -262,9 +296,9 @@ public abstract class Notice<Self> implements Noticeable<Self> {
             this.deferred = deferred;
         }
         
-        protected void put(Map<String, Object> map) {
+        protected void put(Diffuse diffuse, Map<String, Object> map) {
             if (!IGNORE.contains(name)) {
-                map.put(name, Diffuse.flatten(object, includes));
+                map.put(name, diffuse.flatten(object, includes));
             }
         }
         

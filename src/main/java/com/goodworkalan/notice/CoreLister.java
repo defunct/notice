@@ -10,6 +10,9 @@ import java.util.Map;
 import com.goodworkalan.diffuse.Diffuse;
 
 public class CoreLister<T> implements Lister<T> {
+    /** Strategy for converting objects into maps, collections and primatives. */
+    private final Diffuse diffuse;
+    
     /**
      * The parent element in the domain-specific language use to create
      * messages.
@@ -29,7 +32,8 @@ public class CoreLister<T> implements Lister<T> {
      * @param list
      *            The list to build.
      */
-    public CoreLister(T parent, List<Object> list) {
+    public CoreLister(Diffuse diffuse, T parent, List<Object> list) {
+        this.diffuse = diffuse;
         this.parent = parent;
         this.list = list;
     }
@@ -38,7 +42,7 @@ public class CoreLister<T> implements Lister<T> {
      * @see com.goodworkalan.prattle.entry.Lister#add(java.lang.Object)
      */
     public Lister<T> add(Object object) {
-        list.add(Diffuse.flatten(object, Notice.SHALLOW));
+        list.add(diffuse.flatten(object, Notice.SHALLOW));
         return this;
     }
 
@@ -46,7 +50,7 @@ public class CoreLister<T> implements Lister<T> {
      * @see com.goodworkalan.prattle.entry.Lister#add(java.lang.Object, java.lang.String)
      */
     public Lister<T> add(Object object, String... paths) {
-        list.add(Diffuse.flatten(object, new HashSet<String>(Arrays.asList(paths))));
+        list.add(diffuse.flatten(object, new HashSet<String>(Arrays.asList(paths))));
         return this;
     }
     
@@ -54,7 +58,7 @@ public class CoreLister<T> implements Lister<T> {
      * @see com.goodworkalan.prattle.entry.Lister#add(java.lang.Object, boolean)
      */
     public Lister<T> add(Object object, boolean recurse) {
-        list.add(Diffuse.flatten(object, recurse ? Notice.DEEP : Notice.SHALLOW));
+        list.add(diffuse.flatten(object, recurse ? Notice.DEEP : Notice.SHALLOW));
         return this;
     }
 
@@ -64,7 +68,7 @@ public class CoreLister<T> implements Lister<T> {
     public Lister<Lister<T>> list() {
         List<Object> subList = new ArrayList<Object>();
         list.add(subList);
-        return new CoreLister<Lister<T>>(this, subList);
+        return new CoreLister<Lister<T>>(diffuse, this, subList);
     }
 
     /* (non-Javadoc)
@@ -73,7 +77,7 @@ public class CoreLister<T> implements Lister<T> {
     public Mapper<Lister<T>> map() {
         Map<String, Object> subMap = new LinkedHashMap<String, Object>();
         list.add(subMap);
-        return new CoreMapper<Lister<T>>(this, subMap);
+        return new CoreMapper<Lister<T>>(diffuse, this, subMap);
     }
 
     /* (non-Javadoc)
