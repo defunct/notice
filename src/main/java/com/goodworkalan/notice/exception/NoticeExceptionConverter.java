@@ -11,10 +11,10 @@ public class NoticeExceptionConverter extends ThrowableConverter {
      * Add the variables to the exception.
      */
     @Override
-    protected Map<String, Object> modifiable(Object object, StringBuilder path, Set<String> includes) {
-        Map<String, Object> map = super.modifiable(object, path, includes);
+    protected Map<String, Object> modifiable(Diffuse diffuse, Object object, StringBuilder path, Set<String> includes) {
+        Map<String, Object> map = super.modifiable(diffuse, object, path, includes);
         NoticeException e = (NoticeException) object;
-        map.put("vars", Diffuse.flatten(e.get("vars"), true));
+        map.put("vars", diffuse.flatten(e.get("vars"), true));
         return map;
     }
     

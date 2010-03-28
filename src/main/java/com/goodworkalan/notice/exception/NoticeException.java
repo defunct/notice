@@ -3,11 +3,11 @@ package com.goodworkalan.notice.exception;
 import java.io.PrintWriter;
 import java.util.Date;
 
-import com.goodworkalan.diffuse.Diffuse;
 import com.goodworkalan.notice.Lister;
 import com.goodworkalan.notice.ListerLister;
 import com.goodworkalan.notice.Mapper;
 import com.goodworkalan.notice.MapperMapper;
+import com.goodworkalan.notice.Notice;
 import com.goodworkalan.notice.Noticeable;
 import com.goodworkalan.notice.Sink;
 
@@ -30,7 +30,7 @@ public  class NoticeException extends RuntimeException implements Noticeable<Not
 
     // Register the CassandraException converter. 
     static {
-        Diffuse.setConverter(NoticeException.class, NoticeExceptionConverter.INSTANCE);
+        Notice.setConverter(NoticeException.class, NoticeExceptionConverter.INSTANCE);
     }
     
     /**
