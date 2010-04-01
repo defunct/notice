@@ -7,17 +7,17 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.goodworkalan.diffuse.Diffuse;
+import com.goodworkalan.diffuse.Diffuser;
 
 public class CoreMapper<T> implements Mapper<T> {
-    private final Diffuse diffuse;
+    private final Diffuser diffuser;
     
     private final T parent;
 
     private final Map<String, Object> map;
 
-    public CoreMapper(Diffuse diffuse, T parent, Map<String, Object> map) {
-        this.diffuse = diffuse;
+    public CoreMapper(Diffuser diffuse, T parent, Map<String, Object> map) {
+        this.diffuser = diffuse;
         this.parent = parent;
         this.map = map;
     }
@@ -26,7 +26,7 @@ public class CoreMapper<T> implements Mapper<T> {
      * @see com.goodworkalan.prattle.entry.Mapper#put(java.lang.String, java.lang.Object)
      */
     public Mapper<T> put(String id, Object object) {
-        map.put(id, diffuse.flatten(object, Notice.SHALLOW));
+        map.put(id, diffuser.flatten(object, Notice.SHALLOW));
         return this;
     }
 
@@ -34,7 +34,7 @@ public class CoreMapper<T> implements Mapper<T> {
      * @see com.goodworkalan.prattle.entry.Mapper#put(java.lang.String, java.lang.Object, java.lang.String)
      */
     public Mapper<T> put(String id, Object object, String... paths) {
-        map.put(id, diffuse.flatten(object, new HashSet<String>(Arrays.asList(paths))));
+        map.put(id, diffuser.flatten(object, new HashSet<String>(Arrays.asList(paths))));
         return this;
     }
 
@@ -42,7 +42,7 @@ public class CoreMapper<T> implements Mapper<T> {
      * @see com.goodworkalan.prattle.entry.Mapper#put(java.lang.String, java.lang.Object, boolean)
      */
     public Mapper<T> put(String id, Object object, boolean recurse) {
-        map.put(id, diffuse.flatten(object, recurse ? Notice.DEEP : Notice.SHALLOW));
+        map.put(id, diffuser.flatten(object, recurse ? Notice.DEEP : Notice.SHALLOW));
         return this;
     }
 
@@ -52,7 +52,7 @@ public class CoreMapper<T> implements Mapper<T> {
     public Lister<Mapper<T>> list(String id) {
         List<Object> subList = new ArrayList<Object>();
         map.put(id, subList);
-        return new CoreLister<Mapper<T>>(diffuse, this, subList);
+        return new CoreLister<Mapper<T>>(diffuser, this, subList);
     }
 
     /* (non-Javadoc)
@@ -61,7 +61,7 @@ public class CoreMapper<T> implements Mapper<T> {
     public Mapper<Mapper<T>> map(String id) {
         Map<String, Object> subMap = new LinkedHashMap<String, Object>();
         map.put(id, subMap);
-        return new CoreMapper<Mapper<T>>(diffuse, this, subMap);
+        return new CoreMapper<Mapper<T>>(diffuser, this, subMap);
     }
 
     /* (non-Javadoc)
