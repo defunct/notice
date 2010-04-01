@@ -9,7 +9,7 @@ import java.util.UUID;
 
 import com.goodworkalan.diffuse.ClassAsssociation;
 import com.goodworkalan.diffuse.ConcurrentClassAssociation;
-import com.goodworkalan.diffuse.Converter;
+import com.goodworkalan.diffuse.ObjectDiffuser;
 import com.goodworkalan.notice.Notice;
 
 /**
@@ -19,7 +19,7 @@ import com.goodworkalan.notice.Notice;
  * @author Alan Gutierrez
  */
 public class Clue extends Notice<Clue> {
-    private final static ClassAsssociation<Converter> cache = new ConcurrentClassAssociation<Converter>();
+    private final static ClassAsssociation<ObjectDiffuser> cache = new ConcurrentClassAssociation<ObjectDiffuser>();
     
     /** A place to dump the stack trace. */
     private final StringWriter stackTrace;
