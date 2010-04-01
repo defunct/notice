@@ -2,17 +2,17 @@ package com.goodworkalan.notice.event;
 
 import com.goodworkalan.diffuse.ClassAsssociation;
 import com.goodworkalan.diffuse.ConcurrentClassAssociation;
-import com.goodworkalan.diffuse.Converter;
+import com.goodworkalan.diffuse.ObjectDiffuser;
 
 public class Logger {
-    private final ClassAsssociation<Converter> cache;
+    private final ClassAsssociation<ObjectDiffuser> cache;
     
     private final org.slf4j.Logger logger;
     
     // FIXME Does Diffuse go here?
 
     public Logger(org.slf4j.Logger logger) {
-        this.cache = new ConcurrentClassAssociation<Converter>();
+        this.cache = new ConcurrentClassAssociation<ObjectDiffuser>();
         this.logger = logger;
     }
     

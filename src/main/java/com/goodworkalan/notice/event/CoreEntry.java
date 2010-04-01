@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.goodworkalan.diffuse.ClassAsssociation;
-import com.goodworkalan.diffuse.Converter;
+import com.goodworkalan.diffuse.ObjectDiffuser;
 import com.goodworkalan.notice.Notice;
 import com.goodworkalan.notice.Sink;
 
@@ -34,7 +34,7 @@ class CoreEntry extends Notice<Entry> implements Entry {
      * @param name
      *            The name of the entry.
      */
-    public CoreEntry(org.slf4j.Logger logger, ClassAsssociation<Converter> cache, Level level, String code) {
+    public CoreEntry(org.slf4j.Logger logger, ClassAsssociation<ObjectDiffuser> cache, Level level, String code) {
         super(cache, logger.getName(), "prattle", getMessageKey(logger.getName(), code), now("level", level.toString()), now("code", code));
         this.logger = logger;
         this.level = level;
