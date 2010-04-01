@@ -7,7 +7,7 @@ import javax.persistence.EntityManager;
 
 import org.json.simple.JSONValue;
 
-import com.goodworkalan.diffuse.Diffuse;
+import com.goodworkalan.diffuse.Diffuser;
 import com.goodworkalan.notice.viewer.model.Filter;
 import com.goodworkalan.paste.Actors;
 import com.goodworkalan.paste.infuse.InfusionActor;
@@ -42,7 +42,7 @@ public class FilterAdd {
         em.flush();
         Map<String, Object> response = new HashMap<String, Object>();
         response.put("status", "success");
-        response.put("filter", Diffuse.flatten(filter));
+        response.put("filter", new Diffuser().flatten(filter));
         return JSONValue.toJSONString(response);
     }
 }

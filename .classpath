@@ -164,5 +164,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/addendum"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/addendum-mysql"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/addendum-jpa"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/diffuse"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
