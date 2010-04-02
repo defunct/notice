@@ -7,9 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import com.goodworkalan.diffuse.ClassAsssociation;
-import com.goodworkalan.diffuse.ConcurrentClassAssociation;
-import com.goodworkalan.diffuse.ObjectDiffuser;
 import com.goodworkalan.notice.Notice;
 
 /**
@@ -19,8 +16,6 @@ import com.goodworkalan.notice.Notice;
  * @author Alan Gutierrez
  */
 public class Clue extends Notice<Clue> {
-    private final static ClassAsssociation<ObjectDiffuser> cache = new ConcurrentClassAssociation<ObjectDiffuser>();
-    
     /** A place to dump the stack trace. */
     private final StringWriter stackTrace;
     
@@ -44,7 +39,7 @@ public class Clue extends Notice<Clue> {
      *            The string writer where the stack trace will be written.
      */
     private Clue(StringWriter stackTrace) {
-        super(cache, Clue.class.getCanonicalName(), "exceptions", "missing", now("level", "EXCEPTION"), later("stackTrace", stackTrace));
+        super(Clue.class.getCanonicalName(), "exceptions", "missing", now("level", "EXCEPTION"), later("stackTrace", stackTrace));
         this.stackTrace = stackTrace;
     }
 

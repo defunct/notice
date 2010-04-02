@@ -30,7 +30,7 @@ public  class NoticeException extends RuntimeException implements Noticeable<Not
 
     // Register the CassandraException converter. 
     static {
-        Notice.setConverter(NoticeException.class, NoticeExceptionDiffuser.INSTANCE);
+        Notice.setObjectDiffuser(NoticeException.class, NoticeExceptionDiffuser.INSTANCE);
     }
     
     /**
