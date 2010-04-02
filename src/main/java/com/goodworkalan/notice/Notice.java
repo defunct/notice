@@ -13,11 +13,8 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import com.goodworkalan.diffuse.ClassAsssociation;
-import com.goodworkalan.diffuse.ObjectDiffuser;
 import com.goodworkalan.diffuse.Diffuser;
 import com.goodworkalan.diffuse.MapDiffuser;
-import com.goodworkalan.diffuse.PerClassLoaderClassAssociation;
 import com.goodworkalan.verbiage.Message;
 
 /**
@@ -30,28 +27,8 @@ import com.goodworkalan.verbiage.Message;
  *            type from the chained methods that build the structure.
  */
 public abstract class Notice<Self> implements Noticeable<Self> {
-    /** The global map of diffuse converters. */
-    private final static ClassAsssociation<ObjectDiffuser> converters = new PerClassLoaderClassAssociation<ObjectDiffuser>();
-
-    /**
-     * Assign the given diffuse object converter to the given object type. The
-     * assignment will be inherited by any subsequently created child class
-     * loaders of the associated class loader, but not by existing child class
-     * loaders.
-     * <p>
-     * The converter will be assigned to a map of converters that is associated
-     * with the <code>ClassLoader</code> of the given object type through a weak
-     * reference so that the converter can be collected if an application
-     * container reloads an application's libraries.
-     * 
-     * @param type
-     *            The object type.
-     * @param converter
-     *            The object converter.
-     */
-    public static void setConverter(Class<?> type, ObjectDiffuser converter) {
-        converters.put(type, converter);
-    }
+    /** The global diffuser. */
+    public final static Diffuser diffuser = new Diffuser();
     
     /** Cache of resource bundles. */
     private final static ConcurrentMap<String, ResourceBundle> bundles = new ConcurrentHashMap<String, ResourceBundle>();
@@ -65,12 +42,6 @@ public abstract class Notice<Self> implements Noticeable<Self> {
     final static Set<String> IGNORE = new HashSet<String>(Arrays.asList(new String[]{
             "context", "threadId", "threadName", "vars", "date", "message"
     }));
-
-    /**
-     * The diffuser used to convert beans into maps of properties and values for
-     * serialization into a log file.
-     */
-    private final Diffuser diffuser;
 
     /**
      * A set to indicate a shallow copy. The set contains a single include,
@@ -116,7 +87,6 @@ public abstract class Notice<Self> implements Noticeable<Self> {
      *            An array of extra properties to add to the top level map.
      */
     protected Notice(Notice<?> notice, String context, String messageKey, Property...properties) {
-        this.diffuser = notice.diffuser;
         this.vars = MapDiffuser.INSTANCE.modifiable(diffuser, notice.vars, new StringBuilder(), DEEP);
         this.line = notice.line;
         this.message = new Message(bundles, context, notice.message.getBundleName(), messageKey, notice.message.getVariables());
@@ -128,10 +98,9 @@ public abstract class Notice<Self> implements Noticeable<Self> {
         this.line.put("date", notice.get("date"));
     }
     
-    protected Notice(ClassAsssociation<ObjectDiffuser> cache, String context, String bundleName, String messageKey, Property...properties) {
+    protected Notice(String context, String bundleName, String messageKey, Property...properties) {
         Thread thread = Thread.currentThread();
-        
-        this.diffuser = new Diffuser(cache, converters);
+
         this.vars = new LinkedHashMap<String, Object>();
         this.line = new LinkedHashMap<String, Object>();
         this.message = new Message(bundles, context, bundleName, messageKey, this.line);
