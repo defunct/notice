@@ -15,6 +15,7 @@ import java.util.concurrent.ConcurrentMap;
 
 import com.goodworkalan.diffuse.Diffuser;
 import com.goodworkalan.diffuse.MapDiffuser;
+import com.goodworkalan.diffuse.ObjectDiffuser;
 import com.goodworkalan.verbiage.Message;
 
 /**
@@ -28,7 +29,27 @@ import com.goodworkalan.verbiage.Message;
  */
 public abstract class Notice<Self> implements Noticeable<Self> {
     /** The global diffuser. */
-    public final static Diffuser diffuser = new Diffuser();
+    private final static Diffuser diffuser = new Diffuser();
+    
+    /**
+     * Assign the given diffuse object converter to the given object type. The
+     * assignment will be inherited by any subsequently created child class
+     * loaders of the associated class loader, but not by existing child class
+     * loaders.
+     * <p>
+     * The converter will be assigned to a map of converters that is associated
+     * with the <code>ClassLoader</code> of the given object type through a weak
+     * reference so that the converter can be collected if an application
+     * container reloads an application's libraries.
+     * 
+     * @param type
+     *            The object type.
+     * @param converter
+     *            The object converter.
+     */
+    public static void setObjectDiffuser(Class<?> type, ObjectDiffuser converter) {
+        diffuser.setConverter(type, converter);
+    }
     
     /** Cache of resource bundles. */
     private final static ConcurrentMap<String, ResourceBundle> bundles = new ConcurrentHashMap<String, ResourceBundle>();
