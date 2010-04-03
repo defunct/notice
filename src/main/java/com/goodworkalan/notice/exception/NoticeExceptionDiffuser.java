@@ -14,7 +14,7 @@ public class NoticeExceptionDiffuser extends ThrowableDiffuser {
     protected Map<String, Object> modifiable(Diffuser diffuser, Object object, StringBuilder path, Set<String> includes) {
         Map<String, Object> map = super.modifiable(diffuser, object, path, includes);
         NoticeException e = (NoticeException) object;
-        map.put("vars", diffuser.flatten(e.get("vars"), true));
+        map.put("vars", diffuser.diffuse(e.get("vars"), true));
         return map;
     }
     
