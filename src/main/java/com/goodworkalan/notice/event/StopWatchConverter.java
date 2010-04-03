@@ -12,7 +12,7 @@ public class StopWatchConverter implements ObjectDiffuser {
         return stopWatch.getDuration();
     }
 
-    public boolean isContainer() {
+    public boolean isScalar() {
         return false;
     }
 }
