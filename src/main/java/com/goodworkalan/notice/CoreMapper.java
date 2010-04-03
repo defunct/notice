@@ -26,7 +26,7 @@ public class CoreMapper<T> implements Mapper<T> {
      * @see com.goodworkalan.prattle.entry.Mapper#put(java.lang.String, java.lang.Object)
      */
     public Mapper<T> put(String id, Object object) {
-        map.put(id, diffuser.flatten(object, Notice.SHALLOW));
+        map.put(id, diffuser.diffuse(object, Notice.SHALLOW));
         return this;
     }
 
@@ -34,7 +34,7 @@ public class CoreMapper<T> implements Mapper<T> {
      * @see com.goodworkalan.prattle.entry.Mapper#put(java.lang.String, java.lang.Object, java.lang.String)
      */
     public Mapper<T> put(String id, Object object, String... paths) {
-        map.put(id, diffuser.flatten(object, new HashSet<String>(Arrays.asList(paths))));
+        map.put(id, diffuser.diffuse(object, new HashSet<String>(Arrays.asList(paths))));
         return this;
     }
 
@@ -42,7 +42,7 @@ public class CoreMapper<T> implements Mapper<T> {
      * @see com.goodworkalan.prattle.entry.Mapper#put(java.lang.String, java.lang.Object, boolean)
      */
     public Mapper<T> put(String id, Object object, boolean recurse) {
-        map.put(id, diffuser.flatten(object, recurse ? Notice.DEEP : Notice.SHALLOW));
+        map.put(id, diffuser.diffuse(object, recurse ? Notice.DEEP : Notice.SHALLOW));
         return this;
     }
 

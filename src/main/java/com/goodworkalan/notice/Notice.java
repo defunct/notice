@@ -187,7 +187,7 @@ public abstract class Notice<Self> implements Noticeable<Self> {
      */
     public Self put(String name, Object object) {
         added(name);
-        vars.put(name, diffuser.flatten(object, SHALLOW));
+        vars.put(name, diffuser.diffuse(object, SHALLOW));
         return getSelf();
     }
 
@@ -196,7 +196,7 @@ public abstract class Notice<Self> implements Noticeable<Self> {
      */
     public Self put(String name, Object object, String...paths) {
         added(name);
-        vars.put(name, diffuser.flatten(object, new HashSet<String>(Arrays.asList(paths))));
+        vars.put(name, diffuser.diffuse(object, new HashSet<String>(Arrays.asList(paths))));
         return getSelf();
     }
 
@@ -205,7 +205,7 @@ public abstract class Notice<Self> implements Noticeable<Self> {
      */
     public Self put(String name, Object object, boolean recurse) {
         added(name);
-        vars.put(name, diffuser.flatten(object, recurse ? DEEP : SHALLOW));
+        vars.put(name, diffuser.diffuse(object, recurse ? DEEP : SHALLOW));
         return getSelf();
     }
 
@@ -288,7 +288,7 @@ public abstract class Notice<Self> implements Noticeable<Self> {
         
         protected void put(Diffuser diffuse, Map<String, Object> map) {
             if (!IGNORE.contains(name)) {
-                map.put(name, diffuse.flatten(object, includes));
+                map.put(name, diffuse.diffuse(object, includes));
             }
         }
         

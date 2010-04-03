@@ -42,7 +42,7 @@ public class CoreLister<T> implements Lister<T> {
      * @see com.goodworkalan.prattle.entry.Lister#add(java.lang.Object)
      */
     public Lister<T> add(Object object) {
-        list.add(diffuser.flatten(object, Notice.SHALLOW));
+        list.add(diffuser.diffuse(object, Notice.SHALLOW));
         return this;
     }
 
@@ -50,7 +50,7 @@ public class CoreLister<T> implements Lister<T> {
      * @see com.goodworkalan.prattle.entry.Lister#add(java.lang.Object, java.lang.String)
      */
     public Lister<T> add(Object object, String... paths) {
-        list.add(diffuser.flatten(object, new HashSet<String>(Arrays.asList(paths))));
+        list.add(diffuser.diffuse(object, new HashSet<String>(Arrays.asList(paths))));
         return this;
     }
     
@@ -58,7 +58,7 @@ public class CoreLister<T> implements Lister<T> {
      * @see com.goodworkalan.prattle.entry.Lister#add(java.lang.Object, boolean)
      */
     public Lister<T> add(Object object, boolean recurse) {
-        list.add(diffuser.flatten(object, recurse ? Notice.DEEP : Notice.SHALLOW));
+        list.add(diffuser.diffuse(object, recurse ? Notice.DEEP : Notice.SHALLOW));
         return this;
     }
 
