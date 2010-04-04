@@ -17,8 +17,4 @@ public class NoticeExceptionDiffuser extends ThrowableDiffuser {
         map.put("vars", diffuser.diffuse(e.get("vars"), true));
         return map;
     }
-    
-    public boolean isContainer() {
-        return false;
-    }
 }
