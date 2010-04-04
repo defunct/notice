@@ -4,7 +4,7 @@ import com.goodworkalan.notice.Notice;
 
 public class StopWatch {
     static {
-        Notice.setObjectDiffuser(StopWatch.class, new StopWatchConverter());
+        Notice.setObjectDiffuser(StopWatch.class, new StopWatchDiffuser());
     }
 
     private int duration;
