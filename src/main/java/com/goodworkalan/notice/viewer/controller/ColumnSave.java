@@ -41,7 +41,7 @@ public class ColumnSave {
         em.flush();
         Map<String, Object> response = new HashMap<String, Object>();
         response.put("status", "success");
-        response.put("column", new Diffuser().flatten(column));
+        response.put("column", new Diffuser().diffuse(column));
         return JSONValue.toJSONString(response);
     }
 }

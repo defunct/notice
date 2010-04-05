@@ -23,6 +23,6 @@ public class ColumnsGet {
 
     @Output(contentType = "application/json")
     public CharSequence text() {
-        return JSONValue.toJSONString(new Diffuser().flatten(grid, "filters", "columns", "log"));
+        return JSONValue.toJSONString(new Diffuser().diffuse(grid, "filters", "columns", "log"));
     }
 }

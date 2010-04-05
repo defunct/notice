@@ -42,7 +42,7 @@ public class FilterAdd {
         em.flush();
         Map<String, Object> response = new HashMap<String, Object>();
         response.put("status", "success");
-        response.put("filter", new Diffuser().flatten(filter));
+        response.put("filter", new Diffuser().diffuse(filter));
         return JSONValue.toJSONString(response);
     }
 }
