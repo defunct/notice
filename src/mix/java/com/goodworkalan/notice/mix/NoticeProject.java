@@ -1,4 +1,4 @@
-package com.goodworkalan.prattle.mix;
+package com.goodworkalan.notice.mix;
 
 import com.goodworkalan.go.go.Artifact;
 import com.goodworkalan.mix.ProjectModule;
