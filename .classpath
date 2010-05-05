@@ -5,19 +5,17 @@
   <classpathentry kind="src" output="target/test-classes" path="src/test/java"/>
   <classpathentry excluding="**/*.java" kind="src" output="target/test-classes" path="src/test/resources"/>
   <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-  <classpathentry combineaccessrules="false" kind="src" path="/notice"/>
-  <classpathentry combineaccessrules="false" kind="src" path="/diffuse"/>
   <classpathentry kind="output" path="target/classes"/>
-  <classpathentry kind="var" path="M2_REPO/org/testng/testng/5.10/testng-5.10-jdk15.jar" sourcepath="M2_REPO/org/testng/testng/5.10/testng-5.10-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/com/goodworkalan/notice/0.1/notice-0.1.jar" sourcepath="M2_REPO/com/goodworkalan/notice/0.1/notice-0.1-sources.jar">
+  <classpathentry kind="var" path="M2_REPO/org/testng/testng-jdk15/5.10/testng-jdk15-5.10.jar"/>
+  <classpathentry kind="var" path="M2_REPO/com/github/bigeasy/notice/notice/0.1/notice-0.1.jar" sourcepath="M2_REPO/com/github/bigeasy/notice/notice/0.1/notice-0.1-sources.jar">
     <attributes>
-      <attribute name="javadoc_location" value="jar:file:/Users/alan/.m2/repository/com/goodworkalan/notice/0.1/notice-0.1-javadoc.jar!/"/>
+      <attribute name="javadoc_location" value="jar:file:/Users/alan/.m2/repository/com/github/bigeasy/notice/notice/0.1/notice-0.1-javadoc.jar!/"/>
     </attributes>
   </classpathentry>
   <classpathentry kind="var" path="M2_REPO/junit/junit/3.8.1/junit-3.8.1.jar" sourcepath="M2_REPO/junit/junit/3.8.1/junit-3.8.1-sources.jar"/>
-  <classpathentry kind="var" path="M2_REPO/com/github/bigeasy/verbiage/verbiage/0.1/verbiage-0.1.jar" sourcepath="M2_REPO/com/github/bigeasy/verbiage/verbiage/0.1/verbiage-0.1-sources.jar">
+  <classpathentry kind="var" path="M2_REPO/com/github/bigeasy/verbiage/verbiage/0.1.0.2/verbiage-0.1.0.2.jar" sourcepath="M2_REPO/com/github/bigeasy/verbiage/verbiage/0.1.0.2/verbiage-0.1.0.2-sources.jar">
     <attributes>
-      <attribute name="javadoc_location" value="jar:file:/Users/alan/.m2/repository/com/github/bigeasy/verbiage/verbiage/0.1/verbiage-0.1-javadoc.jar!/"/>
+      <attribute name="javadoc_location" value="jar:file:/Users/alan/.m2/repository/com/github/bigeasy/verbiage/verbiage/0.1.0.2/verbiage-0.1.0.2-javadoc.jar!/"/>
     </attributes>
   </classpathentry>
   <classpathentry kind="var" path="M2_REPO/com/github/bigeasy/diffuse/diffuse/0.1/diffuse-0.1.jar" sourcepath="M2_REPO/com/github/bigeasy/diffuse/diffuse/0.1/diffuse-0.1-sources.jar">
@@ -25,20 +23,25 @@
       <attribute name="javadoc_location" value="jar:file:/Users/alan/.m2/repository/com/github/bigeasy/diffuse/diffuse/0.1/diffuse-0.1-javadoc.jar!/"/>
     </attributes>
   </classpathentry>
-  <classpathentry kind="var" path="M2_REPO/com/goodworkalan/reflective/0.1/reflective-0.1.jar" sourcepath="M2_REPO/com/goodworkalan/reflective/0.1/reflective-0.1-sources.jar">
+  <classpathentry kind="var" path="M2_REPO/com/github/bigeasy/reflective/reflective/0.1/reflective-0.1.jar" sourcepath="M2_REPO/com/github/bigeasy/reflective/reflective/0.1/reflective-0.1-sources.jar">
     <attributes>
-      <attribute name="javadoc_location" value="jar:file:/Users/alan/.m2/repository/com/goodworkalan/reflective/0.1/reflective-0.1-javadoc.jar!/"/>
+      <attribute name="javadoc_location" value="jar:file:/Users/alan/.m2/repository/com/github/bigeasy/reflective/reflective/0.1/reflective-0.1-javadoc.jar!/"/>
     </attributes>
   </classpathentry>
-  <classpathentry kind="var" path="M2_REPO/com/goodworkalan/madlib/0.1/madlib-0.1.jar" sourcepath="M2_REPO/com/goodworkalan/madlib/0.1/madlib-0.1-sources.jar">
+  <classpathentry kind="var" path="M2_REPO/com/github/bigeasy/madlib/madlib/0.1/madlib-0.1.jar" sourcepath="M2_REPO/com/github/bigeasy/madlib/madlib/0.1/madlib-0.1-sources.jar">
     <attributes>
-      <attribute name="javadoc_location" value="jar:file:/Users/alan/.m2/repository/com/goodworkalan/madlib/0.1/madlib-0.1-javadoc.jar!/"/>
+      <attribute name="javadoc_location" value="jar:file:/Users/alan/.m2/repository/com/github/bigeasy/madlib/madlib/0.1/madlib-0.1-javadoc.jar!/"/>
     </attributes>
   </classpathentry>
   <classpathentry kind="var" path="M2_REPO/org/slf4j/slf4j-api/1.4.2/slf4j-api-1.4.2.jar" sourcepath="M2_REPO/org/slf4j/slf4j-api/1.4.2/slf4j-api-1.4.2-sources.jar"/>
   <classpathentry kind="var" path="M2_REPO/com/github/bigeasy/danger/danger/0.1/danger-0.1.jar" sourcepath="M2_REPO/com/github/bigeasy/danger/danger/0.1/danger-0.1-sources.jar">
     <attributes>
       <attribute name="javadoc_location" value="jar:file:/Users/alan/.m2/repository/com/github/bigeasy/danger/danger/0.1/danger-0.1-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="var" path="M2_REPO/com/github/bigeasy/class-association/class-association/0.1/class-association-0.1.jar" sourcepath="M2_REPO/com/github/bigeasy/class-association/class-association/0.1/class-association-0.1-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:file:/Users/alan/.m2/repository/com/github/bigeasy/class-association/class-association/0.1/class-association-0.1-javadoc.jar!/"/>
     </attributes>
   </classpathentry>
 </classpath>

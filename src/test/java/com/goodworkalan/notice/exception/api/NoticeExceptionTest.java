@@ -12,6 +12,7 @@ import org.testng.annotations.Test;
 
 import com.goodworkalan.notice.exception.Clue;
 import com.goodworkalan.notice.exception.NoticeException;
+import com.goodworkalan.notice.exception.api.missing.BundleMissing;
 
 public class NoticeExceptionTest {
     /**
@@ -90,7 +91,7 @@ public class NoticeExceptionTest {
      */
     @Test
     public void noBundle() {
-        assertEquals(new BundleMissing(101).getMessage(), "101");
+        assertEquals(new BundleMissing(101).getMessage(), "Missing message bundle [com.goodworkalan.notice.exception.api.missing.exceptions]. Message key is [101]. (This is a meta error message.)");
     }
 
     /**
@@ -99,9 +100,9 @@ public class NoticeExceptionTest {
      */
     @Test
     public void noCanonicalClassName() {
-        assertEquals(new NoticeException(101, new Clue()) {
+        assertEquals(new NoticeException(102, new Clue()) {
             private static final long serialVersionUID = 1L;
-        }.getMessage(), "101");
+        }.getMessage(), "Basic message.");
     }
 
     /**
@@ -109,7 +110,7 @@ public class NoticeExceptionTest {
      */
     @Test
     public void missingMessage() {
-        assertEquals(new TestException(100).getMessage(), "100");
+        assertEquals(new TestException(100).getMessage(), "The message key [100] cannot be found in bundle [com.goodworkalan.notice.exception.api.exceptions]. (This is a meta error message.)");
     }
 
     /**
@@ -117,7 +118,7 @@ public class NoticeExceptionTest {
      */
     @Test
     public void blankMessage() {
-        assertEquals(new TestException(101).getMessage(), "101");
+        assertEquals(new TestException(101).getMessage(), "The message for message key [101] in bundle [com.goodworkalan.notice.exception.api.exceptions] is blank. (This is a meta error message.)");
     }
     
     /**
@@ -141,7 +142,7 @@ public class NoticeExceptionTest {
      */
     @Test
     public void badFormat() {
-        assertEquals(new TestException(104).map("map").put("name", "value").end().getMessage(), "104");
+        assertEquals(new TestException(104).map("map").put("name", "value").end().getMessage(), "Format exception [d != java.lang.String] for message key [104] in bundle [com.goodworkalan.notice.exception.api.exceptions]. (This is a meta error message.)");
     }
 
     /**
@@ -149,7 +150,7 @@ public class NoticeExceptionTest {
      */
     @Test
     public void badPathIdentifier() {
-        assertEquals(new TestException(105).map("map").put("name", "value").end().getMessage(), "105");
+        assertEquals(new TestException(105).map("map").put("name", "value").end().getMessage(), "Invalid format argument name [vars.map.!] for message key [105] in bundle [com.goodworkalan.notice.exception.api.exceptions]. (This is a meta error message.)");
     }
 
     /**
@@ -165,7 +166,7 @@ public class NoticeExceptionTest {
      */
     @Test
     public void badListPath() {
-        assertEquals(new TestException(112).list("list").add("value").end().getMessage(), "112");
+        assertEquals(new TestException(112).list("list").add("value").end().getMessage(), "Cannot find argument named [list.!] for message key [112] in bundle [com.goodworkalan.notice.exception.api.exceptions]. (This is a meta error message.)");
     }
 
     /**
@@ -174,7 +175,7 @@ public class NoticeExceptionTest {
      */
     @Test
     public void listPathIdentifier() {
-        assertEquals(new TestException(107).list("list").add("value").end().getMessage(), "107");
+        assertEquals(new TestException(107).list("list").add("value").end().getMessage(), "Cannot find argument named [vars.list.zero] for message key [107] in bundle [com.goodworkalan.notice.exception.api.exceptions]. (This is a meta error message.)");
     }
 
     /**
@@ -183,7 +184,7 @@ public class NoticeExceptionTest {
      */
     @Test
     public void notACollection() {
-        assertEquals(new TestException(108).map("map").put("name", "value").end().getMessage(), "108");
+        assertEquals(new TestException(108).map("map").put("name", "value").end().getMessage(), "Cannot find argument named [map.name.path] for message key [108] in bundle [com.goodworkalan.notice.exception.api.exceptions]. (This is a meta error message.)");
     }
     
 
@@ -192,7 +193,7 @@ public class NoticeExceptionTest {
      */
     @Test
     public void nullReference() {
-        assertEquals(new TestException(109).map("map").put("name", "value").end().getMessage(), "109");
+        assertEquals(new TestException(109).map("map").put("name", "value").end().getMessage(), "Cannot find argument named [none.name] for message key [109] in bundle [com.goodworkalan.notice.exception.api.exceptions]. (This is a meta error message.)");
     }
     
     /**
@@ -201,7 +202,7 @@ public class NoticeExceptionTest {
      */
     @Test
     public void outOfBounds() {
-        assertEquals(new TestException(110).list("list").add("value").end().getMessage(), "110");
+        assertEquals(new TestException(110).list("list").add("value").end().getMessage(), "Cannot find argument named [vars.list.1] for message key [110] in bundle [com.goodworkalan.notice.exception.api.exceptions]. (This is a meta error message.)");
     }
     
     

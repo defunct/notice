@@ -1,4 +1,4 @@
-package com.goodworkalan.notice.exception.api;
+package com.goodworkalan.notice.exception.api.missing;
 
 import com.goodworkalan.notice.exception.Clue;
 import com.goodworkalan.notice.exception.NoticeException;
