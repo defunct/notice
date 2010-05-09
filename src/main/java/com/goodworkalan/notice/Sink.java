@@ -50,14 +50,30 @@ public final class Sink {
     }
 
     /**
-     * Get the Prattle logger Singleton.
+     * Get the default notice sink.
      * 
-     * @return The Singleton longer instance.
+     * @return The default notice sink.
      */
     public static Sink getInstance() {
         return getInstance("default");
     }
-    
+
+    /**
+     * Get the notice sink with the given name. The notice sink will be
+     * configured using the properties file found in the
+     * <code>com.goodworkalan.notice</code> package that contains the given
+     * name, in the format <code>sink.name.properties</code>, where name is the
+     * given name.
+     * <p>
+     * FIXME Make it so. (Name is different.)
+     * <p>
+     * FIXME Strange to add to someone else's package. Maybe
+     * <code>META-INF/com.goodworkalan.notice/sink.properties</code>.
+     * 
+     * @param name
+     *            The sink name.
+     * @return
+     */
     public static Sink getInstance(String name) {
         Sink sink = sinks.get(name);
         if (sink == null) {
@@ -142,6 +158,7 @@ public final class Sink {
      * message into an non-blocking queue and return immediately.
      * 
      * @param message
+     *            The message to record.
      */
     void send(Map<String, Object> entry) {
         consumer.consume(entry);

@@ -22,8 +22,16 @@ abstract class Sender {
     public Sender(Logger logger) {
         this.logger = logger;
     }
-    
+
+    /**
+     * Send the formatted message to the underlying SLF4J logger. Derived
+     * classes will choose a write method based on message level.
+     * 
+     * @param message
+     *            The message to write.
+     */
     protected abstract void send(String message);
+
     /**
      * Send the given map to the given sink after writing the formatted message
      * to this logger at this level.

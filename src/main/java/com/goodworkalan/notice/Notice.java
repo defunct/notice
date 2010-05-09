@@ -3,8 +3,13 @@ package com.goodworkalan.notice;
 import com.goodworkalan.diffuse.Diffuser;
 import com.goodworkalan.diffuse.ObjectDiffuser;
 
+/**
+ * A structured program instrumentation message.
+ *
+ * @author Alan Gutierrez
+ */
 public abstract class Notice {
-    /** The global diffuser. */
+    /** The static diffuser used by all notice instances. */
     final static Diffuser diffuser = new Diffuser();
     
     /**
@@ -28,22 +33,17 @@ public abstract class Notice {
     }
 
     /**
-     * Flatten the given object, referencing the Entry configuration to
-     * determine if the object should be converted to a <code>Map</code>
-     * or converted to a <code>String</code> using <code>toString</code>.
-     * <p>
-     * The given object graph must be a tree. Logging cyclical graphs will
-     * result in endless recursion.
-     * <p>
-     * Object in the tree are turned into maps of their properites, unless
-     * the object has been marked as one that will be converted using either
-     * the toString method or a string converter.  
+     * Put a recursive diffusion of the given object into the notice with the
+     * given key including only the given object paths in the recursive
+     * diffusion.
      * 
-     * @param name
-     *            The property name.
+     * @param key
+     *            The map key.
      * @param object
-     *            The object property.
-     * @return This log language element to continue the logging statement.
+     *            The object to diffuse and add to map.
+     * @param includes
+     *            The paths to include in the recursive diffusion.
+     * @return This notice to continue to build the notice.
      */
     public abstract Notice put(String name, Object object);
 
@@ -59,7 +59,7 @@ public abstract class Notice {
      *            The property name.
      * @return A map building language element to build a map to log.
      */
-    public abstract Mapper<Notice> map(String id);
+    public abstract Mapper<Notice> map(String key);
 
     /**
      * Create a map building language element to build a map that will be
@@ -69,17 +69,28 @@ public abstract class Notice {
      *            The property name.
      * @return A map building language element to build a map to log.
      */
-    public abstract Lister<Notice> list(String id);
+    public abstract Lister<Notice> list(String key);
 
     /**
-     * Write the log message to the default message log and send the output
-     * properties to the consumer tread.
+     * Write the notice to the given message sink.
      */
     public abstract void send(Sink sink);
-    
+
+    /**
+     * Start a stop watch with the given name. The stop watch will run until
+     * either the stop method is called with the stop watch name or the notice
+     * is sent to a sink.
+     * 
+     * @param name
+     *            The stop watch name.
+     * @return This notice in order to chain method calls.
+     */
     public abstract Notice start(String name);
     
     public abstract Notice stop(String name);
 
+    /**
+     * Write the notice to the default message sink.
+     */
     public abstract void send();
 }

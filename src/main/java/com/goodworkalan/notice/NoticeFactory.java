@@ -8,13 +8,26 @@ import java.util.concurrent.ConcurrentMap;
 
 import com.goodworkalan.verbiage.Message;
 
-
+/**
+ * A factory that builds notice messages whose levels are governed by an SLF4J
+ * logger.
+ * 
+ * @author Alan Gutierrez
+ */
 public class NoticeFactory {
     /** The static cache of exception message resource bundles. */
     private final static ConcurrentMap<String, ResourceBundle> BUNDLES = new ConcurrentHashMap<String, ResourceBundle>();
 
+    /** The SLF4J logger. */
     private final org.slf4j.Logger logger;
-    
+
+    /**
+     * Create a notice factory that will write message to the given SLF4j logger
+     * and use the SLF4J logger to determine what logging levels are enabled.
+     * 
+     * @param logger
+     *            The SLF4J logger.
+     */
     public NoticeFactory(org.slf4j.Logger logger) {
         this.logger = logger;
     }
