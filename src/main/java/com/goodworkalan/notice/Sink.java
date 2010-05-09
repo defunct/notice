@@ -22,7 +22,7 @@ import com.goodworkalan.reflective.ReflectiveFactory;
  */
 public final class Sink {
     /** The reflective factory used to build recorders. */
-    private final static ReflectiveFactory reflectiveFactory = new ReflectiveFactory();
+    private final static ReflectiveFactory reflective = new ReflectiveFactory();
 
     /** The map of sink names to sinks. */
     private final static ConcurrentMap<String, Sink> sinks = new ConcurrentHashMap<String, Sink>();
@@ -72,11 +72,11 @@ public final class Sink {
     }
 
     /**
-     * Read a <code>prattle.properties</code> configuraiton file, constructing
+     * Read a <code>notice.properties</code> configuration file, constructing
      * the specified recorders and appending them to the given list.
      * 
      * @param properties
-     *            The Prattle properties file to load.
+     *            The properties file to load.
      * @param recorders
      *            The list of recorders.
      */
@@ -92,7 +92,7 @@ public final class Sink {
             }
             Recorder recorder;
             try {
-                recorder = (Recorder) reflectiveFactory.getConstructor(recorderClass).newInstance();
+                recorder = (Recorder) reflective.getConstructor(recorderClass).newInstance();
             } catch (ReflectiveException e) {
                 throw new NoticeException(0, e);
             }

@@ -1,20 +1,23 @@
 package com.goodworkalan.notice;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
-public final class NoticeException extends RuntimeException
-{
+import com.goodworkalan.danger.CodedDanger;
+
+/**
+ * A general purpose exception that indicates that an error occurred in one 
+ * of the classes in the notice package.
+ *   
+ * @author Alan Gutierrez
+ */
+public final class NoticeException extends CodedDanger {
+    /** The static cache of exception message resource bundles. */
+    private final static ConcurrentMap<String, ResourceBundle> BUNDLES = new ConcurrentHashMap<String, ResourceBundle>();
+
     /** The serial version id. */
     private static final long serialVersionUID = 20080620L;
-    
-    /** The error code. */
-    private final int code;
-
-    /** A list of arguments to the formatted error message. */
-    private final List<Object> arguments = new ArrayList<Object>();
     
     /** A variable substitution in the property file creates an infinite loop. */
     public final static int PROPERTY_LOOP = 101;
@@ -27,11 +30,11 @@ public final class NoticeException extends RuntimeException
      * 
      * @param code
      *            The error code.
+     * @param arguments
+     *            The positioned format arguments.
      */
-    public NoticeException(int code)
-    {
-        super();
-        this.code = code;
+    public NoticeException(int code, Object...arguments) {
+        super(BUNDLES, code, null, arguments);
     }
 
     /**
@@ -42,78 +45,10 @@ public final class NoticeException extends RuntimeException
      *            The error code.
      * @param cause
      *            The cause exception.
+     * @param arguments
+     *            The positioned format arguments.
      */
-    public NoticeException(int code, Throwable cause)
-    {
-        super(cause);
-        this.code = code;
-    }
-
-    /**
-     * Get the error code.
-     * 
-     * @return The error code.
-     */
-    public int getCode()
-    {
-        return code;
-    }
-
-    /**
-     * Add an argument to the list of arguments to provide the formatted error
-     * message associated with the error code.
-     * 
-     * @param args
-     *            The format arguments.
-     * @return This sheaf exception for chained invocation of add.
-     */
-    public NoticeException add(Object...args)
-    {
-        for (Object arg : args)
-        {
-            arguments.add(arg);
-        }
-        return this;
-    }
-
-    /**
-     * Return the path to the message bundle. Derived classes can override
-     * this to provide messages for their own error code.
-     * 
-     * @return The message bundle path.
-     */
-    protected String getMessageBundlePath()
-    {
-        return "com.goodworkalan.prattle.exceptions";
-    }
-
-    /**
-     * Create an detail message from the error message format associated with
-     * the error code and the format arguments.
-     * 
-     * @return The exception message.
-     */
-    @Override
-    public String getMessage()
-    {
-        String key = Integer.toString(code);
-        ResourceBundle exceptions = ResourceBundle.getBundle(getMessageBundlePath());
-        String format;
-        try
-        {
-            format = exceptions.getString(key);
-        }
-        catch (MissingResourceException e)
-        {
-            return key;
-        }
-        try
-        {
-            return String.format(format, arguments.toArray());
-        }
-        catch (Throwable e)
-        {
-            throw new Error(key, e);
-        }
+    public NoticeException(int code, Throwable cause, Object...arguments) {
+        super(BUNDLES, code, cause, arguments);
     }
 }

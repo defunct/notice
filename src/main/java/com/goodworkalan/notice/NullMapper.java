@@ -1,36 +1,31 @@
 package com.goodworkalan.notice;
 
-public class MapperMapper<T> implements Mapper<T> {
+
+class NullMapper<T> implements Mapper<T> {
     private final T parent;
 
-    private final Mapper<?> mapper;
-
-    public MapperMapper(T parent, Mapper<?> mapper) {
+    public NullMapper(T parent) {
         this.parent = parent;
-        this.mapper = mapper;
     }
 
     public Mapper<T> put(String id, Object object) {
-        mapper.put(id, object);
         return this;
     }
-
+    
     public Mapper<T> put(String id, Object object, boolean recurse) {
-        mapper.put(id, object, recurse);
         return this;
     }
-
+    
     public Mapper<T> put(String id, Object object, String... paths) {
-        mapper.put(id, object, paths);
         return this;
     }
 
     public Lister<Mapper<T>> list(String id) {
-        return new ListerLister<Mapper<T>>(this, mapper.list(id));
+        return new NullLister<Mapper<T>>(this);
     }
 
     public Mapper<Mapper<T>> map(String id) {
-        return new MapperMapper<Mapper<T>>(this, mapper.map(id));
+        return new NullMapper<Mapper<T>>(this);
     }
 
     public T end() {

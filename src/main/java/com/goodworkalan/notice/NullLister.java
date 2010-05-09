@@ -1,36 +1,31 @@
 package com.goodworkalan.notice;
 
-public class ListerLister<T> implements Lister<T> {
+
+class NullLister<T> implements Lister<T> {
     private final T parent;
 
-    private final Lister<?> lister;
-
-    public ListerLister(T parent, Lister<?> lister) {
+    public NullLister(T parent) {
         this.parent = parent;
-        this.lister = lister;
     }
 
     public Lister<T> add(Object object) {
-        lister.add(object);
         return this;
     }
 
     public Lister<T> add(Object object, boolean recurse) {
-        lister.add(object, recurse);
         return this;
     }
 
     public Lister<T> add(Object object, String... paths) {
-        lister.add(object, paths);
         return this;
     }
 
     public Lister<Lister<T>> list() {
-        return new ListerLister<Lister<T>>(this, lister.list());
+        return new NullLister<Lister<T>>(this);
     }
 
     public Mapper<Lister<T>> map() {
-        return new MapperMapper<Lister<T>>(this, lister.map());
+        return new NullMapper<Lister<T>>(this);
     }
 
     public T end() {

@@ -2,21 +2,40 @@ package com.goodworkalan.notice;
 
 public interface Mapper<T> {
     /**
-     * Put a shallow copy of the given object in the map at the given name
-     * index. A shallow copy will copy scalar and exception properties of the
-     * given object, but no collections, maps or objects.
+     * Put a shallow diffusion of the given object in the map with the given
+     * key.
      * 
-     * @param name
-     *            The index name.
+     * @param key
+     *            The map key.
      * @param object
-     *            The object to copy.
-     * @return This map builder to continue map creation.
+     *            The object to diffuse and add to map.
+     * @return This map builder to continue building the map.
      */
-    public Mapper<T> put(String id, Object object);
+    public Mapper<T> put(String key, Object object);
 
-    public Mapper<T> put(String id, Object object, String... paths);
+    /**
+     * Put a recursive diffusion of the given object into the map with the given
+     * key excluding the given object paths from the recursive diffusion.
+     * 
+     * @param key
+     *            The map key.
+     * @param object
+     *            The object to diffuse and add to map.
+     * @return This map builder to continue building the map.
+     */
+    public Mapper<T> put(String key, Object object, String... paths);
 
-    public Mapper<T> put(String id, Object object, boolean recurse);
+    /**
+     * Put a recursive diffusion of the given object to the list if the given
+     * recursive flag is true, shallow if it is false.
+     * 
+     * @param key
+     *            The map key.
+     * @param object
+     *            The object to diffuse and add to map.
+     * @return This map builder to continue building the map.
+     */
+    public Mapper<T> put(String key, Object object, boolean recurse);
 
     /**
      * Create a new list builder that will build a map list will be stored in
@@ -41,10 +60,9 @@ public interface Mapper<T> {
     public Mapper<Mapper<T>> map(String name);
 
     /**
-     * Terminate map creation and switch the context of the chained method calls
-     * to the parent object that created this map builder.
+     * Terminate the builder and return the parent builder.
      * 
-     * @return The parent object.
+     * @return The parent builder.
      */
     public T end();
 }
