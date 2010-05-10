@@ -14,33 +14,25 @@ package com.goodworkalan.notice;
  */
 public interface Lister<T> {
     /**
-     * Add a shallow diffusion of the given object to the list.
+     * Add a diffused copy of the given object to the list, incluSecursive copy
+     * of the diffused object graph. If not paths are given, the copy is not
+     * recursive, a shallow diffusion of only the immediate object is added to
+     * the notice. If any of the include paths given is the special path "*", a
+     * recursive copy is performed that includes all objects in the object
+     * graph.
+     * <p>
+     * There are no checks to determine if a recursively copied object is
+     * visited more than once, so recursive copies of object graphs un-tempered
+     * by specific include paths will result in in endless recursion. Object
+     * trees present no such problems.
      * 
      * @param object
-     *            The object to copy and add to list.
-     * @return This list builder to continue building the list.
-     */
-    public Lister<T> add(Object object);
-
-    /**
-     * Add a recursive diffusion of the given object to the list excluding the
-     * given object paths from the recursive copy.
-     * 
-     * @param object
-     *            The object to copy and add to list.
+     *            The object to diffuse and add to the list.
+     * @param includes
+     *            The paths to include in the recursive diffusion.
      * @return This list builder to continue building the list.
      */
     public Lister<T> add(Object object, String... paths);
-
-    /**
-     * Add a recursive diffusion of the given object to the list if the given
-     * recursive flag is true, shallow if it is false.
-     * 
-     * @param object
-     *            The object to copy and add to list.
-     * @return This list builder to continue building the list.
-     */
-    public Lister<T> add(Object object, boolean recurse);
 
     /**
      * Add a list to the list and return a list builder to build the child list.

@@ -1,10 +1,8 @@
 package com.goodworkalan.notice;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,32 +57,41 @@ class CoreNotice extends Notice {
         return data;
     }
 
-    /* (non-Javadoc)
-     * @see com.goodworkalan.prattle.entry.MetaEntry#put(java.lang.String, java.lang.Object)
+    /**
+     * Put a diffused copy of the given object into the notice using the given
+     * key, including all of the object paths given in includes in a recursive
+     * copy of the diffused object graph. If not paths are given, the copy is
+     * not recursive, a shallow diffusion of only the immediate object is added
+     * to the notice. If any of the include paths given is the special path "*",
+     * a recursive copy is performed that includes all objects in the object
+     * graph.
+     * <p>
+     * There are no checks to determine if a recursively copied object is
+     * visited more than once, so recursive copies of object graphs un-tempered
+     * by specific include paths will result in in endless recursion. Object
+     * trees present no such problems.
+     * 
+     * @param key
+     *            The map key.
+     * @param object
+     *            The object to diffuse and add to map.
+     * @param includes
+     *            The paths to include in the recursive diffusion.
+     * @return This notice to continue to build the notice.
      */
-    public Notice put(String name, Object object) {
-        data.put(name, diffuser.diffuse(object, SHALLOW));
+    public Notice put(String name, Object object, String... includes) {
+        data.put(name, diffuser.diffuse(object, includes));
         return this;
     }
 
-    /* (non-Javadoc)
-     * @see com.goodworkalan.prattle.entry.MetaEntry#put(java.lang.String, java.lang.Object, java.lang.String)
-     */
-    public Notice put(String name, Object object, String...paths) {
-        data.put(name, diffuser.diffuse(object, new HashSet<String>(Arrays.asList(paths))));
-        return this;
-    }
-
-    /* (non-Javadoc)
-     * @see com.goodworkalan.prattle.entry.MetaEntry#put(java.lang.String, java.lang.Object, boolean)
-     */
-    public Notice put(String name, Object object, boolean recurse) {
-        data.put(name, diffuser.diffuse(object, recurse ? DEEP : SHALLOW));
-        return this;
-    }
-
-    /* (non-Javadoc)
-     * @see com.goodworkalan.prattle.entry.MetaEntry#map(java.lang.String)
+    /**
+     * Add a map to the notice using the given key and return a map builder to
+     * build the child map. When the child builder terminates, it will return
+     * this notice as the parent.
+     * 
+     * @param key
+     *            The notice entry key.
+     * @return A map builder to build the child map.
      */
     public Mapper<Notice> map(String name) {
         Map<String, Object> map = new LinkedHashMap<String, Object>();
@@ -92,8 +99,15 @@ class CoreNotice extends Notice {
         return new CoreMapper<Notice>(diffuser, this, map);
     }
     
-    /* (non-Javadoc)
-     * @see com.goodworkalan.prattle.entry.MetaEntry#list(java.lang.String)
+
+    /**
+     * Add a list to the notice using the given key and return a list builder to
+     * build the child list. When the child builder terminates, it will return
+     * this notice as the parent.
+     * 
+     * @param key
+     *            The notice entry key.
+     * @return A list builder to build the child list.
      */
     public Lister<Notice> list(String name) {
         List<Object> list = new ArrayList<Object>();

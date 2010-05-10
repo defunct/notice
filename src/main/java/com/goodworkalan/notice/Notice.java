@@ -11,17 +11,9 @@ import com.goodworkalan.diffuse.ObjectDiffuser;
 public abstract class Notice {
     /** The static diffuser used by all notice instances. */
     final static Diffuser diffuser = new Diffuser();
-    
+
     /**
-     * Assign the given diffuse object converter to the given object type. The
-     * assignment will be inherited by any subsequently created child class
-     * loaders of the associated class loader, but not by existing child class
-     * loaders.
-     * <p>
-     * The converter will be assigned to a map of converters that is associated
-     * with the <code>ClassLoader</code> of the given object type through a weak
-     * reference so that the converter can be collected if an application
-     * container reloads an application's libraries.
+     * Assign the given object diffuser to the given class.
      * 
      * @param type
      *            The object type.
@@ -33,9 +25,18 @@ public abstract class Notice {
     }
 
     /**
-     * Put a recursive diffusion of the given object into the notice with the
-     * given key including only the given object paths in the recursive
-     * diffusion.
+     * Put a diffused copy of the given object into the notice using the given
+     * key, including all of the object paths given in includes in a recursive
+     * copy of the diffused object graph. If not paths are given, the copy is
+     * not recursive, a shallow diffusion of only the immediate object is added
+     * to the notice. If any of the include paths given is the special path "*",
+     * a recursive copy is performed that includes all objects in the object
+     * graph.
+     * <p>
+     * There are no checks to determine if a recursively copied object is
+     * visited more than once, so recursive copies of object graphs un-tempered
+     * by specific include paths will result in in endless recursion. Object
+     * trees present no such problems.
      * 
      * @param key
      *            The map key.
@@ -45,34 +46,35 @@ public abstract class Notice {
      *            The paths to include in the recursive diffusion.
      * @return This notice to continue to build the notice.
      */
-    public abstract Notice put(String name, Object object);
-
-    public abstract Notice put(String name, Object object, String... paths);
-
-    public abstract Notice put(String name, Object object, boolean recurse);
+    public abstract Notice put(String name, Object object, String... includes);
 
     /**
-     * Create a map building language element to build a map that will be
-     * written to the log flagged with the given property name.
+     * Add a map to the notice using the given key and return a map builder to
+     * build the child map. When the child builder terminates, it will return
+     * this notice as the parent.
      * 
-     * @param name
-     *            The property name.
-     * @return A map building language element to build a map to log.
+     * @param key
+     *            The notice entry key.
+     * @return A map builder to build the child map.
      */
     public abstract Mapper<Notice> map(String key);
 
     /**
-     * Create a map building language element to build a map that will be
-     * written to the log flagged with the given property name.
+     * Add a list to the notice using the given key and return a list builder to
+     * build the child list. When the child builder terminates, it will return
+     * this notice as the parent.
      * 
-     * @param name
-     *            The property name.
-     * @return A map building language element to build a map to log.
+     * @param key
+     *            The notice entry key.
+     * @return A list builder to build the child list.
      */
     public abstract Lister<Notice> list(String key);
 
     /**
      * Write the notice to the given message sink.
+     * 
+     * @param sink
+     *            The sink to write to.
      */
     public abstract void send(Sink sink);
 

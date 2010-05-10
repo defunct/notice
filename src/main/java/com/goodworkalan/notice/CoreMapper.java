@@ -1,8 +1,6 @@
 package com.goodworkalan.notice;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,17 +42,19 @@ class CoreMapper<T> implements Mapper<T> {
         this.map = map;
     }
 
-    /* (non-Javadoc)
-     * @see com.goodworkalan.prattle.entry.Mapper#put(java.lang.String, java.lang.Object)
-     */
-    public Mapper<T> put(String id, Object object) {
-        map.put(id, diffuser.diffuse(object, CoreNotice.SHALLOW));
-        return this;
-    }
-
     /**
-     * Put a recursive diffusion of the given object into the map with the given
-     * key including only the given object paths in the recursive diffusion.
+     * Put a diffused copy of the given object into the map using the given key,
+     * including all of the object paths given in includes in a recursive copy
+     * of the diffused object graph. If not paths are given, the copy is not
+     * recursive, a shallow diffusion of only the immediate object is added to
+     * the notice. If any of the include paths given is the special path "*", a
+     * recursive copy is performed that includes all objects in the object
+     * graph.
+     * <p>
+     * There are no checks to determine if a recursively copied object is
+     * visited more than once, so recursive copies of object graphs un-tempered
+     * by specific include paths will result in in endless recursion. Object
+     * trees present no such problems.
      * 
      * @param key
      *            The map key.
@@ -62,25 +62,10 @@ class CoreMapper<T> implements Mapper<T> {
      *            The object to diffuse and add to map.
      * @param includes
      *            The paths to include in the recursive diffusion.
-     * @return This map builder to continue building the map.
+     * @return This notice to continue to build the notice.
      */
-    public Mapper<T> put(String key, Object object, String... includes) {
-        map.put(key, diffuser.diffuse(object, new HashSet<String>(Arrays.asList(includes))));
-        return this;
-    }
-
-    /**
-     * Put a recursive diffusion of the given object to the list if the given
-     * recursive flag is true, shallow if it is false.
-     * 
-     * @param key
-     *            The map key.
-     * @param object
-     *            The object to diffuse and add to map.
-     * @return This map builder to continue building the map.
-     */
-    public Mapper<T> put(String id, Object object, boolean recurse) {
-        map.put(id, diffuser.diffuse(object, recurse ? CoreNotice.DEEP : CoreNotice.SHALLOW));
+     public Mapper<T> put(String key, Object object, String... includes) {
+        map.put(key, diffuser.diffuse(object, includes));
         return this;
     }
 

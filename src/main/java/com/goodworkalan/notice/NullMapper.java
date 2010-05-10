@@ -8,15 +8,7 @@ class NullMapper<T> implements Mapper<T> {
         this.parent = parent;
     }
 
-    public Mapper<T> put(String id, Object object) {
-        return this;
-    }
-    
-    public Mapper<T> put(String id, Object object, boolean recurse) {
-        return this;
-    }
-    
-    public Mapper<T> put(String id, Object object, String... paths) {
+    public Mapper<T> put(String id, Object object, String... includes) {
         return this;
     }
 

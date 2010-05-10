@@ -8,14 +8,6 @@ class NullLister<T> implements Lister<T> {
         this.parent = parent;
     }
 
-    public Lister<T> add(Object object) {
-        return this;
-    }
-
-    public Lister<T> add(Object object, boolean recurse) {
-        return this;
-    }
-
     public Lister<T> add(Object object, String... paths) {
         return this;
     }
