@@ -9,8 +9,10 @@ import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import com.goodworkalan.reflective.ReflectiveException;
-import com.goodworkalan.reflective.ReflectiveFactory;
+import com.goodworkalan.reflective.Reflection;
+import com.goodworkalan.reflective.Reflective;
+import com.goodworkalan.reflective.ReflectionException;
+import com.goodworkalan.verbiage.Message;
 
 /**
  * Singleton instance of a sink that consumes Prattle messages.
@@ -21,9 +23,6 @@ import com.goodworkalan.reflective.ReflectiveFactory;
  * @author Alan Gutierrez
  */
 public final class Sink {
-    /** The reflective factory used to build recorders. */
-    private final static ReflectiveFactory reflective = new ReflectiveFactory();
-
     /** The map of sink names to sinks. */
     private final static ConcurrentMap<String, Sink> sinks = new ConcurrentHashMap<String, Sink>();
 
@@ -100,16 +99,21 @@ public final class Sink {
         for (String recorderName : properties.getProperty("recorders", "").split(",\\s*")) {
             String prefix = "recorder." + recorderName;
             String className = properties.getProperty(prefix);
-            Class<?> recorderClass;
+            Class<?> foundClass;
             try {
-                recorderClass = Class.forName(className);
+                foundClass = Class.forName(className);
             } catch (ClassNotFoundException e) {
                 throw new NoticeException(0, e);
             }
+            final Class<? extends Recorder> recorderClass = foundClass.asSubclass(Recorder.class);
             Recorder recorder;
             try {
-                recorder = (Recorder) reflective.getConstructor(recorderClass).newInstance();
-            } catch (ReflectiveException e) {
+                recorder = new Reflective().reflect(new Reflection<Recorder>() {
+                    public Recorder reflect() throws InstantiationException, IllegalAccessException {
+                        return recorderClass.newInstance();
+                    }
+                });
+            } catch (ReflectionException e) {
                 throw new NoticeException(0, e);
             }
             configurations.add(new Configuration(recorder, prefix + ".", properties));
