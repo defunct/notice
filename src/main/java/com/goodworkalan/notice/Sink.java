@@ -9,9 +9,8 @@ import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import com.goodworkalan.reflective.Reflection;
 import com.goodworkalan.reflective.Reflective;
-import com.goodworkalan.reflective.ReflectionException;
+import com.goodworkalan.reflective.ReflectiveException;
 import com.goodworkalan.verbiage.Message;
 
 /**
@@ -108,12 +107,12 @@ public final class Sink {
             final Class<? extends Recorder> recorderClass = foundClass.asSubclass(Recorder.class);
             Recorder recorder;
             try {
-                recorder = new Reflective().reflect(new Reflection<Recorder>() {
-                    public Recorder reflect() throws InstantiationException, IllegalAccessException {
-                        return recorderClass.newInstance();
-                    }
-                });
-            } catch (ReflectionException e) {
+                try {
+                    recorder = recorderClass.newInstance();
+                } catch (Throwable e) {
+                    throw new ReflectiveException(Reflective.encode(e), e);
+                }
+            } catch (ReflectiveException e) {
                 throw new NoticeException(0, e);
             }
             configurations.add(new Configuration(recorder, prefix + ".", properties));
