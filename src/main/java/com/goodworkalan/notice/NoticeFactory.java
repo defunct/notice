@@ -2,9 +2,6 @@ package com.goodworkalan.notice;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.ResourceBundle;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 import com.goodworkalan.verbiage.Message;
 
@@ -15,9 +12,6 @@ import com.goodworkalan.verbiage.Message;
  * @author Alan Gutierrez
  */
 public class NoticeFactory {
-    /** The static cache of exception message resource bundles. */
-    private final static ConcurrentMap<String, ResourceBundle> BUNDLES = new ConcurrentHashMap<String, ResourceBundle>();
-
     /** The SLF4J logger. */
     private final org.slf4j.Logger logger;
 
@@ -107,7 +101,7 @@ public class NoticeFactory {
         data.put("$messageKey", qualifiedMessageKey);
         data.put("$date", System.currentTimeMillis());
         
-        Message message = new Message(BUNDLES, className, "notice", getMessageKey(className, messageKey), data);
+        Message message = new Message(className, "notice", getMessageKey(className, messageKey), data);
         
         return new CoreNotice(message, data, sender);
     }

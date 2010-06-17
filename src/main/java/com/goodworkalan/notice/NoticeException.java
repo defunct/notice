@@ -1,9 +1,5 @@
 package com.goodworkalan.notice;
 
-import java.util.ResourceBundle;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
 import com.goodworkalan.danger.CodedDanger;
 
 /**
@@ -13,9 +9,6 @@ import com.goodworkalan.danger.CodedDanger;
  * @author Alan Gutierrez
  */
 public final class NoticeException extends CodedDanger {
-    /** The static cache of exception message resource bundles. */
-    private final static ConcurrentMap<String, ResourceBundle> BUNDLES = new ConcurrentHashMap<String, ResourceBundle>();
-
     /** The serial version id. */
     private static final long serialVersionUID = 20080620L;
     
@@ -34,7 +27,7 @@ public final class NoticeException extends CodedDanger {
      *            The positioned format arguments.
      */
     public NoticeException(int code, Object...arguments) {
-        super(BUNDLES, code, null, arguments);
+        super(code, null, arguments);
     }
 
     /**
@@ -49,6 +42,6 @@ public final class NoticeException extends CodedDanger {
      *            The positioned format arguments.
      */
     public NoticeException(int code, Throwable cause, Object...arguments) {
-        super(BUNDLES, code, cause, arguments);
+        super(code, cause, arguments);
     }
 }
