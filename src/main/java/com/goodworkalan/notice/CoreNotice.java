@@ -32,10 +32,13 @@ class CoreNotice extends Notice {
     /** The notice variables. */
     private final Map<String, Object> data;
     
+    // TODO Document.
     private final Message message;
     
+    // TODO Document.
     private final Sender sender;
 
+    // TODO Document.
     public CoreNotice(Message message, Map<String, Object> data, Sender sender) {
         this.message = message;
         this.data = data;
@@ -53,6 +56,7 @@ class CoreNotice extends Notice {
      */
 //    public abstract Self getSelf();
 
+    // TODO Document.
     public Map<String, Object> getData() {
         return data;
     }
@@ -130,10 +134,12 @@ class CoreNotice extends Notice {
         return message.get(path);
     }
     
+    // TODO Document.
     public String getContext() {
         return message.getContext();
     }
     
+    // TODO Document.
     public void send(Sink sink) {
         for (Map.Entry<String, StopWatch> stopWatch : stopWatches.entrySet()) {
             put(stopWatch.getKey(), stopWatch.getValue());
@@ -183,6 +189,7 @@ class CoreNotice extends Notice {
         return this;
     }
     
+    // TODO Document.
     public void send() {
         send(Sink.getInstance());
     }

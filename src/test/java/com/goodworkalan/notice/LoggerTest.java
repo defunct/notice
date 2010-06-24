@@ -8,7 +8,9 @@ import org.testng.annotations.Test;
 import com.goodworkalan.notice.NoticeFactory;
 import com.goodworkalan.notice.Sink;
 
+// TODO Document.
 public class LoggerTest {
+    // TODO Document.
     @Test
     public void test() {
         NoticeFactory notices =  new NoticeFactory(LoggerFactory.getLogger(LoggerTest.class));

@@ -26,6 +26,7 @@ public class NoticeFactory {
         this.logger = logger;
     }
     
+    // TODO Document.
     public Notice trace(String messageKey) {
         if (logger.isTraceEnabled()) {
             return createNotice("TRACE", messageKey, new Sender(logger) {
@@ -38,6 +39,7 @@ public class NoticeFactory {
         return NullNotice.INSTANCE;
     }
     
+    // TODO Document.
     public Notice debug(String messageKey) {
         if (logger.isDebugEnabled()) {
             return createNotice("DEBUG", messageKey, new Sender(logger) {
@@ -50,6 +52,7 @@ public class NoticeFactory {
         return NullNotice.INSTANCE;   
     }
 
+    // TODO Document.
     public Notice info(String messageKey) {
         if (logger.isInfoEnabled()) {
             return createNotice("INFO", messageKey, new Sender(logger) {
@@ -62,6 +65,7 @@ public class NoticeFactory {
         return NullNotice.INSTANCE;
     }    
 
+    // TODO Document.
     public Notice warn(String messageKey) {
         if (logger.isWarnEnabled()) {
             return createNotice("WARN", messageKey, new Sender(logger) {
@@ -86,6 +90,7 @@ public class NoticeFactory {
         return NullNotice.INSTANCE;
     }
 
+    // TODO Document.
     private Notice createNotice(String level, String messageKey, Sender sender) {
         String qualifiedMessageKey = getMessageKey(logger.getName(), messageKey);
         Thread thread = Thread.currentThread();
@@ -106,6 +111,7 @@ public class NoticeFactory {
         return new CoreNotice(message, data, sender);
     }
     
+    // TODO Document.
     static String getMessageKey(String className, String code) {
         int index = className.lastIndexOf('.');
         if (index > -1) {

@@ -89,6 +89,7 @@ public abstract class Notice {
      */
     public abstract Notice start(String name);
     
+    // TODO Document.
     public abstract Notice stop(String name);
 
     /**
