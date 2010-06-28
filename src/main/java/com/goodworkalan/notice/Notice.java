@@ -38,7 +38,7 @@ public abstract class Notice {
      * by specific include paths will result in in endless recursion. Object
      * trees present no such problems.
      * 
-     * @param key
+     * @param name
      *            The map key.
      * @param object
      *            The object to diffuse and add to map.

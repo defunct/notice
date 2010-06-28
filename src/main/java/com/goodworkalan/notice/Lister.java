@@ -28,7 +28,7 @@ public interface Lister<T> {
      * 
      * @param object
      *            The object to diffuse and add to the list.
-     * @param includes
+     * @param paths
      *            The paths to include in the recursive diffusion.
      * @return This list builder to continue building the list.
      */

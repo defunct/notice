@@ -14,10 +14,7 @@ import com.goodworkalan.reflective.ReflectiveException;
 import com.goodworkalan.verbiage.Message;
 
 /**
- * Singleton instance of a sink that consumes Prattle messages.
- * <p>
- * Prattle messages are consumed by the sink by passign them to method
- * {@link #send(Message) send}.
+ * Singleton instance of a sink that consumes Notice messages.
  * 
  * @author Alan Gutierrez
  */
@@ -70,7 +67,7 @@ public final class Sink {
      * 
      * @param name
      *            The sink name.
-     * @return
+     * @return The sink.
      */
     public static Sink getInstance(String name) {
         Sink sink = sinks.get(name);
