@@ -11,7 +11,6 @@ import java.util.concurrent.ConcurrentMap;
 
 import com.goodworkalan.reflective.Reflective;
 import com.goodworkalan.reflective.ReflectiveException;
-import com.goodworkalan.verbiage.Message;
 
 /**
  * Singleton instance of a sink that consumes Notice messages.
