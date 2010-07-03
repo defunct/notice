@@ -88,8 +88,14 @@ public abstract class Notice {
      * @return This notice in order to chain method calls.
      */
     public abstract Notice start(String name);
-    
-    // TODO Document.
+
+    /**
+     * Stop the stop watch with the given name.
+     * 
+     * @param name
+     *            The stop watch name.
+     * @return This notice in order to chain method calls.
+     */
     public abstract Notice stop(String name);
 
     /**

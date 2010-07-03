@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.slf4j.Logger;
+
 import com.goodworkalan.verbiage.Message;
 
 /**
@@ -32,17 +34,19 @@ class CoreNotice extends Notice {
     /** The notice variables. */
     private final Map<String, Object> data;
     
-    // TODO Document.
+    /** The message format. */
     private final Message message;
     
-    // TODO Document.
-    private final Sender sender;
+    private final Logger logger;
+    
+    private final int level;
 
     // TODO Document.
-    public CoreNotice(Message message, Map<String, Object> data, Sender sender) {
+    public CoreNotice(Message message, Map<String, Object> data, Logger logger, int level) {
         this.message = message;
         this.data = data;
-        this.sender = sender;
+        this.logger = logger;
+        this.level = level;
     }
     
     /**
@@ -138,14 +142,37 @@ class CoreNotice extends Notice {
     public String getContext() {
         return message.getContext();
     }
-    
-    // TODO Document.
+
+    /**
+     * Send the notice to the given sink. Stop watches are stopped and the error
+     * message is formatted using the diagnostic data gathered.
+     * 
+     * @param sink
+     *            The sink.
+     */
     public void send(Sink sink) {
         for (Map.Entry<String, StopWatch> stopWatch : stopWatches.entrySet()) {
             put(stopWatch.getKey(), stopWatch.getValue());
         }
-        data.put("$message", message.toString());
-        sender.send(data, sink);
+        String formatted = message.toString();
+        data.put("$message", formatted);
+        switch (level) {
+        case 1:
+            logger.trace(formatted);
+            break;
+        case 2:
+            logger.debug(formatted);
+            break;
+        case 3:
+            logger.info(formatted);
+            break;
+        case 4:
+            logger.warn(formatted);
+            break;
+        case 5:
+            logger.error(formatted);
+        }
+        sink.send(data);
     }
 
     /** The log entry stop watches. */

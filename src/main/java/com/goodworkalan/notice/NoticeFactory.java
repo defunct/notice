@@ -29,12 +29,7 @@ public class NoticeFactory {
     // TODO Document.
     public Notice trace(String messageKey) {
         if (logger.isTraceEnabled()) {
-            return createNotice("TRACE", messageKey, new Sender(logger) {
-                @Override
-                protected void send(String message) {
-                    logger.trace(message);
-                }
-            });
+            return createNotice("TRACE", messageKey, 1);
         }
         return NullNotice.INSTANCE;
     }
@@ -42,12 +37,7 @@ public class NoticeFactory {
     // TODO Document.
     public Notice debug(String messageKey) {
         if (logger.isDebugEnabled()) {
-            return createNotice("DEBUG", messageKey, new Sender(logger) {
-                @Override
-                protected void send(String message) {
-                    logger.debug(message);
-                }
-            });
+            return createNotice("DEBUG", messageKey, 2);
         }
         return NullNotice.INSTANCE;   
     }
@@ -55,12 +45,7 @@ public class NoticeFactory {
     // TODO Document.
     public Notice info(String messageKey) {
         if (logger.isInfoEnabled()) {
-            return createNotice("INFO", messageKey, new Sender(logger) {
-                @Override
-                protected void send(String message) {
-                    logger.info(message);
-                }
-            });
+            return createNotice("INFO", messageKey, 3);
         }
         return NullNotice.INSTANCE;
     }    
@@ -68,30 +53,30 @@ public class NoticeFactory {
     // TODO Document.
     public Notice warn(String messageKey) {
         if (logger.isWarnEnabled()) {
-            return createNotice("WARN", messageKey, new Sender(logger) {
-                @Override
-                protected void send(String message) {
-                    logger.warn(message);
-                }
-            });
+            return createNotice("WARN", messageKey, 4);
         }
         return NullNotice.INSTANCE;
     }
     
     public Notice error(String messageKey) {
         if (logger.isErrorEnabled()) {
-            return createNotice("ERROR", messageKey, new Sender(logger) {
-                @Override
-                protected void send(String message) {
-                    logger.error(message);
-                }
-            });
+            return createNotice("ERROR", messageKey, 5);
         }
         return NullNotice.INSTANCE;
     }
 
-    // TODO Document.
-    private Notice createNotice(String level, String messageKey, Sender sender) {
+    /**
+     * Create a notice populating the common notice fields.
+     * 
+     * @param levelName
+     *            The notice level name.
+     * @param messageKey
+     *            The message key.
+     * @param level
+     *            The magic number indicating the level.
+     * @return A newly created notice.
+     */
+    private Notice createNotice(String levelName, String messageKey, int level) {
         String qualifiedMessageKey = getMessageKey(logger.getName(), messageKey);
         Thread thread = Thread.currentThread();
 
@@ -102,13 +87,13 @@ public class NoticeFactory {
         data.put("$threadId", thread.getId());
         data.put("$threadName", thread.getName());
         data.put("$logger", className);
-        data.put("$level", level);
+        data.put("$level", levelName);
         data.put("$messageKey", qualifiedMessageKey);
         data.put("$date", System.currentTimeMillis());
         
         Message message = new Message(className, "notice", getMessageKey(className, messageKey), data);
         
-        return new CoreNotice(message, data, sender);
+        return new CoreNotice(message, data, logger, level);
     }
     
     // TODO Document.
