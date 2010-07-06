@@ -12,7 +12,13 @@ import org.testng.annotations.Test;
 import com.goodworkalan.notice.json.JsonEntry;
 import com.goodworkalan.notice.json.JsonEntryReader;
 
+/**
+ * Unit tests for the {@Link JsonEntryReader} class.
+ * 
+ * @author Alan Gutierrez
+ */
 public class JsonEntryReaderTest {
+    /** Test reading a log file directory. */
     @Test
     public void read() throws ParseException {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
