@@ -8,13 +8,18 @@ import java.util.TimeZone;
 
 import com.goodworkalan.madlib.VariableProperties;
 
+// TODO Document.
 public class Rotator {
+    // TODO Document.
     private DateFormat fileFormat;
     
+    // TODO Document.
     private Date rotateAfter;
     
+    // TODO Document.
     private RotateType rotateType;
     
+    // TODO Document.
     public Rotator(VariableProperties configuration, String prefix) {
         Calendar calendar = getCalendar(new Date());
         String rotate = configuration.getProperty(prefix + "rotate", "NEVER").trim().toUpperCase();
@@ -30,12 +35,14 @@ public class Rotator {
 
     }
     
+    // TODO Document.
     private Calendar getCalendar(Date date) {
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
         calendar.setTime(date);
         return calendar;
     }
     
+    // TODO Document.
     private Calendar getRotation(Calendar calendar) {
         calendar.set(Calendar.MILLISECOND, 0);
         calendar.set(Calendar.SECOND, 0);
@@ -46,6 +53,7 @@ public class Rotator {
         return calendar;
     }
 
+    // TODO Document.
     private Date getNextRotation(Calendar calendar) {
         switch (rotateType) {
         case HOURLY:
@@ -57,10 +65,12 @@ public class Rotator {
         return calendar.getTime();
     }
     
+    // TODO Document.
     public boolean shouldRotate(Date date) {
         return date.after(rotateAfter);
     }
     
+    // TODO Document.
     public String getSuffix() {
         Calendar calendar = getRotation(getCalendar(new Date()));
         String suffix = fileFormat.format(calendar.getTime());

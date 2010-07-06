@@ -1,5 +1,13 @@
 package com.goodworkalan.notice.rotate;
 
+// TODO Document.
 public enum RotateType {
-    HOURLY, DAILY, WEEKLY, NEVER
+    // TODO Document.
+    HOURLY,
+    // TODO Document.
+    DAILY,
+    // TODO Document.
+    WEEKLY,
+    // TODO Document.
+    NEVER
 }
