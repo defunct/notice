@@ -9,9 +9,6 @@ import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import com.goodworkalan.reflective.Reflective;
-import com.goodworkalan.reflective.ReflectiveException;
-
 /**
  * Singleton instance of a sink that consumes Notice messages.
  * 
@@ -103,12 +100,8 @@ public final class Sink {
             final Class<? extends Recorder> recorderClass = foundClass.asSubclass(Recorder.class);
             Recorder recorder;
             try {
-                try {
-                    recorder = recorderClass.newInstance();
-                } catch (Throwable e) {
-                    throw new ReflectiveException(Reflective.encode(e), e);
-                }
-            } catch (ReflectiveException e) {
+                recorder = recorderClass.newInstance();
+            } catch (Exception e) {
                 throw new NoticeException(0, e);
             }
             configurations.add(new Configuration(recorder, prefix + ".", properties));

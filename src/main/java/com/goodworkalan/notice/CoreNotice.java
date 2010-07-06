@@ -39,6 +39,10 @@ class CoreNotice extends Notice {
     
     private final Logger logger;
     
+    /**
+     * The logging level. This is a value of 1 through 5 for the levels TRACE
+     * through ERROR.
+     */
     private final int level;
 
     // TODO Document.
@@ -60,7 +64,11 @@ class CoreNotice extends Notice {
      */
 //    public abstract Self getSelf();
 
-    // TODO Document.
+    /**
+     * Get the map of diagnostic data.
+     * 
+     * @return The map of diagnostic data.
+     */
     public Map<String, Object> getData() {
         return data;
     }
@@ -137,8 +145,12 @@ class CoreNotice extends Notice {
     public Object get(String path) {
         return message.get(path);
     }
-    
-    // TODO Document.
+
+    /**
+     * Get the message context string, used to locate a message bundle.
+     * 
+     * @return The message context string.
+     */
     public String getContext() {
         return message.getContext();
     }
@@ -215,8 +227,10 @@ class CoreNotice extends Notice {
         stopWatches.get(name).stop();
         return this;
     }
-    
-    // TODO Document.
+
+    /**
+     * Send the notice to the default sink instance.
+     */
     public void send() {
         send(Sink.getInstance());
     }

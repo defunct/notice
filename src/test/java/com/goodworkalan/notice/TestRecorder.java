@@ -5,21 +5,37 @@ import java.util.Map;
 import com.goodworkalan.madlib.VariableProperties;
 import com.goodworkalan.notice.Recorder;
 
-// TODO Document.
+/**
+ * A test recorder implementation.
+ *
+ * @author Alan Gutierrez
+ */
 public class TestRecorder implements Recorder {
-    // TODO Document.
+    /**
+     * Does nothing.
+     * 
+     * @param prefix
+     *            The property key prefix.
+     * @param configuration
+     *            The properties file.
+     */
     public void initialize(String prefix, VariableProperties configuration) {
     }
 
-    // TODO Document.
+    /**
+     * Does nothing.
+     * 
+     * @param map
+     *            The notice data.
+     */
     public void record(Map<String, Object> map) {
     }
     
-    // TODO Document.
+    /** Does nothing. */
     public void flush() {
     }
 
-    // TODO Document.
+    /** Does nothing. */
     public void close() {
     }
 }

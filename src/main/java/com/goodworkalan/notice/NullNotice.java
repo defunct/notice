@@ -49,7 +49,7 @@ class NullNotice extends Notice {
     public void send(Sink sink) {
     }
 
-    // TODO Document.
+    /** Does nothing. */
     public void send() {
     }
 }

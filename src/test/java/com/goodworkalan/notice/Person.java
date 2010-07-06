@@ -1,25 +1,44 @@
 package com.goodworkalan.notice;
 
-// TODO Document.
+/**
+ * An example person bean.
+ *
+ * @author Alan Gutierrez
+ */
 public class Person {
-    // TODO Document.
+    /** The first name. */
     private String firstName;
 
-    // TODO Document.
+    /** The last name. */
     private String lastName;
 
-    // TODO Document.
+    /**
+     * Create a person.
+     * 
+     * @param firstName
+     *            The first name.
+     * @param lastName
+     *            The last name.
+     */
     public Person(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
     }
 
-    // TODO Document.
+    /**
+     * Get the first name.
+     * 
+     * @return The first name.
+     */
     public String getFirstName() {
         return firstName;
     }
 
-    // TODO Document.
+    /**
+     * Get the last name.
+     * 
+     * @return The last name.
+     */
     public String getLastName() {
         return lastName;
     }

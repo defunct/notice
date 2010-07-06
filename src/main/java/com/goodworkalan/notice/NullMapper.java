@@ -2,10 +2,15 @@ package com.goodworkalan.notice;
 
 // TODO Document.
 class NullMapper<T> implements Mapper<T> {
-    // TODO Document.
+    /** The parent builder to return when this builder terminates. */
     private final T parent;
 
-    // TODO Document.
+    /**
+     * Create a null mapper.
+     * 
+     * @param parent
+     *            The parent builder to return when this builder terminates.
+     */
     public NullMapper(T parent) {
         this.parent = parent;
     }
@@ -25,7 +30,12 @@ class NullMapper<T> implements Mapper<T> {
         return new NullMapper<Mapper<T>>(this);
     }
 
-    // TODO Document.
+    /**
+     * Terminate the builder by returning the parent builder to continue
+     * building structured messages with chained method calls.
+     * 
+     * @return The parent builder.
+     */
     public T end() {
         return parent;
     }

@@ -1,6 +1,8 @@
 package com.goodworkalan.notice;
 
-import com.goodworkalan.danger.CodedDanger;
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 
 /**
  * A general purpose exception that indicates that an error occurred in one 
@@ -8,7 +10,7 @@ import com.goodworkalan.danger.CodedDanger;
  *   
  * @author Alan Gutierrez
  */
-public final class NoticeException extends CodedDanger {
+public final class NoticeException extends RuntimeException {
     /** The serial version id. */
     private static final long serialVersionUID = 20080620L;
     
@@ -17,6 +19,12 @@ public final class NoticeException extends CodedDanger {
     
     /** A property value ends with a backslash character, does not actually escape anything. */
     public final static int TERMINAL_BACKSLASH = 102;
+    
+    /** The error code. */
+    private final int code;
+    
+    /** The error message. */
+    private final String message;
 
     /**
      * Create a Sheaf exception with the given error code.
@@ -27,7 +35,7 @@ public final class NoticeException extends CodedDanger {
      *            The positioned format arguments.
      */
     public NoticeException(int code, Object...arguments) {
-        super(code, null, arguments);
+        this(code, null, arguments);
     }
 
     /**
@@ -42,6 +50,49 @@ public final class NoticeException extends CodedDanger {
      *            The positioned format arguments.
      */
     public NoticeException(int code, Throwable cause, Object...arguments) {
-        super(code, cause, arguments);
+        super(null, cause);
+        this.message = formatMessage(code, arguments);
+        this.code = code;
+    }
+    
+    /**
+     * Get the error code.
+     * 
+     * @return The error code.
+     */
+    public int getCode() {
+        return code;
+    }
+
+    /**
+     * Get the error message.
+     * 
+     * @return The error message.
+     */
+    public String getMessage() {
+        return message;
+    }
+    
+    /**
+     * Format the exception message using the message arguments to format the
+     * message found with the message key in the message bundle found in the
+     * package of the given context class.
+     * 
+     * @param contextClass
+     *            The context class.
+     * @param code
+     *            The error code.
+     * @param arguments
+     *            The format message arguments.
+     * @return The formatted message.
+     */
+    private String formatMessage(int code, Object...arguments) {
+        String baseName = getClass().getPackage().getName() + ".exceptions";
+        try {
+            ResourceBundle bundle = ResourceBundle.getBundle(baseName, Locale.getDefault(), Thread.currentThread().getContextClassLoader());
+            return String.format((String) bundle.getObject(Integer.toString(code)), arguments);
+        } catch (Exception e) {
+            return String.format("Cannot load message key [%s] from bundle [%s] becuase [%s].", code, baseName, e.getMessage());
+        }
     }
 }

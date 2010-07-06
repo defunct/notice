@@ -19,12 +19,11 @@ public class NoticeProject implements ProjectModule {
     public void build(Builder builder) {
         builder
             .cookbook(JavaProject.class)
-                .produces("com.github.bigeasy.notice/notice/0.1.0.2")
+                .produces("com.github.bigeasy.notice/notice/0.1.0.3")
                 .depends()
                     .production("com.github.bigeasy.retry/retry/0.+1")
                     .production("com.github.bigeasy.verbiage/verbiage/0.+1")
                     .production("com.github.bigeasy.diffuse/diffuse/0.+1")
-                    .production("com.github.bigeasy.reflective/reflective/0.+1")
                     .production("com.github.bigeasy.madlib/madlib/0.+1")
                     .production("org.slf4j/slf4j-api/1.4.2")
                     .development("org.slf4j/slf4j-log4j12/1.4.2")
