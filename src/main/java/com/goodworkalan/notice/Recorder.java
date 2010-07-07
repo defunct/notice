@@ -21,15 +21,13 @@ public interface Recorder {
     /**
      * Initialize the recorder using the properties read from the given
      * properties map using keys prepended with the given property key prefix.
-     * <p>
-     * FIXME Flip parameter positions.
      * 
+     * @param properties
+     *            The properties map.
      * @param prefix
      *            The property key prefix.
-     * @param properties
-     *            The proeprties map.
      */
-    public void initialize(String prefix, VariableProperties properties);
+    public void initialize(VariableProperties properties, String prefix);
 
     /**
      * Flush all written entries to persistent storage. Used to ensure that the

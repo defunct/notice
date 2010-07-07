@@ -14,12 +14,12 @@ public class TestRecorder implements Recorder {
     /**
      * Does nothing.
      * 
+     * @param properties
+     *            The properties file.
      * @param prefix
      *            The property key prefix.
-     * @param configuration
-     *            The properties file.
      */
-    public void initialize(String prefix, VariableProperties configuration) {
+    public void initialize(VariableProperties properties, String prefix) {
     }
 
     /**

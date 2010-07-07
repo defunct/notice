@@ -89,7 +89,7 @@ class CoreConsumer implements Consumer, Runnable {
             while (eachConfiguration.hasNext()) {
                 Configuration configuration = eachConfiguration.next();
                 try {
-                    configuration.recorder.initialize(configuration.prefix, new VariableProperties(configuration.properties, true));
+                    configuration.recorder.initialize(new VariableProperties(configuration.properties, true), configuration.prefix);
                 } catch (Throwable e) {
                     // The stack trace will show the culpret.
                     logger.error("Unable to configure recorder.", e); 
