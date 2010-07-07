@@ -9,11 +9,11 @@ import com.goodworkalan.notice.NoticeFactory;
 import com.goodworkalan.notice.Sink;
 
 // TODO Document.
-public class LoggerTest {
+public class NoticeTest {
     // TODO Document.
     @Test
     public void test() {
-        NoticeFactory notices =  new NoticeFactory(LoggerFactory.getLogger(LoggerTest.class));
+        NoticeFactory notices =  new NoticeFactory(LoggerFactory.getLogger(NoticeTest.class));
         notices.debug("test1").send();
         notices.info("test2").send();
         notices.info("test3")
