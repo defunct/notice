@@ -8,9 +8,13 @@ import org.testng.annotations.Test;
 import com.goodworkalan.notice.NoticeFactory;
 import com.goodworkalan.notice.Sink;
 
-// TODO Document.
+/**
+ * Unit tests for the {@link Notice} class.
+ *
+ * @author Alan Gutierrez
+ */
 public class NoticeTest {
-    // TODO Document.
+    /** Test notice. */
     @Test
     public void test() {
         NoticeFactory notices =  new NoticeFactory(LoggerFactory.getLogger(NoticeTest.class));

@@ -1,51 +1,80 @@
 package com.goodworkalan.notice;
 
-// TODO Document.
+/**
+ * A do nothing implementation of <code>Notice</code> returned by
+ * <code>NoticeFactory</code> when a level is disabled.
+ * 
+ * @author Alan Gutierrez
+ */
 class NullNotice extends Notice {
-    // TODO Document.
+    /** The singleton instance. */
     public final static Notice INSTANCE = new NullNotice();
 
-    // TODO Document.
+    /**
+     * Does nothing.
+     * 
+     * @param name
+     *            The stop watch name.
+     * @return This notice in order to chain method calls.
+     */
     public Notice start(String name) {
         return this;
     }
 
-    // TODO Document.
+    /**
+     * Does nothing.
+     * 
+     * @param name
+     *            The stop watch name.
+     * @return This notice in order to chain method calls.
+     */
     public Notice stop(String name) {
         return this;
     }
 
-    // TODO Document.
-    public Notice put(String name, Object object) {
-        return this;
-    }
-
-    // TODO Document.
+    /**
+     * Does nothing.
+     * 
+     * @param name
+     *            The map key.
+     * @param object
+     *            The object to diffuse and add to map.
+     * @param includes
+     *            The paths to include in the recursive diffusion.
+     * @return This notice to continue to build the notice.
+     */
     public Notice put(String name, Object object, String... paths) {
         return this;
     }
 
-    // TODO Document.
-    public Notice put(String name, Object object, boolean recurse) {
-        return this;
-    }
-
-    // TODO Document.
-    public Notice string(String id, Object object) {
-        return this;
-    }
-
-    // TODO Document.
-    public Lister<Notice> list(String id) {
+    /**
+     * Return a do nothing implementation of <code>Mapper</code>.
+     * 
+     * @param key
+     *            The notice entry key.
+     * @return A do nothing list builder to build the child list.
+     */
+    public Lister<Notice> list(String key) {
         return new NullLister<Notice>(this);
     }
 
-    // TODO Document.
-    public Mapper<Notice> map(String id) {
+    /**
+     * Return a do nothing implementation of <code>Mapper</code>.
+     * 
+     * @param key
+     *            The notice entry key.
+     * @return A do nothing map builder to build the child map.
+     */
+    public Mapper<Notice> map(String key) {
         return new NullMapper<Notice>(this);
     }
-    
-    // TODO Document.
+
+    /**
+     * Does nothing.
+     * 
+     * @param sink
+     *            The sink to write to.
+     */
     public void send(Sink sink) {
     }
 

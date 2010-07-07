@@ -53,13 +53,8 @@ public final class Sink {
      * Get the notice sink with the given name. The notice sink will be
      * configured using the properties file found in the
      * <code>com.goodworkalan.notice</code> package that contains the given
-     * name, in the format <code>sink.name.properties</code>, where name is the
+     * name, in the format <code>notice.name.properties</code>, where name is the
      * given name.
-     * <p>
-     * FIXME Make it so. (Name is different.)
-     * <p>
-     * FIXME Strange to add to someone else's package. Maybe
-     * <code>META-INF/com.goodworkalan.notice/sink.properties</code>.
      * 
      * @param name
      *            The sink name.
@@ -123,7 +118,7 @@ public final class Sink {
         List<Configuration> configurations = new ArrayList<Configuration>();
         try {
             ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-            String fileName = name.equals("default") ? "notice.properties" : "notice." + name + ".properties";
+            String fileName = "com/goodworkalan/notice/" + (name.equals("default") ? "notice.properties" : "notice." + name + ".properties");
             Enumeration<URL> resources = classLoader.getResources(fileName);
 
             while (resources.hasMoreElements()) {

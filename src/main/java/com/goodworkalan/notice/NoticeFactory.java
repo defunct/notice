@@ -26,15 +26,32 @@ public class NoticeFactory {
         this.logger = logger;
     }
     
-    // TODO Document.
+
+    /**
+     * Create a trace message formatted using the message mapped to the given
+     * message key. The message will be emitted if the TRACE level is enabled
+     * for the context associated with this factory.
+     * 
+     * @param messageKey
+     *            The message key.
+     * @return A notice to build a structured logging message.
+     */
     public Notice trace(String messageKey) {
         if (logger.isTraceEnabled()) {
             return createNotice("TRACE", messageKey, 1);
         }
         return NullNotice.INSTANCE;
     }
-    
-    // TODO Document.
+
+    /**
+     * Create a debug message formatted using the message mapped to the given
+     * message key. The message will be emitted if the DEBUG level is enabled
+     * for the context associated with this factory.
+     * 
+     * @param messageKey
+     *            The message key.
+     * @return A notice to build a structured logging message.
+     */
     public Notice debug(String messageKey) {
         if (logger.isDebugEnabled()) {
             return createNotice("DEBUG", messageKey, 2);
@@ -42,22 +59,47 @@ public class NoticeFactory {
         return NullNotice.INSTANCE;   
     }
 
-    // TODO Document.
-    public Notice info(String messageKey) {
+    /**
+     * Create an info message formatted using the message mapped to the given
+     * message key. The message will be emitted if the INFO level is enabled for
+     * the context associated with this factory.
+     * 
+     * @param messageKey
+     *            The message key.
+     * @return A notice to build a structured logging message.
+     */
+   public Notice info(String messageKey) {
         if (logger.isInfoEnabled()) {
             return createNotice("INFO", messageKey, 3);
         }
         return NullNotice.INSTANCE;
-    }    
+    }
 
-    // TODO Document.
+    /**
+     * Create a warn message formatted using the message mapped to the given
+     * message key. The message will be emitted if the WARN level is enabled for
+     * the context associated with this factory.
+     * 
+     * @param messageKey
+     *            The message key.
+     * @return A notice to build a structured logging message.
+     */
     public Notice warn(String messageKey) {
         if (logger.isWarnEnabled()) {
             return createNotice("WARN", messageKey, 4);
         }
         return NullNotice.INSTANCE;
     }
-    
+
+    /**
+     * Create an error message formatted using the message mapped to the given
+     * message key. The message will be emitted if the ERROR level is enabled
+     * for the context associated with this factory.
+     * 
+     * @param messageKey
+     *            The message key.
+     * @return A notice to build a structured logging message.
+     */
     public Notice error(String messageKey) {
         if (logger.isErrorEnabled()) {
             return createNotice("ERROR", messageKey, 5);
@@ -95,8 +137,19 @@ public class NoticeFactory {
         
         return new CoreNotice(message, data, logger, level);
     }
-    
-    // TODO Document.
+
+    /**
+     * Get the message key for the given class name and message code. A message
+     * key is created by joining the simple class name with a slash and the
+     * message code.
+     * 
+     * @param className
+     *            The fully qualified class name.
+     * @param code
+     *            The message code.
+     * @return The message key created by joining the simple class with the
+     *         code.
+     */
     static String getMessageKey(String className, String code) {
         int index = className.lastIndexOf('.');
         if (index > -1) {

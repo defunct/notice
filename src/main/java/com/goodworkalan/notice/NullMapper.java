@@ -1,6 +1,15 @@
 package com.goodworkalan.notice;
 
-// TODO Document.
+/**
+ * A do nothing implementation of <code>Mapper</code> returned from the do
+ * nothing implementation of <code>Notice</code> that is returned from
+ * <code>NoticeFactory</code> when a level is disabled.
+ * 
+ * @author Alan Gutierrez
+ * 
+ * @param <T>
+ *            Type type of the parent builder.
+ */
 class NullMapper<T> implements Mapper<T> {
     /** The parent builder to return when this builder terminates. */
     private final T parent;
@@ -15,17 +24,41 @@ class NullMapper<T> implements Mapper<T> {
         this.parent = parent;
     }
 
-    // TODO Document.
-    public Mapper<T> put(String id, Object object, String... includes) {
+    /**
+     * Does nothing.
+     * 
+     * @param key
+     *            The map key.
+     * @param object
+     *            The object to diffuse and add to map.
+     * @param includes
+     *            The paths to include in the recursive diffusion.
+     * @return This map builder to continue building the map.
+     */
+    public Mapper<T> put(String key, Object object, String... includes) {
         return this;
     }
 
-    // TODO Document.
+    /**
+     * A do nothing implementation that returns a do nothing implementation of
+     * <code>Lister</code>.
+     * 
+     * @param key
+     *            The map key for the list value.
+     * @return A do nothing implementation of <code>Lister</code>.
+     */
     public Lister<Mapper<T>> list(String id) {
         return new NullLister<Mapper<T>>(this);
     }
 
-    // TODO Document.
+    /**
+     * A do nothing implementation that returns a do nothing implementation of
+     * <code>Mapper</code>.
+     * 
+     * @param key
+     *            The map key for the map value.
+     * @return A do nothing implementation of <code>Mapper</code>.
+     */
     public Mapper<Mapper<T>> map(String id) {
         return new NullMapper<Mapper<T>>(this);
     }

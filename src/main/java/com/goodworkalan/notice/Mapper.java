@@ -42,18 +42,22 @@ public interface Mapper<T> {
      * build the child list. When the child builder terminates, it will return
      * this list builder as the parent.
      * 
+     * @param key
+     *            The map key for the list value.
      * @return A list builder to build the child list.
      */
-    public Lister<Mapper<T>> list(String name);
+    public Lister<Mapper<T>> list(String key);
 
     /**
      * Put a map to the map with the given key and return a map builder to build
      * the child map. When the child builder terminates, it will return this map
      * builder as the parent.
      * 
+     * @param key
+     *            The map key for the map value.
      * @return A map builder to build the child map.
      */
-    public Mapper<Mapper<T>> map(String name);
+    public Mapper<Mapper<T>> map(String key);
 
     /**
      * Terminate the builder and return the parent builder.

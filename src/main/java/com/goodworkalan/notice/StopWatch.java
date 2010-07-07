@@ -1,6 +1,10 @@
 package com.goodworkalan.notice;
 
-// TODO Document.
+/**
+ * A stop watch to time operations and record them in a Notice entry.
+ * 
+ * @author Alan Gutierrez
+ */
 class StopWatch {
     static {
         Notice.setObjectDiffuser(StopWatch.class, new StopWatchDiffuser());

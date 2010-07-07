@@ -37,32 +37,30 @@ class CoreNotice extends Notice {
     /** The message format. */
     private final Message message;
     
+    /**  The SLF4J logger. */
     private final Logger logger;
     
-    /**
-     * The logging level. This is a value of 1 through 5 for the levels TRACE
-     * through ERROR.
-     */
+    /** The logging level, 1 through 5 for TRACE through ERROR. */
     private final int level;
 
-    // TODO Document.
+    /**
+     * Create a core notice.
+     * 
+     * @param message
+     *            The message.
+     * @param data
+     *            The diagnostic data.
+     * @param logger
+     *            The SLF4J logger.
+     * @param level
+     *            The logging level, 1 through 5 for TRACE through ERROR.
+     */
     public CoreNotice(Message message, Map<String, Object> data, Logger logger, int level) {
         this.message = message;
         this.data = data;
         this.logger = logger;
         this.level = level;
     }
-    
-    /**
-     * Return this object, but cast to the type needed for the chained variable
-     * map population method. Descendant classes implement this method and
-     * simply return the <code>this</code> object.
-     * <p>
-     * TODO Nice descirption.
-     * 
-     * @return This object.
-     */
-//    public abstract Self getSelf();
 
     /**
      * Get the map of diagnostic data.
