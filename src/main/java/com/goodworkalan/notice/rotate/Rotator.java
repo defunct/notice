@@ -8,21 +8,34 @@ import java.util.TimeZone;
 
 import com.goodworkalan.madlib.VariableProperties;
 
-// TODO Document.
+/**
+ * Rotates a log file in a log file directory at an hourly, daily or weekly
+ * interval.
+ * 
+ * @author Alan Gutierrez
+ */
 public class Rotator {
-    // TODO Document.
+    /** The file format. */
     private DateFormat fileFormat;
     
-    // TODO Document.
+    /** The next rotate time. */
     private Date rotateAfter;
     
-    // TODO Document.
+    /** The rotation interval. */
     private RotateType rotateType;
     
-    // TODO Document.
-    public Rotator(VariableProperties configuration, String prefix) {
+    /**
+     * Create a rotator using the given properties file reading properties
+     * prefixed with the given key prefix.
+     * 
+       * @param properties
+     *            The properties map.
+     * @param prefix
+     *            The property key prefix.
+     */
+    public Rotator(VariableProperties properties, String prefix) {
         Calendar calendar = getCalendar(new Date());
-        String rotate = configuration.getProperty(prefix + "rotate", "NEVER").trim().toUpperCase();
+        String rotate = properties.getProperty(prefix + "rotate", "NEVER").trim().toUpperCase();
         rotateType = RotateType.valueOf(rotate);
         if (rotateType == RotateType.NEVER) {
             rotateAfter = new Date(Long.MAX_VALUE);
@@ -34,15 +47,28 @@ public class Rotator {
         }
 
     }
-    
-    // TODO Document.
+
+    /**
+     * Create a calendar to do date math that is set to the given date.
+     * 
+     * @param date
+     *            The date.
+     * @return A calendar.
+     */
     private Calendar getCalendar(Date date) {
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("GMT"));
         calendar.setTime(date);
         return calendar;
     }
-    
-    // TODO Document.
+
+    /**
+     * Round the given calendar off to the nearest hour and to midnight as well,
+     * if the interval is not hourly.
+     * 
+     * @param calendar
+     *            The calendar.
+     * @return The calendar set to the top of the hour, possibly midnight.
+     */
     private Calendar getRotation(Calendar calendar) {
         calendar.set(Calendar.MILLISECOND, 0);
         calendar.set(Calendar.SECOND, 0);
@@ -53,7 +79,14 @@ public class Rotator {
         return calendar;
     }
 
-    // TODO Document.
+    /**
+     * Calculate the next rotation time by incrementing the time in the given
+     * calendar.
+     * 
+     * @param calendar
+     *            The calendar.
+     * @return The next rotate date.
+     */
     private Date getNextRotation(Calendar calendar) {
         switch (rotateType) {
         case HOURLY:
@@ -64,13 +97,23 @@ public class Rotator {
         }
         return calendar.getTime();
     }
-    
-    // TODO Document.
+
+    /**
+     * Determine if the log file should be rotated at the given time.
+     * 
+     * @param date
+     *            The current time.
+     * @return True if the log file should be rotated.
+     */
     public boolean shouldRotate(Date date) {
         return date.after(rotateAfter);
     }
     
-    // TODO Document.
+    /**
+     * Get the file name suffix which is based on the rotation time.
+     * 
+     * @return The file name suffix.
+     */
     public String getSuffix() {
         Calendar calendar = getRotation(getCalendar(new Date()));
         String suffix = fileFormat.format(calendar.getTime());

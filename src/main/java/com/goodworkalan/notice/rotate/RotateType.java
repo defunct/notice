@@ -1,13 +1,17 @@
 package com.goodworkalan.notice.rotate;
 
-// TODO Document.
+/**
+ * An enumerated type for rotation intervals.
+ * 
+ * @author Alan Gutierrez
+ */
 public enum RotateType {
-    // TODO Document.
+    /** Indicates hourly rotation at the top of the hour. */
     HOURLY,
-    // TODO Document.
+    /** Indicates daily rotation at midnight. */
     DAILY,
-    // TODO Document.
+    /** Indicates weekly rotation at midnight on Sunday. */
     WEEKLY,
-    // TODO Document.
+    /** Indicates no rotation. */
     NEVER
 }
