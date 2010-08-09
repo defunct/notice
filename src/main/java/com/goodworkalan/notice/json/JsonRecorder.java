@@ -38,8 +38,16 @@ public class JsonRecorder implements Recorder {
     public JsonRecorder() {
     }
 
-    // TODO Document.
-    public void initialize(String prefix, VariableProperties configuration) {
+    /**
+     * Initialize the recorder using the properties read from the given
+     * properties map using keys prepended with the given property key prefix.
+     * 
+     * @param properties
+     *            The properties map.
+     * @param prefix
+     *            The property key prefix.
+     */
+    public void initialize(VariableProperties configuration, String prefix) {
         file = configuration.getProperty(prefix + "file", null);
         if (file == null) {
             throw new NoticeException(0);

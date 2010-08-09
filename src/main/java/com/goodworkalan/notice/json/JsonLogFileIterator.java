@@ -49,8 +49,13 @@ class JsonLogFileIterator implements Iterator<JsonEntry> {
         this.pattern = pattern;
         this.entries = iterate();
     }
-    
-    // TODO Document.
+
+    /**
+     * Create an iterator over the entries in the next log file in the log file
+     * collection, or return null if there are no more log files to read.
+     * 
+     * @return An iterator over the next log file in the log file iterator.
+     */
     private Iterator<JsonEntry> iterate() {
         while (files.hasNext()) {
             File file = new File(directory, files.next());
@@ -69,12 +74,23 @@ class JsonLogFileIterator implements Iterator<JsonEntry> {
         return null;
     }
 
-    // TODO Document.
+    /**
+     * Determine if there is another log file entry in the log file collection.
+     * 
+     * @return True if there is another log file entry in the log file
+     *         collection.
+     */
     public boolean hasNext() {
         return entries != null;
     }
-    
-    // TODO Document.
+
+    /**
+     * Get the next entry in the lot file collection.
+     * 
+     * @return The next entry in the log file collection.
+     * @exception NoSuchElementException
+     *                If there are no more entries in the log file.
+     */
     public JsonEntry next() {
         if (entries == null) {
             throw new NoSuchElementException();
@@ -86,7 +102,12 @@ class JsonLogFileIterator implements Iterator<JsonEntry> {
         return entry;
     }
     
-    // TODO Document.
+    /**
+     * This method is unsupported by this implementation.
+     * 
+     * @exception UnsupportedOperationException
+     *                Entries cannot be removed.
+     */
     public void remove() {
         throw new UnsupportedOperationException();
     }
