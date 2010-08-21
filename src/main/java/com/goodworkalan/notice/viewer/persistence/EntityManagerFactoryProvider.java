@@ -3,9 +3,9 @@ package com.goodworkalan.notice.viewer.persistence;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import com.goodworkalan.paste.Application;
-import com.goodworkalan.paste.janitor.Janitor;
-import com.goodworkalan.paste.janitor.JanitorQueue;
+import com.goodworkalan.paste.controller.Janitor;
+import com.goodworkalan.paste.controller.JanitorQueue;
+import com.goodworkalan.paste.controller.qualifiers.Application;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 

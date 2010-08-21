@@ -7,8 +7,8 @@ import java.util.Date;
 
 import javax.persistence.EntityManager;
 
-import com.goodworkalan.paste.Actors;
-import com.goodworkalan.paste.Request;
+import com.goodworkalan.paste.controller.Actors;
+import com.goodworkalan.paste.controller.qualifiers.Request;
 import com.goodworkalan.paste.infuse.InfusionActor;
 import com.goodworkalan.paste.stream.Output;
 import com.goodworkalan.notice.json.JsonEntry;

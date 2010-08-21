@@ -8,7 +8,7 @@ import javax.persistence.EntityManager;
 import org.json.simple.JSONValue;
 
 import com.goodworkalan.notice.viewer.model.Column;
-import com.goodworkalan.paste.Actors;
+import com.goodworkalan.paste.controller.Actors;
 import com.goodworkalan.paste.infuse.InfusionActor;
 import com.goodworkalan.paste.stream.Output;
 import com.google.inject.Inject;

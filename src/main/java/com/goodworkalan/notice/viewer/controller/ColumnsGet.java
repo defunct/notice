@@ -4,7 +4,7 @@ import org.json.simple.JSONValue;
 
 import com.goodworkalan.diffuse.Diffuser;
 import com.goodworkalan.notice.viewer.model.Grid;
-import com.goodworkalan.paste.Actors;
+import com.goodworkalan.paste.controller.Actors;
 import com.goodworkalan.paste.infuse.InfusionActor;
 import com.goodworkalan.paste.stream.Output;
 

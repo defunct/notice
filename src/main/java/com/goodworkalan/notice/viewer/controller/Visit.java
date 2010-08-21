@@ -2,7 +2,7 @@ package com.goodworkalan.notice.viewer.controller;
 
 import java.io.Serializable;
 
-import com.goodworkalan.paste.SessionScoped;
+import com.goodworkalan.paste.controller.scopes.SessionScoped;
 
 /**
  * An instance of a visit by a single visitor to the website.

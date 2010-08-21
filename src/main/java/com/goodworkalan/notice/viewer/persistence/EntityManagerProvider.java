@@ -4,9 +4,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 import com.goodworkalan.notice.viewer.guice.NoticeViewerModule;
-import com.goodworkalan.paste.Request;
-import com.goodworkalan.paste.janitor.Janitor;
-import com.goodworkalan.paste.janitor.JanitorQueue;
+import com.goodworkalan.paste.controller.Janitor;
+import com.goodworkalan.paste.controller.JanitorQueue;
+import com.goodworkalan.paste.controller.qualifiers.Request;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 

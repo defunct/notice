@@ -15,7 +15,7 @@ $(document).ready(function () {
         enableCellNavigation: false
     };  
     function evaluation(e) {
-        return eval('(function() { return function (entry) { return (' + e + ') } })()');
+        return eval('(function() { return function (entry) { try { return (' + e + ') } catch(e) { return e.message } } })()');
     }
     var prototypeColumn = {
         renderOnResize: true,

@@ -5,6 +5,14 @@
 	<classpathentry kind="src" output="target/test-classes" path="src/test/java"/>
 	<classpathentry excluding="**/*.java" kind="src" output="target/test-classes" path="src/test/resources"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/notice"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/notice-json"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/addendum"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/addendum-mysql"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/addendum-jpa"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/diffuse"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/string-beans"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/string-beans-url"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/paste"/>
 	<classpathentry kind="var" path="M2_REPO/org/eclipse/jetty/jetty-xml/7.0.0.RC3/jetty-xml-7.0.0.RC3.jar" sourcepath="M2_REPO/org/eclipse/jetty/jetty-xml/7.0.0.RC3/jetty-xml-7.0.0.RC3-sources.jar">
 		<attributes>
@@ -159,11 +167,8 @@
 			<attribute name="javadoc_location" value="jar:file:/Users/alan/.m2/repository/org/eclipse/jetty/jetty-io/7.0.0.RC3/jetty-io-7.0.0.RC3-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry combineaccessrules="false" kind="src" path="/notice"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/notice-json"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/addendum"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/addendum-mysql"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/addendum-jpa"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/diffuse"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/string-beans-jpa"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/ilk"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/stash"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

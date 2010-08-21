@@ -1,17 +1,21 @@
 package com.goodworkalan.notice.viewer.guice;
 
+import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
-import com.goodworkalan.infuse.CollectionFactory;
-import com.goodworkalan.infuse.ObjectFactory;
-import com.goodworkalan.infuse.guice.GuiceFactory;
-import com.goodworkalan.notice.viewer.persistence.EntityFactoryProvider;
 import com.goodworkalan.notice.viewer.persistence.EntityManagerFactoryProvider;
 import com.goodworkalan.notice.viewer.persistence.EntityManagerProvider;
-import com.goodworkalan.paste.ApplicationScoped;
-import com.goodworkalan.paste.RequestScoped;
+import com.goodworkalan.paste.controller.Actors;
+import com.goodworkalan.paste.controller.scopes.ApplicationScoped;
+import com.goodworkalan.paste.controller.scopes.RequestScoped;
+import com.goodworkalan.paste.infuse.Infusable;
+import com.goodworkalan.paste.infuse.StashAssignment;
+import com.goodworkalan.stringbeans.Converter;
+import com.goodworkalan.stringbeans.StringerBuilder;
+import com.goodworkalan.stringbeans.jpa.MetaJpaBean;
 import com.google.inject.AbstractModule;
+import com.google.inject.TypeLiteral;
 import com.google.inject.multibindings.Multibinder;
 
 /**
@@ -27,9 +31,11 @@ public class NoticeViewerModule extends AbstractModule {
     protected void configure() {
         bind(EntityManagerFactory.class).toProvider(EntityManagerFactoryProvider.class).in(ApplicationScoped.class);
         bind(EntityManager.class).toProvider(EntityManagerProvider.class).in(RequestScoped.class);
-        Multibinder<ObjectFactory> factories = Multibinder.newSetBinder(binder(), ObjectFactory.class);
-        factories.addBinding().toProvider(EntityFactoryProvider.class);
-        factories.addBinding().to(CollectionFactory.class);
-        factories.addBinding().to(GuiceFactory.class).in(RequestScoped.class);
+        Converter stringer = new StringerBuilder().isBeanIfAnnotatedWith(Actors.class)
+                                                 .isBeanIfAnnotatedWith(Entity.class, MetaJpaBean.class)
+                                                 .getInstance();
+        bind(Converter.class).toInstance(stringer);
+        Multibinder<StashAssignment<?>> keys =  Multibinder.newSetBinder(binder(), new TypeLiteral<StashAssignment<?>>() { }, Infusable.class);
+        keys.addBinding().toInstance(new StashAssignment<EntityManager>(MetaJpaBean.ENTITY_MANAGER, EntityManager.class));
     }
 }

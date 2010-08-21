@@ -3,7 +3,7 @@ package com.goodworkalan.notice.viewer.controller;
 import javax.servlet.http.HttpServletRequest;
 
 import com.goodworkalan.notice.viewer.model.Grid;
-import com.goodworkalan.paste.Actors;
+import com.goodworkalan.paste.controller.Actors;
 import com.goodworkalan.paste.infuse.InfusionActor;
 import com.google.inject.Inject;
 

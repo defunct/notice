@@ -15,13 +15,13 @@ import com.goodworkalan.notice.viewer.controller.LoginView;
 import com.goodworkalan.notice.viewer.controller.LogoutGet;
 import com.goodworkalan.notice.viewer.controller.MigrateSchema;
 import com.goodworkalan.notice.viewer.controller.VerifyLogin;
-import com.goodworkalan.paste.Connector;
-import com.goodworkalan.paste.Router;
-import com.goodworkalan.paste.Startup;
+import com.goodworkalan.paste.connector.Connector;
+import com.goodworkalan.paste.connector.Router;
+import com.goodworkalan.paste.controller.Redirection;
+import com.goodworkalan.paste.controller.Startup;
 import com.goodworkalan.paste.forward.Forward;
 import com.goodworkalan.paste.paths.ControllerClassName;
 import com.goodworkalan.paste.redirect.Redirect;
-import com.goodworkalan.paste.redirect.Redirection;
 import com.goodworkalan.paste.stream.Stream;
 
 /**
