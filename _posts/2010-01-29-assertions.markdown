@@ -58,3 +58,11 @@ possible error condition. If you don't, you get what you deserve.
 What people deserve are libraries that do not treat programmer errors a failings
 of character. Libraries that make it easy to diagnose and rectify common
 misktakes.
+
+In any case, Notice will not report message format problems by raising
+exceptions when it can just as easily report the problem by putting it out in
+the message. You can still inspect the variables you've recorded to see what's
+the matter while you fix your message.
+
+Even if you haven't achived 100% test coverage, Notice will still serve you.
+least some of 
